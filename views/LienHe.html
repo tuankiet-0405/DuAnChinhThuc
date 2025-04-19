@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../public/css/styles.css">
+   
+</head>
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+            </div>
+            <div class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="#gioithieu">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="services.html">Dịch vụ</a>
+                        <ul class="sub-menu">
+                            <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="">Thuê xe 16 chỗ</a></li>
+                            <li><a href="">Thuê xe 29 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
+                <a href="#" id="openLogin" class="btn btn-login">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <div class ="iconx">
+        <a href="https://www.facebook.com/messages/t/100009036720265"><i class="icon fa-brands fa-facebook-messenger"></i></a><br>
+        <a href="https://www.facebook.com/47NDK/" target="_blank"><i class="icon fa-brands fa-facebook"></i></a><br>
+        <a href=""><i class="icon fa-solid fa-phone-volume"></i></a>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content"> 
+            <span class="close">&times;</span>
+            <h2>Đăng nhập</h2>
+            <form>
+                <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required>
+                <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
+                <button type="submit" class="login-btn" style="margin-bottom: 10px;">Đăng nhập</button>
+                <a href="#d" style="font-weight: normal; color: rgb(0, 0, 0); font-size: 15px; border-bottom: 1px black solid ;">Quên mật khẩu?</a>
+                <p>Bạn chưa là thành viên? <a href="#" style="font-weight: normal; color: blue; font-size: 15px; margin: 1px;">Đăng ký ngay</a></p>
+                <div class="social-login">
+                    <button class="social-btn facebook">Facebook</button>
+                    <button class="social-btn google">Google</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="registerModal">
+        <div class="form-register">
+            <span class="close">&times;</span>
+            <h2>Đăng ký</h2>
+            <form>
+                <div class="phone">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="number" id="phone" name="phone" required>
+                </div>
+                <div class="name">
+                    <label for="name">Họ và tên:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="password">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="Repass">
+                    <label for="Repass">Nhập lại mật khẩu:</label>
+                    <input type="password" id="Repass" name="Repass" required>
+                </div>
+                <div class="ref">
+                    <label for="ref">Người giới thiệu:</label>
+                    <input type="text" id="ref" name="ref">
+                </div>
+                <button type="button" class="btn-register">Đăng ký</button>
+            </form>
+            <p style="margin-top: 10px;">Bạn đã có tài khoản? <a href="#"  style="font-weight: normal; color: blue; font-size: 15px; margin: 1px;">Đăng nhập ngay</a></p>
+            <div class="social-login">
+                <button class="social-btn facebook">Facebook</button>
+                <button class="social-btn google">Google</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container12">
+        <div class="header1">
+            <div class="booking-section">
+        
+                <div class="image-and-text">
+                    <div class="img-container-bus">
+                        <img src="https://dulichquanghuy68.com/wp-content/uploads/944619_457419431010973_127480731_n-9680.jpg" alt="Xe du lịch" class="bus-image">
+                    </div>
+                    <div class="company-text">
+                        <h1 style="color: #ff0000;">CÔNG TY DU LỊCH TKDK</h1>
+                        <p>Đội ngũ chúng tôi luôn nỗ lực để đảm bảo Quý khách hàng có những chiếc xe tuyệt vời nhất hoặc được phục vụ bởi đội ngũ tài xế tận tâm, nhiệt tình và chuyên nghiệp nhất.</p>
+                    </div>
+                </div>
+
+                <div class="form-book-car">
+                    
+                    
+                   
+                        <p style="color: #ff0000; font-size: 20px;"> Vui lòng điền thông tin bên dưới:</p>
+                        <form >
+                            <label for="name">Họ và tên:</label>
+                            <input type="text" id="name" name="name" required placeholder="Nhập họ và tên">
+                            <label for="phone">Số điện thoại:</label>
+                            <input type="text" id="phone" name="phone" required placeholder="Nhập số điện thoại">
+                            <label for="address">Điểm giao xe:</label>
+                            <input type="text" id="address" name="address" required placeholder="Nhập địa chỉ đón">
+                            <label for="date">Ngày dự kiến di chuyển:</label>
+                            <input type="date" id="date" name="date" required placeholder="Chọn ngày di chuyển">
+                            <label for="type of vehicle">Loại xe:</label>
+                            <select id="type of vehicle" name="type of vehicle" style="width: 100%; height: 40px;margin: 10px 0;" required>
+                                <option value="Chọn loại xe bạn muốn đặt" required> Chọn loại xe bạn muốn đặt </option>
+                                <option value=" Xe 4 chỗ" > Xe 4 chỗ</option>
+                                <option value=" Xe 7 chỗ"> Xe 7 chỗ</option>
+                                <option value=" Xe 16 chỗ"> Xe 16 chỗ</option>
+                                <option value=" Xe 29 chỗ"> Xe 29 chỗ</option>
+                            </select>
+                            <button type="submit" class="login-btn">Gửi thông tin đi</button>
+                        </form>
+                   
+                </div>
+            </div>
+
+            <div class="info">
+                <h2 style="text-align: center; color: #ff0000;">THÔNG TIN LIÊN HỆ</h2>
+                <div class="contact">
+                    <div class="contact-item">
+                        <div class="icon">📍</div>
+                        <h3>Văn phòng</h3>
+                        <p>Trường đại học HuTech, TPHCM</p>
+                    </div>
+                    <div class="contact-item red">
+                        <div class="icon">📞</div>
+                        <h3>Điện thoại</h3>
+                        <p>0397468827</p>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon">✉️</div>
+                        <h3>Email</h3>
+                        <p>dinhkhanhvn.2004@gmail.com</p>
+                    </div>
+                    <div class="contact-item red">
+                        <div class="icon">🕒</div>
+                        <h3>Giờ làm việc</h3>
+                        <p>8:00 - 17:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

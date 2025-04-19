@@ -1,0 +1,139 @@
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+    <meta charset="UTF-8">
+    <title>Danh sách người dùng</title>
+        <link rel="stylesheet" href="../public/css/stylesAdmin.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+    <style>
+    
+
+        .btn {
+        padding: 5px 10px;
+        margin: 2px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 13px;
+        color: #fff;
+        }
+
+        .btn-edit {
+        background-color: #ffc107;
+        }
+
+        .btn-delete {
+        background-color: #dc3545;
+        }
+    </style>
+    </head>
+    <body>
+        <div class="header">
+            <div class="header-inner">
+            <div class="logo-header">
+                <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" />
+            </div>
+            <ul class="menu">
+                <li><a href="AdminTrangChu.html">Thống Kê</a></li>
+                <li><a href="AdminQuanLyKH.html">Quản Lý Khách Hàng</a></li>
+                <li><a href="AdminQLXe.html">Quản Lý Xe</a></li>
+                <li><a href="AdminQuanLyNguoiDung.html">Quản Lý Người Dùng</a></li>
+                <li><a href="LienHe.html">Quản Lý Giao Dịch</a></li>
+                <li><a href="LienHe.html">Quản Lý Voucher</a></li>
+                <li><a href="#">Đăng Nhập</a></li>
+            </ul>
+            </div>
+        </div>
+    <div>
+    <h2>Danh sách người dùng</h2>
+
+    <table id="userTable" class="display" style="width:100%">
+        <thead>
+        <tr>
+            <th>STT</th>
+            <th>Họ tên</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th>Quyền</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>Quản trị</td>
+            <td>admin1@gmail.com</td>
+            <td>0340878788</td>
+            <td>Admin</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Admin</td>
+            <td>info@gmail.com</td>
+            <td>0348519101</td>
+            <td>Admin</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Minh Nhạ</td>
+            <td>user@gmail.com</td>
+            <td>01234561489</td>
+            <td>Người dùng</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- jQuery & DataTables -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+        var table = $('#userTable').DataTable({
+            columnDefs: [{
+            targets: -1, // cột cuối cùng (Thao tác)
+            orderable: false,
+            searchable: false,
+            defaultContent: `
+                <button class="btn btn-edit">Cập nhật</button>
+                <button class="btn btn-delete">Xóa</button>
+            `
+            }],
+            language: {
+            search: "Tìm kiếm:",
+            lengthMenu: "Hiển thị _MENU_ dòng",
+            zeroRecords: "Không tìm thấy kết quả nào",
+            info: "Hiển thị từ _START_ đến _END_ của _TOTAL_ mục",
+            infoEmpty: "Không có dữ liệu",
+            paginate: {
+                first: "Đầu",
+                last: "Cuối",
+                next: "Sau",
+                previous: "Trước"
+            }
+            }
+        });
+
+        // Bắt sự kiện xóa
+        $('#userTable tbody').on('click', '.btn-delete', function () {
+            if (confirm('Bạn có chắc muốn xóa người dùng này không?')) {
+            table.row($(this).parents('tr')).remove().draw();
+            }
+        });
+
+        // Bắt sự kiện cập nhật
+        $('#userTable tbody').on('click', '.btn-edit', function () {
+            var data = table.row($(this).parents('tr')).data();
+            alert("Bạn đang cập nhật: " + data[1] + " (" + data[2] + ")");
+            // Sau này có thể mở modal để cập nhật thông tin
+        });
+        });
+    </script>
+
+    </body>
+    </html>

@@ -1,0 +1,1402 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+html,
+body {
+    width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* === HEADER === */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ff0000;
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-inner {
+    background-color: #ff0000;
+    width: 1050px;
+    min-height: 100px;
+    margin: 0 auto;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-header {
+    width: 270px;
+    height: 100px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+}
+
+/* === MENU === */
+.menu {
+    display: flex;
+}
+
+.menu>li:hover .sub-menu {
+    visibility: visible;
+    top: 20px;
+}
+
+.menu-header {
+    width: 780px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.menu-item,
+.menu a {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sub-menu {
+    position: absolute;
+    visibility: hidden;
+    top: 30px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    padding: 10px 20px;
+    transition: 0.5s;
+    z-index: 999;
+}
+
+.sub-menu li a {
+    display: block;
+    color: black;
+    font-size: 18px;
+    padding: 10px 0;
+    font-weight: normal;
+    text-align: left;
+}
+
+/* === BANNER === */
+.banner {
+    width: 100%;
+    height: 600px;
+    margin-top: 90px;
+    overflow: hidden;
+}
+
+.banner-img {
+    width: 100%;
+    height: 100%;
+    size: cover;
+}
+
+
+/* === CONTENT === */
+.z1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    color: red;
+    margin: 20px;
+}
+
+.k {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    text-align: justify;
+    margin: 20px 100px;
+    line-height: 1.5;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.box p {
+    font-size: 20px;
+    color: #666;
+}
+
+.c {
+    font-size: 25px;
+    margin: 10px 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.box1 {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.box1 img {
+    width: 200px;
+    height: 100px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container1 {
+    display: flex;
+    gap: 20px;
+    text-align: center;
+}
+
+.box2 {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box2 img {
+    width: 300px;
+    height: 150px;
+    display: block;
+    margin: auto;
+}
+
+.box2 p {
+    font-size: 20px;
+    color: #000;
+}
+
+.Content {
+    display: flex;
+}
+
+.Content p {
+    flex: 1;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 20px 50px;
+}
+
+.footer {
+    height: 100px;
+    background-color: #778899;
+}
+
+/* === FORM === */
+body.modal-active {
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+input,
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: rgb(209, 49, 49);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.forgot-password {
+    text-align: right;
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #28a745;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.social-login button {
+    width: 48%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: white;
+    color: black;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-login button:hover {
+    background: #f8f8f8;
+}
+
+.btn-login {
+    width: 131px;
+    font-size: 17px;
+    border: 1px solid white;
+    padding: 20px;
+    border-radius: 8px;
+    position: absolute;
+    right: 30px;
+}
+
+/* === ICON === */
+.icon {
+    font-size: 40px;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+.iconx {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+}
+
+.fa-facebook-messenger {
+    color: #0082ff;
+}
+
+.fa-facebook {
+    color: #0866ff;
+}
+
+.fa-phone-volume {
+    color: #79c35c;
+}
+
+/* === REGISTER FORM === */
+.form-register {
+    position: fixed;
+    width: 500px;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form-register h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-register input[type="text"],
+.form-register input[type="password"],
+.form-register input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.btn-register {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    background-color: rgb(209, 49, 49);
+}
+
+.btn-register:hover {
+    background-color: #52b667;
+}
+
+.social-btn {
+    width: 48%;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    border: 1px solid #8ddda9;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* === INPUT SỐ KHÔNG CÓ NÚT TĂNG GIẢM === */
+#phone::-webkit-inner-spin-button,
+#phone::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#phone {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+/* === PRODUCT === */
+.showProduct {
+    margin: 20px 100px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.product {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 40px;
+    justify-content: center;
+}
+
+.btn-product {
+    background-color: red;
+    padding: 2px 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+.so {
+    font-size: 30px !important;
+    font-weight: bold;
+    color: #5fcf86 !important;
+}
+
+.container2 {
+    margin-top: 200px;
+    margin-inline: auto;
+    position: relative;
+    max-width: 1280px;
+    display: flex;
+    justify-self: center;
+    gap: 20px;
+}
+
+.menu__account {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu__account-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-top: 1px solid #000000;
+}
+
+.menu__account-item {
+    max-width: auto;
+    height: 40px;
+    cursor: pointer;
+}
+
+.menu__account-item:hover {
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.menu__account a {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 18px;
+}
+
+.container__account {
+    display: flex;
+    gap: 20px;
+}
+
+.content-item {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px 32px;
+    width: 900px;
+}
+
+.title__edit {
+    display: flex;
+    gap: 10px;
+}
+
+.title__edit img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    padding: 2px;
+    border: #000000 1px solid;
+    border-radius: 50%;
+}
+
+.avatar-box {
+    margin-top: 20px;
+    width: 200px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-box h6 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: #000000 1px solid;
+}
+
+.content {
+    display: flex;
+    gap: 40px;
+}
+
+/* CSS cho trang dich vu xe */
+.content1 {
+    margin-top: 100px;
+}
+
+.image-container {
+    text-align: center;
+    margin: 20px 0;
+    size: cover;
+
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    max-width: 1000px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content-header {
+    margin-top: 1000px;
+    width: 1050px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content-section {
+    margin: 10px 0;
+    line-height: 1.5;
+    font-size: 20px;
+    color: #333;
+}
+
+.content-note {
+    padding: 10px;
+    line-height: 1.5;
+    font-size: 20px;
+
+}
+
+.content-footer {
+    width: 100%;
+    height: 200px;
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+}
+
+h1 {
+    font-size: 30px;
+    color: rgba(255, 0, 0, 0.797);
+    margin-bottom: 10px;
+}
+
+/* CSS cho phần lieen hệ */
+.container12 {
+    width: 90%;
+    height: auto;
+    margin: 150px auto;
+    background:#f9f9f9;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);;
+}
+.header1 {
+    padding: 20px;
+    color: black;
+    text-align: center;
+}
+.contact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.info {
+    text-align: left;
+    color: black;
+}
+.contact{
+    color: black;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+.contact{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px;
+    background: #fff;
+    color: black;
+}
+.contact-item {
+    text-align: center;
+    width: 200px;
+}
+.contact-item .icon {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:black;
+    color: white;
+    font-size: 25px;
+    margin: auto;
+    border-radius: 10px;
+}
+.contact-item.red .icon {
+    background: blue;
+}
+.img-container-bus {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 20px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+.img-container-bus img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+.form-book-car {
+    background: #fff;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.booking-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.image-and-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+}
+.company-text {
+    text-align: center;
+    margin-top: 60px;
+    width: 100%;
+}
+
+.login-btn
+{   
+    width: 200px;
+    border-radius: 40px;
+    margin-top: 20px;
+}
+
+/* SCC thông tin người dùng */
+.info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #f6f6f6;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    align-content: end;
+    margin-top: 18px;
+}
+
+.info-box__item {
+    display: flex;
+    gap: 350px;
+    justify-content: space-between;
+}
+
+.info-box__item p,
+.auth p {
+    font-weight: 500;
+    color: #6f6f6f;
+    font-size: .90rem;
+}
+
+/* end SCC thông tin người dùng */
+
+/*CSS phone email*/
+.info-decs {
+    margin-top: 20px;
+    flex-direction: column;
+    gap: 10px;
+    display: flex;
+}
+
+.title-item {
+    display: flex;
+    align-items: end;
+    gap: 220px;
+}
+
+.title-item img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    padding: 2px;
+    border: #000000 1px solid;
+    border-radius: 50%;
+}
+
+.auth {
+    display: flex;
+    align-items: center;
+}
+
+.info-decs__item {
+    display: flex;
+}
+
+.info-user__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth p {
+    margin-right: 14px;
+}
+
+.note__icon {
+    background-color: #ffe2bb;
+    padding: 2px 4px;
+    border-radius: 100px;
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    font-size: 14px;
+    color: #262626;
+}
+
+/*end CSS phone email*/
+
+/*CSS giấy phép lái xe*/
+.driver-license{
+    display: flex;
+    flex-direction: column;
+}
+.title__item{
+    display: flex;
+    align-items: center;
+}
+.content-item{
+    margin-top: 30px;
+    gap: 20px;
+}
+.title__dirver{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 220px;
+}
+.title-item__info{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 20px;
+    padding: 4px 5px;
+    border-radius: 100px;
+    background-color: #ffd0cd;
+}
+.title-item__info p{
+    font-size: 12px;
+    color: #f04438;
+}
+.btn__edit{
+    background-color: #fff;
+    border: 1px solid #000000;
+    padding: 8px 8px;
+    border-radius: 100px;
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    font-size: 14px;
+    color: #262626;
+}
+.title-item__info-icon img{
+    width: 20px;
+    height: 20px;
+    color: #f04438;
+}
+.note-license{
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #ffd0cd;
+}
+.note-license p{
+    font-size: 13px;
+    color: #f04438;
+}
+.info-license{
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    max-width: 600px;
+    width: 100%;
+}
+
+/*end CSS giấy phép lái xe*/
+/*thêm địa chỉ*/
+.title-address {
+    display: flex;
+    justify-content: space-between;
+    gap: 220px;
+}
+
+.address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.address-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 25px;
+    background-color: #f7fdf9;
+    border: 1px #5fcf86 solid;
+    border-radius: 20px;
+}
+
+.content__address {
+    display: none;
+}
+
+.wrap-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.wrap-text p {
+    font-size: 20px;
+    color: #262626;
+}
+
+.address-content__icon img,
+.address-edit__icon img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.content-title h4,
+.title-address h4 {
+    font-size: 40px;
+    color: #262626;
+}
+
+/*end thêm địa chỉ*/
+
+/* CSS cho phần cập nhật thông tin */
+.modal1 {
+    display: none;
+    /* Ẩn ban đầu */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.update-btn {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #2ecc71;
+    border: none;
+    padding: 12px;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.update-btn:hover {
+    background-color: #27ae60;
+}
+
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: black;
+    padding: 0;
+    width: 40px;
+}
+
+.modal-content .close-btn:hover {
+    background-color: white;
+}
+
+/* CSS cho phần cập nhật thông tin */
+
+.content__change-password {
+    max-width: 600px;
+    margin: auto;
+    padding: 32px;
+    background: #f7f7f7;
+    border-radius: 12px;
+}
+
+.content-title h4 {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.content-title p {
+    color: #555;
+    margin-bottom: 24px;
+}
+
+.change-pw .title h5 {
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.custom-input {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.wrap-info .title-status p {
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.wrap-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+}
+
+.wrap-text input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.wrap-icon {
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 18px;
+    user-select: none;
+    margin-right: 10px;
+}
+
+.btn-confirm {
+    padding: 10px 20px;
+    background: #ccc;
+    border: none;
+    border-radius: 8px;
+    cursor: not-allowed;
+    font-size: 16px;
+    color: #333;
+    float: right;
+    margin-top: 24px;
+}
+
+.content__change-password {
+    display: none;
+}
+
+/*giới thiệu người mới*/
+.share-code {
+    display: flex;
+    margin-top: 30px;
+    gap: 40px;
+    justify-content: space-between;
+}
+
+.learn-more {
+    display: flex;
+    gap: 3px;
+}
+
+.content-img {
+    width: calc(70% - 12px);
+    height: 100%;
+}
+
+.content-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.title__share-code {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.title__share-code h5 {
+    font-size: 22px;
+    color: #262626;
+}
+
+.learn-more p {
+    font-size: 14px;
+    color: #262626;
+}
+.pointer img{
+    cursor: pointer;
+}
+/*giới thiệu người mới*/
+.wrap-svg {
+    cursor: pointer;
+}
+
+/*thông tin giới thiệu người mới*/
+
+.moda {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.modal-content {
+    width: auto;
+    background: white;
+    margin: 5% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 8px;
+}
+
+.modal-body {
+    padding: 16px;
+}
+
+.modal-text-body img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.block-bg {
+    background-color: #fff2f1;
+    border: 1px solid #ffd2d2;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 12px 0;
+}
+
+.text-danger {
+    color: #d9534f;
+}
+
+.modal-text-body h5 {
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.block-content {
+    margin: 12px 0;
+    font-size: 15px;
+    color: #333;
+}
+
+.block-bg-nd {
+    background-color: #eafaf1;
+    /* giống Mioto */
+    padding: 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+}
+
+.block-content b {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Thêm đoạn này để đảm bảo không thụt đầu dòng */
+.modal-text-body p {
+    margin-bottom: 8px;
+    line-height: 1.6;
+    text-indent: 0;
+}
+
+.modal-text-body p:last-child {
+    margin-bottom: 0;
+}
+
+.modal-header {
+    display: none;
+    /* ẩn header nếu không sử dụng */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    width: 35px;
+    border-radius:50% ;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.close-button:hover {
+    color: #000;
+    background-color: rgb(221, 122, 122);
+}
+
+/*thông tin giới thiệu người mới*/
+
+/*xe yêu thích*/
+.content-account {
+    padding: 20px;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+.content-title h4 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.tab-mode {
+    display: flex;
+    gap: 20px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 20px;
+}
+
+.tab-mode__item {
+    padding: 10px 0;
+    font-size: 16px;
+    cursor: pointer;
+    color: #999;
+    position: relative;
+}
+
+.tab-mode__item.active {
+    color: #222;
+    font-weight: 600;
+}
+
+.tab-mode__item.active::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #23c16b;
+    border-radius: 2px;
+}
+
+.list-car {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.item-car.row {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    overflow: hidden;
+    display: flex;
+    padding: 16px;
+    transition: box-shadow 0.3s;
+}
+
+.item-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.img-car {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.img-car img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.wrap-svg.fav-item {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: white;
+    border-radius: 50%;
+    padding: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.label-pos {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: #fff;
+    border-radius: 50%;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.discount {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: #FBE7E8;
+    color: #E53935;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.desc-car {
+    margin-top: 10px;
+}
+
+.desc-tag {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.tag-item.default {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #5FCF86;
+    background: #E8F7F0;
+    padding: 4px 6px;
+    border-radius: 6px;
+    font-weight: 500;
+    gap: 4px;
+}
+
+.desc-car-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.desc-price {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.current-price {
+    color: #222;
+    font-weight: 600;
+}
+
+/*xe yêu thích*/
+/*CSS Admin*/
+.list-header-inner
+{
+    margin-top: 100px
+
+    
+    
+    
+}

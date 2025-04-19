@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dịch vụ thuê xe du lịch</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        
+     
+    </style>
+</head>
+<body id="body">
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="./image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+            </div>
+            <div class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="#body">Trang chủ</a></li>
+                    <li class="menu-item"><a href="#gioithieu">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="services.html">Dịch vụ</a>
+                        <ul class="sub-menu">
+                            <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="">Thuê xe 16 chỗ</a></li>
+                            <li><a href="">Thuê xe 29 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
+                <a href="#" id="openLogin" class="btn btn-login">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+    <div class ="iconx">
+        <a href="https://www.facebook.com/messages/t/100009036720265"><i class="icon fa-brands fa-facebook-messenger"></i></a><br>
+        <a href="https://www.facebook.com/47NDK/" target="_blank"><i class="icon fa-brands fa-facebook"></i></a><br>
+        <a href=""><i class="icon fa-solid fa-phone-volume"></i></a>
+    </div>
+    <div id="loginModal" class="modal">
+        <div class="modal-content"> 
+            <span class="close">&times;</span>
+            <h2>Đăng nhập</h2>
+            <form  action="/auth/login" method="POST">
+                <input type="text" id="username" name="username" placeholder="Số điện thoại" required>
+                <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
+                <button type="submit" class="login-btn" style="margin-bottom: 10px;">Đăng nhập</button> <br>
+                <a href="#d" style="font-weight: normal; color: rgb(0, 0, 0); font-size: 15px; border-bottom: 1px black solid ;">Quên mật khẩu?</a>
+                <p>Bạn chưa là thành viên? <a href="#" style="font-weight: normal; color: blue; font-size: 15px; margin: 1px;">Đăng ký ngay</a></p>
+                <div class="social-login">
+                    <button class="social-btn facebook">Facebook</button>
+                    <button class="social-btn google">Google</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="registerModal">
+        <div class="form-register">
+            <span class="close">&times;</span>
+            <h2>Đăng ký</h2>
+            <form>
+                <div class="name">
+                    <label for="name">Họ và tên:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="phone">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="number" id="phone" name="phone" required>
+                </div>
+                <div class="password">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="Repass">
+                    <label for="Repass">Nhập lại mật khẩu:</label>
+                    <input type="password" id="Repass" name="Repass" required>
+                </div>
+                <div class="ref">
+                    <label for="ref">Người giới thiệu:</label>
+                    <input type="text" id="ref" name="ref">
+                </div>
+                <button type="button" class="btn-register">Đăng ký</button>
+            </form>
+            <p style="margin-top: 10px;">Bạn đã có tài khoản? <a href="#"  style="font-weight: normal; color: blue; font-size: 15px; margin: 1px;">Đăng nhập ngay</a></p>
+            <div class="social-login">
+                <button class="social-btn facebook">Facebook</button>
+                <button class="social-btn google">Google</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main">
+        <div class="banner" id="banner">
+            <img src="../image/BannerWeb.png" alt="banner" class="banner-img">
+        </div>
+        <div class="showProduct">
+            <div class="product">
+                <div class="product-item">
+                    <img src="../../image/xe4cho.png" alt="Xe 4 chỗ" class="product-img">
+                    <h3 class="product-title">Xe 4 chỗ</h3>
+                    <p class="product-price">Giá từ: 500.000 VNĐ/ngày</p>
+                    <a href="#" class="btn btn-product">Xem chi tiết</a>
+                </div>
+                <div class="product-item">
+                    <img src="../../image/xe7cho.png" alt="Xe 7 chỗ" class="product-img">
+                    <h3 class="product-title">Xe 7 chỗ</h3>
+                    <p class="product-price">Giá từ: 800.000 VNĐ/ngày</p>
+                    <a href="#" class="btn btn-product">Xem chi tiết</a>
+                </div>
+                <div class="product-item">
+                    <img src="../../image/xe16cho.png" alt="Xe 16 chỗ" class="product-img">
+                    <h3 class="product-title">Xe 16 chỗ</h3>
+                    <p class="product-price">Giá từ: 1.200.000 VNĐ/ngày</p>
+                    <a href="#" class="btn btn-product">Xem chi tiết</a>
+                </div>
+                <div class="product-item">
+                    <img src="../../image/xe29cho.png" alt="Xe 29 chỗ" class="product-img">
+                    <h3 class="product-title">Xe 29 chỗ</h3>
+                    <p class="product-price">Giá từ: 1.800.000 VNĐ/ngày</p>
+                    <a href="#" class="btn btn-product">Xem chi tiết</a>
+                </div>
+                <div class="product-item">
+                    <img src="../../image/xe7cho.png" alt="Xe 7 chỗ" class="product-img">
+                    <h3 class="product-title">Xe 7 chỗ</h3>
+                    <p class="product-price">Giá từ: 800.000 VNĐ/ngày</p>
+                    <a href="#" class="btn btn-product">Xem chi tiết</a>
+                </div>
+                <div class="product-item">
+                    <img src="../../image/xe16cho.png" alt="Xe 16 chỗ" class="product-img">
+                    <h3 class="product-title">Xe 16 chỗ</h3>
+                    <p class="product-price">Giá từ: 1.200.000 VNĐ/ngày</p>
+                    <a href="#" class="btn btn-product">Xem chi tiết</a>
+                </div>
+                <div class="product-item">
+                    <img src="../../image/xe29cho.png" alt="Xe 29 chỗ" class="product-img">
+                    <h3 class="product-title">Xe 29 chỗ</h3>
+                    <p class="product-price">Giá từ: 1.800.000 VNĐ/ngày</p>
+                    <a href="#" class="btn btn-product">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+        <div class = "DatXe">
+            <h1 style =" font-size: 40px; color: red;font-display: flex; text-align: center;margin-top: 10px;" id="gioithieu">Ưu Điểm Của TKĐK</h1>
+            
+            <div class="container">
+                <div class="box">
+                    <img src="https://www.mioto.vn/static/media/thue_xe_co_tai_xe.a6f7dc54.svg" alt="Icon 1">
+                    <h3 class = "c">Lái xe an toàn </h3>
+                    <p>Chuyến đi trên Mioto được bảo vệ với Gói bảo hiểm thuê xe tự lái từ MIC & VNI...</p>
+                </div>
+                <div class="box">
+                    <img src="https://www.mioto.vn/static/media/dich_vu_thue_xe_tu_lai_hanoi.f177339e.svg" alt="Icon 2">
+                    <h3 class = "c">An tâm đặt xe</h3>
+                    <p>Không tính phí hủy chuyến trong vòng 1h sau khi thanh toán giữ chỗ...</p>
+                </div>
+                <div class="box">
+                    <img src="https://www.mioto.vn/static/media/cho_thue_xe_tu_lai_tphcm.1e7cb1c7.svg" alt="Icon 3">
+                    <h3 class = "c">Thủ tục đơn giản</h3>
+                    <p>Chỉ cần có CCCD gắn chip & Giấy phép lái xe là đủ điều kiện thuê xe ...</p>
+                </div>
+                <div class="box">
+                    <img src="https://www.mioto.vn/static/media/cho_thue_xe_tu_lai_hanoi.735438af.svg" alt="Icon 4">
+                    <h3 class = "c">Thanh toán dễ dàng</h3>
+                    <p>Đa dạng hình thức thanh toán: </p>
+                </div>
+                <div class="box">
+                    <img src="https://www.mioto.vn/static/media/thue_xe_tu_lai_gia_re_hcm.ffd1319e.svg" alt="Icon 5">
+                    <h3 class = "c">Giao xe tận nơi</h3>
+                    <p>Bạn có thể lựa chọn giao xe tận nhà/sân bay...</p>
+                </div>
+                <div class="box">
+                    <img src="https://www.mioto.vn/static/media/thue_xe_tu_lai_gia_re_hanoi.4035317e.svg" alt="Icon 6">
+                    <h3 class = "c">Dòng xe đa dạng</h3>
+                    <p>Hơn 100 dòng xe cho bạn tùy ý lựa chọn: Mini, Sedan, CUV, SUV, MPV...</p>
+                </div>
+                
+                </div>
+                <h1 style="color: #ff0000;text-align: center;">Hành Trình Của Bạn Luôn Được Bảo Vệ</h1>
+            
+                    <div class = "box1">
+                        <img src="https://www.mioto.vn/static/media/global-care.e4fc7ef6.jpg" alt="Icon 7">
+                        <img src="https://www.mioto.vn/static/media/mic.ad48f066.jpg" alt="">
+                        <img src="https://www.mioto.vn/static/media/vni.d1b15e7a.jpg" alt="">
+                    </div>
+            </div>
+            <div>
+                <h1 style="color: #ff0000;text-align: center;">Hướng Dẫn Thuê Xe</h1>
+                <h3 style="text-align: center; color: #666;">Chỉ với 4 bước cực kì đơn giản chúng ta có thể thuê xe một cách nhanh chóng</h3>
+                <div class=" container1" style="display: flex; justify-content: space-around;">
+
+                <div class = "box2" >
+                    <img src="https://www.mioto.vn/static/media/cho_thue_xe_co_taigia_re_tphcm.12455eba.svg" alt="">
+                    <p class="so">01</p>
+                    <p style="width: 300px;"> Thực hiện đăt xe theo các bước trên web</p>
+                </div>
+                <div class="box2">
+                    <img src="https://www.mioto.vn/static/media/gia_thue_xe_7cho_tai_tphcm.9455973a.svg" alt="">
+                    <p class="so">02</p>
+                    <p > Nhận xe tại điểm giao</p>
+                </div>
+                <div class="box2">
+                    <img src="https://www.mioto.vn/static/media/gia_thue_xe_7cho_tai_hanoi.0834bed8.svg" alt="">
+                    <p class="so">03</p>
+                    <p > Bắt đầu cuộc hành trình </p>    
+                </div>
+                <div class="box2">
+                    <img src="https://www.mioto.vn/static/media/gia_thue_xe_4cho_tai_tphcm.9dcd3930.svg" alt="">
+                    <p class="so">04</p>
+                    <p > Trả xe & thanh toán tiền</p>
+                </div>
+                </div>
+            </div>
+        </div>
+        
+    <footer class="footer">
+        
+    </footer>
+    <script>
+        
+
+    </script>
+    <script src="./js/code.js">
+        
+    </script>
+</body> 
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/css/styles.css">
+    <title>Thông tin tài khoản</title>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+            </div>
+            <div class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="#gioithieu">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="services.html">Dịch vụ</a>
+                        <ul class="sub-menu">
+                            <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="">Thuê xe 16 chỗ</a></li>
+                            <li><a href="">Thuê xe 29 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="contact.html">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
+                <a href="#" id="openLogin" class="btn btn-login">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+    <div class ="iconx">
+        <a href="https://www.facebook.com/messages/t/100009036720265"><i class="icon fa-brands fa-facebook-messenger"></i></a><br>
+        <a href="https://www.facebook.com/47NDK/" target="_blank"><i class="icon fa-brands fa-facebook"></i></a><br>
+        <a href=""><i class="icon fa-solid fa-phone-volume"></i></a>
+    </div>
+    <div id="loginModal" class="modal">
+        <div class="modal-content"> 
+            <span class="close">&times;</span>
+            <h2>Đăng nhập</h2>
+            <form>
+                <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required>
+                <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
+                <button type="submit" class="login-btn">Đăng nhập</button>
+                <p><a href="#d" style="color: green;">Quên mật khẩu?</a></p>
+                <p>Bạn chưa là thành viên? <a href="#" style="color: green;">Đăng ký ngay</a></p>
+                <div class="social-login">
+                    <button class="social-btn facebook">Facebook</button>
+                    <button class="social-btn google">Google</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="registerModal">
+        <div class="form-register">
+            <span class="close">&times;</span>
+            <h2>Đăng ký</h2>
+            <form>
+                <div class="phone">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="number" id="phone" name="phone" required>
+                </div>
+                <div class="name">
+                    <label for="name">Họ và tên:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="password">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="Repass">
+                    <label for="Repass">Nhập lại mật khẩu:</label>
+                    <input type="password" id="Repass" name="Repass" required>
+                </div>
+                <div class="ref">
+                    <label for="ref">Người giới thiệu:</label>
+                    <input type="text" id="ref" name="ref">
+                </div>
+                <button type="button" class="btn-register">Đăng ký</button>
+            </form>
+            <p>Bạn đã có tài khoản? <a href="#" style="color: #ff0000;">Đăng nhập ngay</a></p>
+            <div class="social-login">
+                <button class="social-btn facebook">Facebook</button>
+                <button class="social-btn google">Google</button>
+            </div>
+        </div>
+    </div>
+    <div class="content1">
+        <div class="content-header">
+            <h1>Thuê xe 4 chỗ</h1>
+            <section class="content-section">
+                <p>Chúng tôi tự hào là doang nghiệp hàng đầu trong dịch vụ cho thuê xe 4 chỗ tại TpHCM, đáp ứng nhu cầu đi lại cao của người dân và doanh nghiệp. Các sản phẩm chúng tôi cung cấp đáp ứng nhu cầu thuê xe đi công tác, thuê xe 4 chỗ tham quan, đi du lịch hành hương. Với đa dạng các mẫu mã đến từ các hãng xe nỗi tiếng như TOYOTA VIOS, HONDA CITY, KIA CERATO… Cao cấp hơn thì có các dòng xe như CAMRY, BMW, AUDI….</p>
+                <p>Hãy lựa chọn dịch vụ cho thuê xe du lịch 4 chỗ tại tphcm của chúng tôi để được trải nghiệm trên những chiếc xe đời mới nhất, mẫu mã đẹp, sang trọng, tiện nghi.</p>
+                
+            </section>
+            <div class="image-container">
+                <img src="https://tuanphattravel.com/wp-content/uploads/2024/09/city3.jpg" alt="logo xe">
+            </div>
+            <h1>Những tiện ích xe 4 chỗ bên chúng tôi</h1>
+            <section class="content-section">
+                <p>
+                <strong>- Màn hình giải trí :</strong>
+                 Các loại xe 4 chỗ bên chúng tôi đều được trang bị hệ thống giải trí trên xe như : màn hình LCD 7 – 9 inch (có thể xem phim, xem hoạt hình, nghe nhạc online giúp khách hàng có được những phút giây thoải mái nhất khi đi xe)
+                 </p>
+                 <P>
+                    <strong>- Ghế ngồi :</strong>
+                 Ghế ngồi trên xe 4 chỗ bên chúng tôi đều được bọc da cao cấp, có độ đàn hồi tốt, tạo cảm giác thoải mái cho khách hàng khi đi đường dài. Ngoài ra ghế ngồi còn có thể điều chỉnh độ ngả của ghế giúp khách hàng có thể nằm nghỉ ngơi trong suốt hành trình.
+                 </P>
+                <p>
+                <strong>- Hệ thống điều hòa :</strong>
+                Hệ thống điều hòa trên xe 4 chỗ bên chúng tôi đều là hệ thống điều hòa tự động, giúp khách hàng có thể điều chỉnh nhiệt độ theo ý muốn của mình.
+                 </p>
+
+            </section>
+            
+            <h1>Giá thuê xe 4 chỗ giá rẻ uy tín</h1>
+            <section class="content-section">
+                <strong>- Giá thuê xe 4 chỗ theo tháng tại TPHCM.</strong>
+                <p>Hiện nay, thuê xe 4 chỗ có người lái hoặc tự lái theo tháng thường để phục vụ việc du lịch dài ngày . Mức giá thuê xe  4 chỗ theo tháng hiện nay đang rơi vào khoảng 15 – 25 triệu đồng. Dòng xe càng hiện đại, càng mới thì mức giá càng cao. Vì thế, bạn cần cân nhắc thu chi và khả năng tài chính để thuê một chiếc xe hợp lý.</p>
+            </section>
+            <section class="content-section">
+                <strong>- Giá thuê xe 4 chỗ theo km TPHCM.</strong>
+                <p>Giá thuê xe 4 chỗ tại TpHCM đi du lịch ,đi làm việc theo km đang dao động từ 1.500.000 cho 100km đầu. Với mỗi km nhiều hơn, mức giá với mỗi dòng xe có thể khác nhau. Các nhà xe thường chia các khung giá thành 50 km tiếp theo, km càng nhiều thì giá cả rẻ. Vì thế, bạn cần nắm rõ hành trình chuyến đi của mình và có trao đổi cụ thể với nhà xe về mức giá cho mỗi km nhiều hơn..</p>
+           </section>
+           <section class="content-section">
+            -<strong>Giá thuê xe 4 chỗ theo ngày TPHCM.</strong>
+            <p>Giá thuê xe 4 chỗ theo ngày tại TpHCM thường dao động từ 1.200.000 – 2.500.000 đồng/ ngày. Mức giá này có thể thay đổi tùy thuộc vào thời điểm bạn thuê xe, thời gian thuê xe và dòng xe bạn chọn.</p>
+           </section>
+              <section class="content-section">
+                <strong>- Giá thuê xe 4 chỗ theo giờ TPHCM.</strong>
+                <p>Giá thuê xe 4 chỗ theo giờ tại TpHCM thường dao động từ 200.000 – 500.000 đồng/ giờ. Mức giá này có thể thay đổi tùy thuộc vào thời điểm bạn thuê xe, thời gian thuê xe và dòng xe bạn chọn.</p>
+            </section>
+            
+           <h1 >Chúng tôi cam kết đội ngũ nhân viên phục vụ 24/24</h1>
+           <section class="content-section">
+                <p>
+                    <strong>- Đội ngũ nhân viên : </strong>
+                    chúng tôi hổ trợ và giải đáp thắc mắc của khách hàng xuyên suốt 24/7. Được đào tạo chuyên nghiệp mang đến sự hài lòng tốt nhất khi khách hàng sử dụng dịch vụ thuê xe bên chúng tôi.
+                </p>
+                <p>
+                    <strong>- Đội ngũ tài xế : </strong>
+                    Chúng tôi cam kết đội ngũ tài xế phục vụ tận tình, chu đáo, chuyên nghiệp và có nhiều năm kinh nghiệm trong nghề. Đảm bảo an toàn cho khách hàng trong suốt hành trình.
+                </p>
+                <p>
+                    Nếu quý khách không hài lòng về lái xe hoặc góp ý về thái độ phục vụ có thể liên hệ với bộ phận CSKH 24/24 để chúng tôi có cơ hội phục vụ quý khách 1 cách tốt nhất.
+                </p>
+            </section>
+            <h2 style="text-decoration: underline;">Xin quý khách lưu ý :</h2>   
+            <div class="content-note">
+            <ul>
+                <li>Giá thuê xe du lịch tại Tp.HCM bên trên đã bao gồm: xăng dầu, phí cầu đường / cao tốc,  lương tài xế lái xe .. </li>
+                <li>Giá trên Không bao gồm Thuế VAT</li>
+                <li>Giá chưa bao gồm: Ăn nghỉ của lái xe nếu đi qua đêm. (300k/đêm)</li>
+                <li>Phí giữ xe ở các địa điểm du lịch, sân bay, khách sạn và tiền tip cho tài xế (nếu có) </li>
+            </ul>
+           </div>
+          
+        </div>
+    </div>
+    <footer class="content-footer">
+
+    </footer>
+</body>
+</html>

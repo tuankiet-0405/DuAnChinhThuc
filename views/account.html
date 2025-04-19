@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            background-color: #f6f6f6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+            </div>
+            <div class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="/">Trang chủ</a></li>
+                    <li class="menu-item"><a href="/#gioithieu">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="/services.html">Dịch vụ</a>
+                        <ul class="sub-menu">
+                            <li><a href="">Thuê xe 4 chỗ</a></li>
+                            <li><a href="">Thuê xe 7 chỗ</a></li>
+                            <li><a href="">Thuê xe 16 chỗ</a></li>
+                            <li><a href="">Thuê xe 29 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="/contact.html">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
+                <a href="#" id="openLogin" class="btn btn-login">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+    <div class="container2">
+        <div class="container__account">
+            <div class="menu__account">
+                <div class="title">
+                    <h3>Xin chào bạn!</h3>
+                </div>
+                <ul class="menu__account-list">
+                    <li class="menu__account-item"><a href="#">Tài khoản của tôi</a></li>
+                    <li class="menu__account-item"><a href="#">Thêm địa chỉ</a></li>
+                    <li class="menu__account-item"><a href="#">Xe yêu thích</a></li>
+                    <li class="menu__account-item"><a href="#">Lịch sử đặt xe</a></li>
+                    <li class="menu__account-item"><a href="#">Đổi mật khẩu</a></li>
+                    <li class="menu__account-item"><a href="#" t>Đăng xuất</a></li>
+                </ul>
+            </div>
+
+            <div class="content__change-password">
+                <div class="content-title">
+                    <h4>Đổi mật khẩu</h4>
+                    <p>Vui lòng nhập mật khẩu hiện tại của bạn để thay đổi mật khẩu</p>
+                </div>
+                <div class="content-item change-pw">
+                    <div class="title">
+                        <h5>Nhập mật khẩu</h5>
+                    </div>
+                    <div class="content">
+                        <!-- Mật khẩu hiện tại -->
+                        <div class="custom-input">
+                            <div class="wrap-info">
+                                <div class="title-status">
+                                    <p>Mật khẩu hiện tại</p>
+                                </div>
+                            </div>
+                            <div class="wrap-input">
+                                <div class="wrap-text">
+                                    <input type="password" id="currentPassword">
+                                </div>
+                                <div class="wrap-icon" onclick="togglePassword('currentPassword', this)">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http:www.w3.org/2000/svg">
+                                        <path
+                                            d="M14.52 18.6297C13.71 18.8397 12.87 18.9397 12 18.9397C8.73 18.9397 5.8 17.4097 3.8 14.9897C2.4 13.2997 2.4 10.6897 3.8 9.00969C3.96 8.80969 4.14 8.61969 4.32 8.42969"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                        <path
+                                            d="M20.2 14.9896C19.4 15.9496 18.45 16.7696 17.4 17.4096L6.58997 6.58957C8.17997 5.60957 10.02 5.05957 12 5.05957C15.27 5.05957 18.2 6.58957 20.2 9.00957C21.6 10.6896 21.6 13.3096 20.2 14.9896Z"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                        <path
+                                            d="M15.0799 11.9999C15.0799 12.8499 14.7299 13.6199 14.1799 14.1799L9.81995 9.81992C10.3699 9.25992 11.1499 8.91992 11.9999 8.91992C13.7099 8.91992 15.0799 10.2899 15.0799 11.9999Z"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                        <path d="M2.75 2.75L6.59 6.59L9.82 9.82L14.18 14.18L17.41 17.41L21.25 21.25"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mật khẩu mới -->
+                        <div class="custom-input">
+                            <div class="wrap-info">
+                                <div class="title-status">
+                                    <p>Mật khẩu mới</p>
+                                </div>
+                            </div>
+                            <div class="wrap-input">
+                                <div class="wrap-text">
+                                    <input type="password" id="newPassword">
+                                </div>
+                                <div class="wrap-icon" onclick="togglePassword('newPassword', this)">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http:www.w3.org/2000/svg">
+                                        <path
+                                            d="M14.52 18.6297C13.71 18.8397 12.87 18.9397 12 18.9397C8.73 18.9397 5.8 17.4097 3.8 14.9897C2.4 13.2997 2.4 10.6897 3.8 9.00969C3.96 8.80969 4.14 8.61969 4.32 8.42969"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                        <path
+                                            d="M20.2 14.9896C19.4 15.9496 18.45 16.7696 17.4 17.4096L6.58997 6.58957C8.17997 5.60957 10.02 5.05957 12 5.05957C15.27 5.05957 18.2 6.58957 20.2 9.00957C21.6 10.6896 21.6 13.3096 20.2 14.9896Z"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                        <path
+                                            d="M15.0799 11.9999C15.0799 12.8499 14.7299 13.6199 14.1799 14.1799L9.81995 9.81992C10.3699 9.25992 11.1499 8.91992 11.9999 8.91992C13.7099 8.91992 15.0799 10.2899 15.0799 11.9999Z"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                        <path d="M2.75 2.75L6.59 6.59L9.82 9.82L14.18 14.18L17.41 17.41L21.25 21.25"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Xác nhận mật khẩu mới -->
+                        <div class="custom-input">
+                            <div class="wrap-info">
+                                <div class="title-status">
+                                    <p>Xác nhận mật khẩu mới</p>
+                                </div>
+                            </div>
+                            <div class="wrap-input">
+                                <div class="wrap-text">
+                                    <input type="password" id="confirmPassword">
+                                </div>
+                                <div class="wrap-icon" onclick="togglePassword('confirmPassword', this)">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http:www.w3.org/2000/svg">
+                                        <path
+                                            d="M14.52 18.6297C13.71 18.8397 12.87 18.9397 12 18.9397C8.73 18.9397 5.8 17.4097 3.8 14.9897C2.4 13.2997 2.4 10.6897 3.8 9.00969C3.96 8.80969 4.14 8.61969 4.32 8.42969"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                        <path
+                                            d="M20.2 14.9896C19.4 15.9496 18.45 16.7696 17.4 17.4096L6.58997 6.58957C8.17997 5.60957 10.02 5.05957 12 5.05957C15.27 5.05957 18.2 6.58957 20.2 9.00957C21.6 10.6896 21.6 13.3096 20.2 14.9896Z"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                        <path
+                                            d="M15.0799 11.9999C15.0799 12.8499 14.7299 13.6199 14.1799 14.1799L9.81995 9.81992C10.3699 9.25992 11.1499 8.91992 11.9999 8.91992C13.7099 8.91992 15.0799 10.2899 15.0799 11.9999Z"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                        <path d="M2.75 2.75L6.59 6.59L9.82 9.82L14.18 14.18L17.41 17.41L21.25 21.25"
+                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nút xác nhận -->
+                        <div class="action">
+                            <button class="btn-confirm">Xác nhận</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content__account" id="accountSection">
+                <div class="content-item user-profile">
+                    <div class="title">
+                        <div class="title__edit">
+                            <h3>Thông tin tài khoản</h3>
+                            <a href="#"><img src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000"
+                                    alt="" id="openModal"></a>
+                        </div>
+                        <div class="title__trips">
+
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="avatar-box">
+                            <div class="avatar">
+                                <img src="https://n1-cstg.mioto.vn/m/avatars/avatar-2.png" alt="">
+                            </div>
+                            <h6>Skykiet1133</h6>
+                            <p>Tham gia: 05/04/2025</p>
+                        </div>
+                        <div class="info-user">
+                            <div class="info-box">
+                                <div class="info-box__item">
+                                    <p>Họ tên</p>
+                                    <h3>Nguyễn Văn A</h3>
+                                </div>
+                                <div class="info-box__item">
+                                    <p>Ngày sinh</p>
+                                    <h3>01/01/2000</h3>
+                                </div>
+                                <div class="info-box__item">
+                                    <p>Giới tính</p>
+                                    <h3>Nam</h3>
+                                </div>
+                            </div>
+                            <div class="info-decs">
+                                <div class="info-decs__item">
+                                    <div class="title-item">
+                                        <div class="auth">
+                                            <p>Số điện thoại</p>
+                                            <div class="note__icon auth">
+                                                <div class="note__icon-item">
+                                                    <img src="https://img.icons8.com/?size=100&id=4JjLLkQa1ofF&format=png&color=000000"
+                                                        alt="">
+                                                </div>
+                                                <p1>Xác minh</p1>
+                                            </div>
+                                        </div>
+                                        <div class="info-user__item">
+                                            <p>+84345840642</p>
+                                            <div class="title__edit">
+                                                <a href="#"><img
+                                                        src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000"
+                                                        alt=""></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info-decs__item">
+                                    <div class="title-item">
+                                        <div class="auth">
+                                            <p>Email</p>
+                                            <div class="note__icon auth">
+                                                <div class="note__icon-item">
+                                                    <img src="https://img.icons8.com/?size=100&id=4JjLLkQa1ofF&format=png&color=000000"
+                                                        alt="">
+                                                </div>
+                                                <p1>Xác minh</p1>
+                                            </div>
+                                        </div>
+                                        <div class="info-user__item">
+                                            <p>tk04052k4@gmail.com</p>
+                                            <div class="title__edit">
+                                                <a href=""><img
+                                                        src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000"
+                                                        alt=""></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-item driver-license">
+                    <div class="title__dirver">
+                        <div class="title__item">
+                            <h3>Giấy phép lái xe</h3>
+                            <div class="title-item__info error">
+                                <div class="title-item__info-icon">
+                                    <img src="https://img.icons8.com/?size=100&id=Sb9rYobIrMId&format=png&color=000000"
+                                        alt="">
+                                </div>
+                                <p>Chưa xác thực</p>
+                            </div>
+                        </div>
+                        <div class="btn__edit">
+                            <a href="#">Chỉnh sửa</a>
+                            <div class="note__icon-edit title-item__info-icon">
+                                <img src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-license">
+                        <p><b>Lưu ý: </b> để tránh phát sinh vấn đề trong quá trình thuê xe, <u>người đặt xe</u> trên
+                            Web (đã xác thực GPLX) <b>ĐỒNG THỜI </b>phải là <u>người nhận xe.</u></p>
+                    </div>
+                    <div class="content">
+                        <div class="info-license">
+                            <div class="info-license__title">
+                                <h3>Hình ảnh</h3>
+                            </div>
+                            <div class="info-license__img">
+                                <div class="fix-img">
+                                    <img src="../public/image/license__img.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-license">
+                            <div class="info-license__title">
+                                <h3>Thông tin giấy phép lái xe</h3>
+                            </div>
+                            <div class="custom-input">
+                                <div class="wrap-info">
+                                    <p>Số GPLX</p>
+                                </div>
+                                <div class="wrap-input">
+                                    <input type="text" placeholder="Nhập số GPLX" class="input__license">
+                                </div>
+                            </div>
+                            <div class="custom-input">
+                                <div class="wrap-info">
+                                    <p>Họ và tên</p>
+                                </div>
+                                <div class="wrap-input">
+                                    <input type="text" placeholder="Nhập họ và tên" class="input__license">
+                                </div>
+                            </div>
+                            <div class="custom-input">
+                                <div class="wrap-info">
+                                    <p>Ngày sinh</p>
+                                </div>
+                                <div class="wrap-input">
+                                    <input type="date" class="input__license">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-item share-code">
+                    <div class="main-content">
+                        <div class="title__share-code">
+                            <h5>Giới thiệu bạn mới</h5>
+                            <div class="learn-more">
+                                <p>tìm hiểu chi tiết chương trình</p>
+                                <div class="wrap-svg">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_2164_37736)">
+                                            <path
+                                                d="M8.00065 14.6673C11.6825 14.6673 14.6673 11.6825 14.6673 8.00065C14.6673 4.31875 11.6825 1.33398 8.00065 1.33398C4.31875 1.33398 1.33398 4.31875 1.33398 8.00065C1.33398 11.6825 4.31875 14.6673 8.00065 14.6673Z"
+                                                stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            <path
+                                                d="M6.06055 6.00038C6.21728 5.55483 6.52665 5.17912 6.93385 4.9398C7.34105 4.70049 7.81981 4.61301 8.28533 4.69285C8.75085 4.7727 9.17309 5.01473 9.47726 5.37607C9.78144 5.7374 9.94792 6.19473 9.94721 6.66705C9.94721 8.00038 7.94721 8.66705 7.94721 8.66705"
+                                                stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            <path d="M8 11.334H8.00667" stroke="black" stroke-linecap="round"
+                                                stroke-linejoin="round"></path>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_2164_37736">
+                                                <rect width="16" height="16" fill="white"></rect>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-img pointer">
+                        <img src="../public/image/TK-DK.PNG" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="content__address">
+                <div class="content-title">
+                    <h4>Địa chỉ của tôi</h4>
+                </div>
+                <div class="content-item address-list">
+                    <div class="title-address">
+                        <h4>Địa chỉ đã lưu</h4>
+                        <div class="btn__edit btn__addaddress">
+                            <a href="">Thêm địa chỉ mới</a>
+                            <div class="note__icon-edit title-item__info-icon">
+                                <img src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="address-item">
+                            <div class="address-content">
+                                <div class="address-content__icon">
+                                    <img src="https://img.icons8.com/?size=100&id=14096&format=png&color=000000" alt="">
+                                </div>
+                                <div class="wrap-text">
+                                    <p class="address-title">
+                                        231
+                                    </p>
+                                    <p>
+                                        Công viên khu tái định cư Hoà Lợi, Thị trấn Phong Điền, Huyện Phong Điền, Cần
+                                        Thơ, Việt Nam
+                                    </p>
+                                </div>
+                                <div class="address-edit">
+                                    <div class="address-edit__icon">
+                                        <a href=""><img
+                                                src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000"
+                                                alt=""></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="moda" id="myModal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close-button" onclick="closeModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-text-body reward-noti-body">
+                            <img src="/DACS-main/image/TK-DK.PNG" alt="">
+                            <div class="block-bg">
+                                <p class="font-14 text-danger">Chương trình chỉ áp dụng cho thành viên đã có chuyến hoặc
+                                    có thời gian đăng ký tài khoản trước 12/01/2025.</p>
+                            </div>
+                            <h5>
+                                Chương trình giới thiệu Mioto đến bạn bè
+                            </h5>
+                            <div class="block-content">
+                                <p>✨ Bạn đang sử dụng và hài lòng với trải nghiệm trên TK-DK?</p>
+                                <P>✨ Bạn sẵn lòng chia sẻ/giới thiệu TK-DK đến nhiều bạn bè của mình?</P>
+                                <p>👉 Trải nghiệm ngay tính năng GIỚI THIỆU BẠN BÈ để nhận quà tặng 500k từ TK-DK.</p>
+                            </div>
+                            <div class="block-bg-nd">
+                                <div class="block-content">
+                                    <b>Người được giới thiệu nhận:</b>
+                                    <p>💵 Mã khuyến mãi thuê xe giảm 200.000đ cho chuyến đầu tiên trên TK-DK.</p>
+                                </div>
+                                <div class="block-content">
+                                    <b>Người giới thiệu nhận:</b>
+                                    <p>🎁 500 điểm thưởng tương đương 500.000đ khi người được giới thiệu hoàn thành
+                                        chuyến đầu tiên có áp dụng mã khuyến mãi (mã giới thiệu của bạn). Bạn có thể đổi
+                                        ra Thẻ quà Got-it (thẻ cào, vé xem phim, café, thẻ siêu thị, ...) hoặc Mã giảm
+                                        giá thuê xe TK-DK.</p>
+                                    <p>
+                                        👉 Lưu ý:
+                                        <br>
+                                        Chương trình chỉ áp dụng cho đơn hàng Thuê xe Tự lái có tổng giá trị từ
+                                        1.000.000đ (giá trước khuyến mãi)
+                                        <br>
+                                        Chương trình không áp dụng đối với trường hợp khách thuê sử dụng mã giới thiệu
+                                        của chính chủ xe.
+                                    </p>
+                                </div>
+                            </div>
+                            <b>Hướng dẫn sử dụng </b>
+                            <div class="block-content">
+                                <p>👉 Người giới thiệu: Click vào biểu tượng "copy" để sao chép nội dung có chứa liên
+                                    kết giới thiệu của bạn, sau đó chia sẽ đến bạn bè thông qua các nền tảng xã hội như
+                                    Facebook, Zalo hoặc các ứng dụng nhắn tin khác.</p>
+                                <p>👉 Người được giới thiệu:</p>
+                                <p>B1: Click vào liên kết được chia sẽ để cài đặt ứng dụng TK-DK.</p>
+                                <P>B2: Nhập mã giới thiệu vào mục Áp dụng mã khuyến mãi khi đặt chuyến đầu tiên.</P>
+                            </div>
+                            <div class="block-content">
+                                <p>Ví dụ: Tương ứng với liên kết giới thiệu để cài ứng dụng là</p>
+                                <p>http://l.mioto.vn/instl/MGTABC thì mã khuyến mãi khi đặt xe là MGTABC.</p>
+                            </div>
+                            <p>✨ Hy vọng bạn luôn có những trải nghiệm thật vui cùng TK-DK!</p>
+                            <p>
+                                Trân trọng,
+                                <br>
+                                TK-DK Team.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal1" id="updateModal">
+                <div class="modal-content">
+                    <button class="close-btn" id="closeModal">&times;</button>
+                    <h2>Cập nhật thông tin</h2>
+
+                    <label for="username">Tên tài khoản</label>
+                    <input type="text" id="username" placeholder="Nhập tên tài khoản">
+
+                    <label for="dob">Ngày sinh</label>
+                    <input type="date" id="dob">
+
+                    <label for="gender">Giới tính</label>
+                    <select id="gender">
+                        <option>Nam</option>
+                        <option>Nữ</option>
+                        <option>Khác</option>
+                    </select>
+                    <button class="update-btn">Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/code.js">
+
+    </script>
+</body>
+
+</html>

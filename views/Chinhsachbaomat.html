@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <title>Chính sách bảo mật</title>
+</head>
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+            </div>
+            <div class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="#gioithieu">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="services.html">Dịch vụ</a>
+                        <ul class="sub-menu">
+                            <li><a href="">Thuê xe 4 chỗ</a></li>
+                            <li><a href="">Thuê xe 7 chỗ</a></li>
+                            <li><a href="">Thuê xe 16 chỗ</a></li>
+                            <li><a href="">Thuê xe 29 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="contact.html">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
+                <a href="#" id="openLogin" class="btn btn-login">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+    <div id="loginModal" class="modal">
+        <div class="modal-content"> 
+            <span class="close">&times;</span>
+            <h2>Đăng nhập</h2>
+            <form>
+                <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required>
+                <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
+                <button type="submit" class="login-btn">Đăng nhập</button>
+                <p><a href="#d" style="color: green;">Quên mật khẩu?</a></p>
+                <p>Bạn chưa là thành viên? <a href="#" style="color: green;">Đăng ký ngay</a></p>
+                <div class="social-login">
+                    <button class="social-btn facebook">Facebook</button>
+                    <button class="social-btn google">Google</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="registerModal">
+        <div class="form-register">
+            <span class="close">&times;</span>
+            <h2>Đăng ký</h2>
+            <form>
+                <div class="phone">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="number" id="phone" name="phone" required>
+                </div>
+                <div class="name">
+                    <label for="name">Họ và tên:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="password">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="Repass">
+                    <label for="Repass">Nhập lại mật khẩu:</label>
+                    <input type="password" id="Repass" name="Repass" required>
+                </div>
+                <div class="ref">
+                    <label for="ref">Người giới thiệu:</label>
+                    <input type="text" id="ref" name="ref">
+                </div>
+                <button type="button" class="btn-register">Đăng ký</button>
+            </form>
+            <p>Bạn đã có tài khoản? <a href="#" style="color: #ff0000;">Đăng nhập ngay</a></p>
+            <div class="social-login">
+                <button class="social-btn facebook">Facebook</button>
+                <button class="social-btn google">Google</button>
+            </div>
+        </div>
+    </div>
+    <div class="content1">
+        <div class="content-header">
+            <section class="content-header-inner">
+                <strong style="color: red;">Công ty TKDK cam kết bảo mật thông tin khách hàng.</strong>
+                <p>
+                    <strong>1. Mục đích và phạm vi thu nhập thông tin</strong>
+                    <p>Thông tin cá nhân mà Công ty thu thập bao gồm: Họ tên, số điện thoại, địa chỉ email, địa chỉ giao hàng, thông tin thanh toán (nếu có).</p>
+                    <p>Thông tin cá nhân của bạn sẽ được sử dụng cho các mục đích sau:</p>
+                    <p>- Để cung cấp dịch vụ cho bạn.</p>
+                    <p>- Để liên lạc với bạn về các dịch vụ mà bạn đã đăng ký.</p>
+                    <p>- Để gửi thông tin khuyến mãi, ưu đãi và các thông tin khác liên quan đến dịch vụ của chúng tôi.</p>
+                    <p>- Để cải thiện chất lượng dịch vụ và trải nghiệm của bạn.</p>
+                    <p>- Để thực hiện các nghĩa vụ pháp lý của chúng tôi.</p>  
+                    <p>Khách hàng có quyền từ chối hoặc không cung cấp đầy đủ các thông tin được yêu cầu khi cần thiết. Trong trường hợp đó, phía chúng tôi có thể sẽ không cung cấp cho Khách hàng những dịch vụ đầy đủ và chất lượng vì sự thiếu hụt thông tin.</p>
+                </p>
+            </section>
+
+
+        </div>
+
+    </div>
+</body>
+</html>
