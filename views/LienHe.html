@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -134,6 +135,7 @@
         }
     </style>
 </head>
+
 <body>
     <header class="header">
         <div class="header-inner">
@@ -154,9 +156,6 @@
                     </li>
                     <li class="menu-item"><a href="/views/LienHe.html">Liên hệ</a></li>
                 </ul>
-            </div>
-            <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
-                <a href="login.html" id="openLogin" class="btn btn-login">Đăng nhập</a>
             </div>
         </div>
     </header>
@@ -227,74 +226,19 @@
         </div>
 
         <div class="map-container" data-aos="fade-up">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.8342935578785!2d106.70083011533433!3d10.748075992346437!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f6c6e8efe67%3A0x42d3c8a87f7b39db!2zTmd1eeG7hW4gVsSDbiBMaW5oLCBUw6JuIFBow7osIFF14bqtbiA3LCBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1650432985085!5m2!1svi!2s" 
-                width="100%" 
-                height="450" 
-                style="border:0;" 
-                allowfullscreen="" 
-                loading="lazy">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.8342935578785!2d106.70083011533433!3d10.748075992346437!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f6c6e8efe67%3A0x42d3c8a87f7b39db!2zTmd1eeG7hW4gVsSDbiBMaW5oLCBUw6JuIFBow7osIFF14bqtbiA3LCBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1650432985085!5m2!1svi!2s"
+                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy">
             </iframe>
         </div>
     </main>
 
     <div class="contact-float">
         <div class="iconx">
-            <a href="https://www.facebook.com/messages/t/100009036720265"><i class="icon fa-brands fa-facebook-messenger"></i></a><br>
+            <a href="https://www.facebook.com/messages/t/100009036720265"><i
+                    class="icon fa-brands fa-facebook-messenger"></i></a><br>
             <a href="https://www.facebook.com/47NDK/" target="_blank"><i class="icon fa-brands fa-facebook"></i></a><br>
             <a href=""><i class="icon fa-solid fa-phone-volume"></i></a>
-        </div>
-    </div>
-
-    <div id="loginModal" class="modal">
-        <div class="modal-content"> 
-            <span class="close">&times;</span>
-            <h2>Đăng nhập</h2>
-            <form>
-                <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required>
-                <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
-                <button type="submit" class="login-btn" style="margin-bottom: 10px;">Đăng nhập</button>
-                <a href="#d" style="font-weight: normal; color: rgb(0, 0, 0); font-size: 15px; border-bottom: 1px black solid ;">Quên mật khẩu?</a>
-                <p>Bạn chưa là thành viên? <a href="#" style="font-weight: normal; color: blue; font-size: 15px; margin: 1px;">Đăng ký ngay</a></p>
-                <div class="social-login">
-                    <button class="social-btn facebook">Facebook</button>
-                    <button class="social-btn google">Google</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal" id="registerModal">
-        <div class="form-register">
-            <span class="close">&times;</span>
-            <h2>Đăng ký</h2>
-            <form>
-                <div class="phone">
-                    <label for="phone">Số điện thoại:</label>
-                    <input type="number" id="phone" name="phone" required>
-                </div>
-                <div class="name">
-                    <label for="name">Họ và tên:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="password">
-                    <label for="password">Mật khẩu:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <div class="Repass">
-                    <label for="Repass">Nhập lại mật khẩu:</label>
-                    <input type="password" id="Repass" name="Repass" required>
-                </div>
-                <div class="ref">
-                    <label for="ref">Người giới thiệu:</label>
-                    <input type="text" id="ref" name="ref">
-                </div>
-                <button type="button" class="btn-register">Đăng ký</button>
-            </form>
-            <p style="margin-top: 10px;">Bạn đã có tài khoản? <a href="#"  style="font-weight: normal; color: blue; font-size: 15px; margin: 1px;">Đăng nhập ngay</a></p>
-            <div class="social-login">
-                <button class="social-btn facebook">Facebook</button>
-                <button class="social-btn google">Google</button>
-            </div>
         </div>
     </div>
 
@@ -307,7 +251,7 @@
         });
 
         // Form handling
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const submitBtn = this.querySelector('.submit-btn');
             submitBtn.disabled = true;
@@ -326,4 +270,5 @@
     </script>
     <script src="../public/js/code.js"></script>
 </body>
+
 </html>
