@@ -1,14 +1,466 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <title>Tài Khoản - TKĐK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../public/css/styles.css">
     <style>
-        body {
-            background-color: #f6f6f6;
+        :root {
+            --primary-color: #10b981;
+            --secondary-color: #059669;
+            --text-color: #1f2937;
+            --light-bg: #f9fafb;
+            --border-color: #e5e7eb;
+        }
+
+        .container2 {
+            margin-top: 80px;
+            padding: 2rem;
+            background-color: var(--light-bg);
+            min-height: calc(100vh - 80px);
+        }
+
+        .container__account {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        .menu__account {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .menu__account .title {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .menu__account .title h3 {
+            font-size: 1.25rem;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .menu__account-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu__account-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .menu__account-item a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .menu__account-item a i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .menu__account-item a:hover {
+            background: #f3f4f6;
+            color: var(--primary-color);
+        }
+
+        .menu__account-item a.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .menu__account-item a.active i {
+            color: white;
+        }
+
+        .content__account {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .content-item {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .content-item:last-child {
+            border-bottom: none;
+        }
+
+        .title__edit {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .title__edit h3 {
+            font-size: 1.25rem;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .title__edit a {
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .title__edit a i {
+            font-size: 1.25rem;
+        }
+
+        .avatar-box {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary-color);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .avatar:hover::after {
+            content: 'Thay đổi ảnh';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-box__item {
+            background: var(--light-bg);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .info-box__item p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box__item h3 {
+            color: var(--text-color);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .info-decs__item {
+            margin-bottom: 1.5rem;
+        }
+
+        .auth {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .note__icon {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .note__icon img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .modal1 {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #fff;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            background-color: #f3f4f6;
+            color: #ef4444;
+        }
+
+        .edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-cancel, .btn-save {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-cancel {
+            background-color: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-cancel:hover {
+            background-color: #e5e7eb;
+        }
+
+        .btn-save {
+            background-color: #10b981;
+            color: white;
+            border: none;
+        }
+
+        .btn-save:hover {
+            background-color: #059669;
+        }
+
+        .btn-save:disabled {
+            background-color: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container__account {
+                grid-template-columns: 1fr;
+            }
+
+            .menu__account {
+                position: static;
+            }
+
+            .content__account {
+                margin-top: 1rem;
+            }
+        }
+
+        /* Style cho form inputs */
+        .form-input {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            outline: none;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal h3 {
+            margin-bottom: 1rem;
+            color: #1f2937;
+            font-size: 1.25rem;
+        }
+
+        .modal p {
+            margin-bottom: 1.5rem;
+            color: #6b7280;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .modal-btn-cancel {
+            background: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+        }
+
+        .modal-btn-confirm {
+            background: #ef4444;
+            color: white;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .modal-btn-cancel:hover {
+            background: #e5e7eb;
+        }
+
+        .modal-btn-confirm:hover {
+            background: #dc2626;
         }
     </style>
 </head>
@@ -17,478 +469,416 @@
     <div class="header">
         <div class="header-inner">
             <div class="logo-header">
-                <img src="/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+                <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
             </div>
             <div class="menu-header">
                 <ul class="menu">
-                    <li class="menu-item"><a href="/public/index.html">Trang chủ</a></li>
-                    <li class="menu-item"><a href="/public/index.html">Giới thiệu</a></li>
-                    <li class="menu-item"><a href="/services.html">Dịch vụ</a>
+                    <li class="menu-item"><a href="../public/index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="../public/index.html">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="../services.html">Dịch vụ</a>
                         <ul class="sub-menu">
-                            <li><a href="/views/Xe4cho.html">Thuê xe 4 chỗ</a></li>
-                            <li><a href="/views/Xe7cho.html">Thuê xe 7 chỗ</a></li>
-                            <li><a href="">Thuê xe 16 chỗ</a></li>
-                            <li><a href="">Thuê xe 29 chỗ</a></li>
+                            <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="#">Thuê xe 16 chỗ</a></li>
+                            <li><a href="#">Thuê xe 29 chỗ</a></li>
                         </ul>
                     </li>
-                    <li class="menu-item"><a href="/views/LienHe.html">Liên hệ</a></li>
+                    <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
                 </ul>
             </div>
             <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
-                <a href="#" id="openLogin" class="btn btn-login">Đăng nhập</a>
+                <a href="login.html" id="openLogin" class="btn btn-login">Đăng nhập</a>
             </div>
         </div>
     </div>
-    <div class="container2">
+
+    <main class="container2">
         <div class="container__account">
-            <div class="menu__account">
+            <aside class="menu__account">
                 <div class="title">
-                    <h3>Xin chào bạn!</h3>
+                    <h3>Tài khoản của tôi</h3>
                 </div>
                 <ul class="menu__account-list">
-                    <li class="menu__account-item"><a href="#">Tài khoản của tôi</a></li>
-                    <li class="menu__account-item"><a href="#">Thêm địa chỉ</a></li>
-                    <li class="menu__account-item"><a href="#">Xe yêu thích</a></li>
-                    <li class="menu__account-item"><a href="#">Lịch sử đặt xe</a></li>
-                    <li class="menu__account-item"><a href="#">Đổi mật khẩu</a></li>
-                    <li class="menu__account-item"><a href="#" t>Đăng xuất</a></li>
+                    <li class="menu__account-item">
+                        <a href="#" class="active">
+                            <i class="fas fa-user"></i>
+                            Thông tin cá nhân
+                        </a>
+                    </li>
+                    <li class="menu__account-item">
+                        <a href="mycars.html">
+                            <i class="fas fa-car"></i>
+                            Xe của tôi
+                        </a>
+                    </li>
+                    <li class="menu__account-item">
+                        <a href="#">
+                            <i class="fas fa-history"></i>
+                            Lịch sử chuyến
+                        </a>
+                    </li>
+                    <li class="menu__account-item">
+                        <a href="mywallet.html">
+                            <i class="fas fa-wallet"></i>
+                            Ví của tôi
+                        </a>
+                    </li>
+                    <li class="menu__account-item">
+                        <a href="#">
+                            <i class="fas fa-heart"></i>
+                            Xe yêu thích
+                        </a>
+                    </li>
+                    <li class="menu__account-item">
+                        <a href="#">
+                            <i class="fas fa-bell"></i>
+                            Thông báo
+                        </a>
+                    </li>
+                    <li class="menu__account-item">
+                        <a href="Chinhsachbaomat.html">
+                            <i class="fas fa-shield-alt"></i>
+                            Bảo mật
+                        </a>
+                    </li>
+                    <li class="menu__account-item">
+                        <a href="#" style="color: #ef4444;" data-logout>
+                            <i class="fas fa-sign-out-alt"></i>
+                            Đăng xuất
+                        </a>
+                    </li>
                 </ul>
-            </div>
+            </aside>
 
-            <div class="content__change-password">
-                <div class="content-title">
-                    <h4>Đổi mật khẩu</h4>
-                    <p>Vui lòng nhập mật khẩu hiện tại của bạn để thay đổi mật khẩu</p>
-                </div>
-                <div class="content-item change-pw">
-                    <div class="title">
-                        <h5>Nhập mật khẩu</h5>
-                    </div>
-                    <div class="content">
-                        <!-- Mật khẩu hiện tại -->
-                        <div class="custom-input">
-                            <div class="wrap-info">
-                                <div class="title-status">
-                                    <p>Mật khẩu hiện tại</p>
-                                </div>
-                            </div>
-                            <div class="wrap-input">
-                                <div class="wrap-text">
-                                    <input type="password" id="currentPassword">
-                                </div>
-                                <div class="wrap-icon" onclick="togglePassword('currentPassword', this)">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http:www.w3.org/2000/svg">
-                                        <path
-                                            d="M14.52 18.6297C13.71 18.8397 12.87 18.9397 12 18.9397C8.73 18.9397 5.8 17.4097 3.8 14.9897C2.4 13.2997 2.4 10.6897 3.8 9.00969C3.96 8.80969 4.14 8.61969 4.32 8.42969"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                        <path
-                                            d="M20.2 14.9896C19.4 15.9496 18.45 16.7696 17.4 17.4096L6.58997 6.58957C8.17997 5.60957 10.02 5.05957 12 5.05957C15.27 5.05957 18.2 6.58957 20.2 9.00957C21.6 10.6896 21.6 13.3096 20.2 14.9896Z"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                        <path
-                                            d="M15.0799 11.9999C15.0799 12.8499 14.7299 13.6199 14.1799 14.1799L9.81995 9.81992C10.3699 9.25992 11.1499 8.91992 11.9999 8.91992C13.7099 8.91992 15.0799 10.2899 15.0799 11.9999Z"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                        <path d="M2.75 2.75L6.59 6.59L9.82 9.82L14.18 14.18L17.41 17.41L21.25 21.25"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mật khẩu mới -->
-                        <div class="custom-input">
-                            <div class="wrap-info">
-                                <div class="title-status">
-                                    <p>Mật khẩu mới</p>
-                                </div>
-                            </div>
-                            <div class="wrap-input">
-                                <div class="wrap-text">
-                                    <input type="password" id="newPassword">
-                                </div>
-                                <div class="wrap-icon" onclick="togglePassword('newPassword', this)">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http:www.w3.org/2000/svg">
-                                        <path
-                                            d="M14.52 18.6297C13.71 18.8397 12.87 18.9397 12 18.9397C8.73 18.9397 5.8 17.4097 3.8 14.9897C2.4 13.2997 2.4 10.6897 3.8 9.00969C3.96 8.80969 4.14 8.61969 4.32 8.42969"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                        <path
-                                            d="M20.2 14.9896C19.4 15.9496 18.45 16.7696 17.4 17.4096L6.58997 6.58957C8.17997 5.60957 10.02 5.05957 12 5.05957C15.27 5.05957 18.2 6.58957 20.2 9.00957C21.6 10.6896 21.6 13.3096 20.2 14.9896Z"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                        <path
-                                            d="M15.0799 11.9999C15.0799 12.8499 14.7299 13.6199 14.1799 14.1799L9.81995 9.81992C10.3699 9.25992 11.1499 8.91992 11.9999 8.91992C13.7099 8.91992 15.0799 10.2899 15.0799 11.9999Z"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                        <path d="M2.75 2.75L6.59 6.59L9.82 9.82L14.18 14.18L17.41 17.41L21.25 21.25"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Xác nhận mật khẩu mới -->
-                        <div class="custom-input">
-                            <div class="wrap-info">
-                                <div class="title-status">
-                                    <p>Xác nhận mật khẩu mới</p>
-                                </div>
-                            </div>
-                            <div class="wrap-input">
-                                <div class="wrap-text">
-                                    <input type="password" id="confirmPassword">
-                                </div>
-                                <div class="wrap-icon" onclick="togglePassword('confirmPassword', this)">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http:www.w3.org/2000/svg">
-                                        <path
-                                            d="M14.52 18.6297C13.71 18.8397 12.87 18.9397 12 18.9397C8.73 18.9397 5.8 17.4097 3.8 14.9897C2.4 13.2997 2.4 10.6897 3.8 9.00969C3.96 8.80969 4.14 8.61969 4.32 8.42969"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                        <path
-                                            d="M20.2 14.9896C19.4 15.9496 18.45 16.7696 17.4 17.4096L6.58997 6.58957C8.17997 5.60957 10.02 5.05957 12 5.05957C15.27 5.05957 18.2 6.58957 20.2 9.00957C21.6 10.6896 21.6 13.3096 20.2 14.9896Z"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                        <path
-                                            d="M15.0799 11.9999C15.0799 12.8499 14.7299 13.6199 14.1799 14.1799L9.81995 9.81992C10.3699 9.25992 11.1499 8.91992 11.9999 8.91992C13.7099 8.91992 15.0799 10.2899 15.0799 11.9999Z"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                        <path d="M2.75 2.75L6.59 6.59L9.82 9.82L14.18 14.18L17.41 17.41L21.25 21.25"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Nút xác nhận -->
-                        <div class="action">
-                            <button class="btn-confirm">Xác nhận</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="content__account" id="accountSection">
+            <div class="content__account">
                 <div class="content-item user-profile">
-                    <div class="title">
-                        <div class="title__edit">
-                            <h3>Thông tin tài khoản</h3>
-                            <a href="#"><img src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000"
-                                    alt="" id="openModal"></a>
+                    <div class="title__edit">
+                        <h3>Thông tin cá nhân</h3>
+                        <a href="#" id="openModal">
+                            <i class="fas fa-edit"></i>
+                            Chỉnh sửa
+                        </a>
+                    </div>
+                    <div class="avatar-box">
+                        <div class="avatar">
+                            <img src="https://via.placeholder.com/120" alt="Avatar">
                         </div>
-                        <div class="title__trips">
+                        <h4 style="margin: 0.5rem 0; color: var(--text-color);">Nguyễn Văn A</h4>
+                        <p style="color: #6b7280;">Thành viên từ 05/04/2023</p>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-box__item">
+                            <p>Email</p>
+                            <h3>user@example.com</h3>
+                        </div>
+                        <div class="info-box__item">
+                            <p>Số điện thoại</p>
+                            <h3>0345840642</h3>
+                        </div>
+                        <div class="info-box__item">
+                            <p>Ngày sinh</p>
+                            <h3>01/01/1990</h3>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="content-item">
+                    <div class="title__edit">
+                        <h3>Giấy phép lái xe</h3>
+                        <div class="auth">
+                            <span class="note__icon">
+                                <i class="fas fa-check-circle"></i>
+                                Đã xác thực
+                            </span>
                         </div>
                     </div>
-                    <div class="content">
-                        <div class="avatar-box">
-                            <div class="avatar">
-                                <img src="https://n1-cstg.mioto.vn/m/avatars/avatar-2.png" alt="">
-                            </div>
-                            <h6>Skykiet1133</h6>
-                            <p>Tham gia: 05/04/2025</p>
+                    <div class="info-box">
+                        <div class="info-box__item">
+                            <p>Số GPLX</p>
+                            <h3>123456789</h3>
                         </div>
-                        <div class="info-user">
-                            <div class="info-box">
-                                <div class="info-box__item">
-                                    <p>Họ tên</p>
-                                    <h3>Nguyễn Văn A</h3>
-                                </div>
-                                <div class="info-box__item">
-                                    <p>Ngày sinh</p>
-                                    <h3>01/01/2000</h3>
-                                </div>
-                                <div class="info-box__item">
-                                    <p>Giới tính</p>
-                                    <h3>Nam</h3>
-                                </div>
-                            </div>
-                            <div class="info-decs">
-                                <div class="info-decs__item">
-                                    <div class="title-item">
-                                        <div class="auth">
-                                            <p>Số điện thoại</p>
-                                            <div class="note__icon auth">
-                                                <div class="note__icon-item">
-                                                    <img src="https://img.icons8.com/?size=100&id=4JjLLkQa1ofF&format=png&color=000000"
-                                                        alt="">
-                                                </div>
-                                                <p1>Xác minh</p1>
-                                            </div>
-                                        </div>
-                                        <div class="info-user__item">
-                                            <p>+84345840642</p>
-                                            <div class="title__edit">
-                                                <a href="#"><img
-                                                        src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000"
-                                                        alt=""></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info-decs__item">
-                                    <div class="title-item">
-                                        <div class="auth">
-                                            <p>Email</p>
-                                            <div class="note__icon auth">
-                                                <div class="note__icon-item">
-                                                    <img src="https://img.icons8.com/?size=100&id=4JjLLkQa1ofF&format=png&color=000000"
-                                                        alt="">
-                                                </div>
-                                                <p1>Xác minh</p1>
-                                            </div>
-                                        </div>
-                                        <div class="info-user__item">
-                                            <p>tk04052k4@gmail.com</p>
-                                            <div class="title__edit">
-                                                <a href=""><img
-                                                        src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000"
-                                                        alt=""></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="info-box__item">
+                            <p>Hạng</p>
+                            <h3>B2</h3>
+                        </div>
+                        <div class="info-box__item">
+                            <p>Ngày hết hạn</p>
+                            <h3>31/12/2030</h3>
                         </div>
                     </div>
                 </div>
-                <div class="content-item driver-license">
-                    <div class="title__dirver">
-                        <div class="title__item">
-                            <h3>Giấy phép lái xe</h3>
-                            <div class="title-item__info error">
-                                <div class="title-item__info-icon">
-                                    <img src="https://img.icons8.com/?size=100&id=Sb9rYobIrMId&format=png&color=000000"
-                                        alt="">
-                                </div>
-                                <p>Chưa xác thực</p>
-                            </div>
-                        </div>
-                        <div class="btn__edit">
-                            <a href="#">Chỉnh sửa</a>
-                            <div class="note__icon-edit title-item__info-icon">
-                                <img src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="note-license">
-                        <p><b>Lưu ý: </b> để tránh phát sinh vấn đề trong quá trình thuê xe, <u>người đặt xe</u> trên
-                            Web (đã xác thực GPLX) <b>ĐỒNG THỜI </b>phải là <u>người nhận xe.</u></p>
-                    </div>
-                    <div class="content">
-                        <div class="info-license">
-                            <div class="info-license__title">
-                                <h3>Hình ảnh</h3>
-                            </div>
-                            <div class="info-license__img">
-                                <div class="fix-img">
-                                    <img src="/image/license__img.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="info-license">
-                            <div class="info-license__title">
-                                <h3>Thông tin giấy phép lái xe</h3>
-                            </div>
-                            <div class="custom-input">
-                                <div class="wrap-info">
-                                    <p>Số GPLX</p>
-                                </div>
-                                <div class="wrap-input">
-                                    <input type="text" placeholder="Nhập số GPLX" class="input__license">
-                                </div>
-                            </div>
-                            <div class="custom-input">
-                                <div class="wrap-info">
-                                    <p>Họ và tên</p>
-                                </div>
-                                <div class="wrap-input">
-                                    <input type="text" placeholder="Nhập họ và tên" class="input__license">
-                                </div>
-                            </div>
-                            <div class="custom-input">
-                                <div class="wrap-info">
-                                    <p>Ngày sinh</p>
-                                </div>
-                                <div class="wrap-input">
-                                    <input type="date" class="input__license">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-item share-code">
-                    <div class="main-content">
-                        <div class="title__share-code">
-                            <h5>Giới thiệu bạn mới</h5>
-                            <div class="learn-more">
-                                <p>tìm hiểu chi tiết chương trình</p>
-                                <div class="wrap-svg">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <g clip-path="url(#clip0_2164_37736)">
-                                            <path
-                                                d="M8.00065 14.6673C11.6825 14.6673 14.6673 11.6825 14.6673 8.00065C14.6673 4.31875 11.6825 1.33398 8.00065 1.33398C4.31875 1.33398 1.33398 4.31875 1.33398 8.00065C1.33398 11.6825 4.31875 14.6673 8.00065 14.6673Z"
-                                                stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <path
-                                                d="M6.06055 6.00038C6.21728 5.55483 6.52665 5.17912 6.93385 4.9398C7.34105 4.70049 7.81981 4.61301 8.28533 4.69285C8.75085 4.7727 9.17309 5.01473 9.47726 5.37607C9.78144 5.7374 9.94792 6.19473 9.94721 6.66705C9.94721 8.00038 7.94721 8.66705 7.94721 8.66705"
-                                                stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <path d="M8 11.334H8.00667" stroke="black" stroke-linecap="round"
-                                                stroke-linejoin="round"></path>
-                                        </g>
-                                        <defs>
-                                            <clipPath id="clip0_2164_37736">
-                                                <rect width="16" height="16" fill="white"></rect>
-                                            </clipPath>
-                                        </defs>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-img pointer">
-                        <img src="/image/TK-DK.PNG" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="content__address">
-                <div class="content-title">
-                    <h4>Địa chỉ của tôi</h4>
-                </div>
-                <div class="content-item address-list">
-                    <div class="title-address">
-                        <h4>Địa chỉ đã lưu</h4>
-                        <div class="btn__edit btn__addaddress">
-                            <a href="">Thêm địa chỉ mới</a>
-                            <div class="note__icon-edit title-item__info-icon">
-                                <img src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="address-item">
-                            <div class="address-content">
-                                <div class="address-content__icon">
-                                    <img src="https://img.icons8.com/?size=100&id=14096&format=png&color=000000" alt="">
-                                </div>
-                                <div class="wrap-text">
-                                    <p class="address-title">
-                                        231
-                                    </p>
-                                    <p>
-                                        Công viên khu tái định cư Hoà Lợi, Thị trấn Phong Điền, Huyện Phong Điền, Cần
-                                        Thơ, Việt Nam
-                                    </p>
-                                </div>
-                                <div class="address-edit">
-                                    <div class="address-edit__icon">
-                                        <a href=""><img
-                                                src="https://img.icons8.com/?size=100&id=15049&format=png&color=000000"
-                                                alt=""></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="moda" id="myModal" style="display: none;">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close-button" onclick="closeModal()">×</button>
+                <div class="content-item">
+                    <div class="title__edit">
+                        <h3>Thống kê</h3>
                     </div>
-                    <div class="modal-body">
-                        <div class="modal-text-body reward-noti-body">
-                            <img src="/DACS-main/image/TK-DK.PNG" alt="">
-                            <div class="block-bg">
-                                <p class="font-14 text-danger">Chương trình chỉ áp dụng cho thành viên đã có chuyến hoặc
-                                    có thời gian đăng ký tài khoản trước 12/01/2025.</p>
-                            </div>
-                            <h5>
-                                Chương trình giới thiệu Mioto đến bạn bè
-                            </h5>
-                            <div class="block-content">
-                                <p>✨ Bạn đang sử dụng và hài lòng với trải nghiệm trên TK-DK?</p>
-                                <P>✨ Bạn sẵn lòng chia sẻ/giới thiệu TK-DK đến nhiều bạn bè của mình?</P>
-                                <p>👉 Trải nghiệm ngay tính năng GIỚI THIỆU BẠN BÈ để nhận quà tặng 500k từ TK-DK.</p>
-                            </div>
-                            <div class="block-bg-nd">
-                                <div class="block-content">
-                                    <b>Người được giới thiệu nhận:</b>
-                                    <p>💵 Mã khuyến mãi thuê xe giảm 200.000đ cho chuyến đầu tiên trên TK-DK.</p>
-                                </div>
-                                <div class="block-content">
-                                    <b>Người giới thiệu nhận:</b>
-                                    <p>🎁 500 điểm thưởng tương đương 500.000đ khi người được giới thiệu hoàn thành
-                                        chuyến đầu tiên có áp dụng mã khuyến mãi (mã giới thiệu của bạn). Bạn có thể đổi
-                                        ra Thẻ quà Got-it (thẻ cào, vé xem phim, café, thẻ siêu thị, ...) hoặc Mã giảm
-                                        giá thuê xe TK-DK.</p>
-                                    <p>
-                                        👉 Lưu ý:
-                                        <br>
-                                        Chương trình chỉ áp dụng cho đơn hàng Thuê xe Tự lái có tổng giá trị từ
-                                        1.000.000đ (giá trước khuyến mãi)
-                                        <br>
-                                        Chương trình không áp dụng đối với trường hợp khách thuê sử dụng mã giới thiệu
-                                        của chính chủ xe.
-                                    </p>
-                                </div>
-                            </div>
-                            <b>Hướng dẫn sử dụng </b>
-                            <div class="block-content">
-                                <p>👉 Người giới thiệu: Click vào biểu tượng "copy" để sao chép nội dung có chứa liên
-                                    kết giới thiệu của bạn, sau đó chia sẽ đến bạn bè thông qua các nền tảng xã hội như
-                                    Facebook, Zalo hoặc các ứng dụng nhắn tin khác.</p>
-                                <p>👉 Người được giới thiệu:</p>
-                                <p>B1: Click vào liên kết được chia sẽ để cài đặt ứng dụng TK-DK.</p>
-                                <P>B2: Nhập mã giới thiệu vào mục Áp dụng mã khuyến mãi khi đặt chuyến đầu tiên.</P>
-                            </div>
-                            <div class="block-content">
-                                <p>Ví dụ: Tương ứng với liên kết giới thiệu để cài ứng dụng là</p>
-                                <p>http://l.mioto.vn/instl/MGTABC thì mã khuyến mãi khi đặt xe là MGTABC.</p>
-                            </div>
-                            <p>✨ Hy vọng bạn luôn có những trải nghiệm thật vui cùng TK-DK!</p>
-                            <p>
-                                Trân trọng,
-                                <br>
-                                TK-DK Team.
-                            </p>
+                    <div class="info-box">
+                        <div class="info-box__item">
+                            <p>Chuyến đã đặt</p>
+                            <h3>0</h3>
+                        </div>
+                        <div class="info-box__item">
+                            <p>Chuyến đã hoàn thành</p>
+                            <h3>0</h3>
+                        </div>
+                        <div class="info-box__item">
+                            <p>Tỷ lệ hoàn thành</p>
+                            <h3>0%</h3>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="modal1" id="updateModal">
-                <div class="modal-content">
-                    <button class="close-btn" id="closeModal">&times;</button>
-                    <h2>Cập nhật thông tin</h2>
-
-                    <label for="username">Tên tài khoản</label>
-                    <input type="text" id="username" placeholder="Nhập tên tài khoản">
-
-                    <label for="dob">Ngày sinh</label>
-                    <input type="date" id="dob">
-
-                    <label for="gender">Giới tính</label>
-                    <select id="gender">
-                        <option>Nam</option>
-                        <option>Nữ</option>
-                        <option>Khác</option>
-                    </select>
-                    <button class="update-btn">Cập nhật</button>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="/js/code.js">
+    </main>
 
+    <!-- Modal cập nhật thông tin -->
+    <div id="updateModal" class="modal1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cập nhật thông tin cá nhân</h3>
+                <button type="button" id="closeModal" class="close-button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm" class="edit-form">
+                    <div class="form-group">
+                        <label for="fullName">Họ và tên</label>
+                        <input type="text" id="fullName" name="fullName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthday">Ngày sinh</label>
+                        <input type="date" id="birthday" name="birthday" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Giới tính</label>
+                        <select id="gender" name="gender" class="form-control">
+                            <option value="male">Nam</option>
+                            <option value="female">Nữ</option>
+                            <option value="other">Khác</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" id="cancelEdit">Hủy</button>
+                        <button type="submit" class="btn-save">Lưu thay đổi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal-overlay">
+        <div class="modal2">
+            <h3>Xác nhận đăng xuất</h3>
+            <p>Bạn có chắc chắn muốn đăng xuất không?</p>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-cancel" onclick="hideLogoutModal()">Hủy</button>
+                <button class="modal-btn modal-btn-confirm" onclick="logout()">Đăng xuất</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal handling
+        const modal = document.getElementById('updateModal');
+        const openModalBtn = document.getElementById('openModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelEdit');
+        const form = document.getElementById('updateForm');
+
+        // Ngăn chặn sự kiện click lan truyền
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Ngăn chặn sự kiện click từ modal-content lan truyền lên modal
+        document.querySelector('.modal-content').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        function openModal(e) {
+            if (e) {
+                e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ a
+                e.stopPropagation(); // Ngăn chặn sự kiện lan truyền
+            }
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Khóa scroll của body
+            
+            // Lấy thông tin hiện tại
+            const currentName = document.querySelector('.avatar-box h4').textContent;
+            const currentEmail = document.querySelector('.info-box__item:nth-child(1) h3').textContent;
+            const currentPhone = document.querySelector('.info-box__item:nth-child(2) h3').textContent;
+            
+            // Điền thông tin vào form
+            document.getElementById('fullName').value = currentName;
+            document.getElementById('email').value = currentEmail;
+            document.getElementById('phone').value = currentPhone;
+
+            // Set ngày sinh nếu có
+            const birthdayInput = document.getElementById('birthday');
+            const currentBirthday = document.querySelector('.info-box__item:nth-child(3) h3').textContent;
+            if (currentBirthday) {
+                try {
+                    const date = new Date(currentBirthday);
+                    birthdayInput.value = date.toISOString().split('T')[0];
+                } catch (error) {
+                    console.log('Không thể parse ngày sinh');
+                }
+            }
+        }
+
+        function closeModal(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            modal.style.display = 'none';
+            document.body.style.overflow = ''; // Khôi phục scroll của body
+            form.reset();
+        }
+
+        // Event listeners
+        openModalBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const submitBtn = this.querySelector('.btn-save');
+            const originalBtnText = submitBtn.textContent;
+            
+            // Disable buttons
+            submitBtn.disabled = true;
+            cancelBtn.disabled = true;
+            closeModalBtn.disabled = true;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang cập nhật...';
+
+            // Lấy dữ liệu từ form
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                birthday: document.getElementById('birthday').value,
+                gender: document.getElementById('gender').value
+            };
+
+            // Giả lập API call
+            setTimeout(() => {
+                try {
+                    // Cập nhật UI
+                    document.querySelector('.avatar-box h4').textContent = formData.fullName;
+                    document.querySelector('.info-box__item:nth-child(1) h3').textContent = formData.email;
+                    document.querySelector('.info-box__item:nth-child(2) h3').textContent = formData.phone;
+                    
+                    const formattedDate = new Date(formData.birthday).toLocaleDateString('vi-VN');
+                    document.querySelector('.info-box__item:nth-child(3) h3').textContent = formattedDate;
+
+                    // Hiển thị thông báo thành công
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Đã cập nhật';
+
+                    // Đóng modal và reset form sau 2 giây
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        cancelBtn.disabled = false;
+                        closeModalBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        closeModal();
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Lỗi khi cập nhật:', error);
+                    submitBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Lỗi cập nhật';
+                    
+                    // Reset trạng thái trong trường hợp lỗi
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        cancelBtn.disabled = false;
+                        closeModalBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                    }, 2000);
+                }
+            }, 1500);
+        });
+
+        // Avatar upload
+        const avatar = document.querySelector('.avatar');
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+
+        avatar.addEventListener('click', function(e) {
+            e.stopPropagation();
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatar.querySelector('img').src = e.target.result;
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Xử lý đăng xuất
+        const logoutButton = document.querySelector('[data-logout]');
+        const logoutModal = document.querySelector('.modal-overlay');
+        const cancelLogoutBtn = document.querySelector('.modal-btn-cancel');
+        const confirmLogoutBtn = document.querySelector('.modal-btn-confirm');
+
+        // Mở modal đăng xuất
+        logoutButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            logoutModal.style.display = 'flex';
+        });
+
+        // Đóng modal khi click nút hủy
+        cancelLogoutBtn.addEventListener('click', function() {
+            logoutModal.style.display = 'none';
+        });
+
+        // Đóng modal khi click ra ngoài
+        logoutModal.addEventListener('click', function(e) {
+            if (e.target === logoutModal) {
+                logoutModal.style.display = 'none';
+            }
+        });
+
+        // Xử lý khi xác nhận đăng xuất
+        confirmLogoutBtn.addEventListener('click', function() {
+            // Chuyển hướng về trang đăng nhập
+            window.location.href = '/public/index.html';
+        });
+
+        function hideLogoutModal() {
+            logoutModal.style.display = 'none';
+        }
+
+        function logout() {
+            window.location.href = 'login.html';
+        }
     </script>
 </body>
 

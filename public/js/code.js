@@ -1,214 +1,492 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const loginModal = document.getElementById("loginModal");
-    const registerModal = document.getElementById("registerModal");
-    
-    const openLoginBtn = document.getElementById("openLogin");
-    const openRegisterBtn = document.getElementById("openRegister");
-    
-    const closeLoginBtn = loginModal.querySelector(".close");
-    const closeRegisterBtn = registerModal.querySelector(".close");
-    
-    const registerLink = loginModal.querySelector("a[href='#']");
-    const loginLink = registerModal.querySelector("a[href='#']");
-    
-    // Mở modal đăng nhập
-    if (openLoginBtn) {
-        openLoginBtn.addEventListener("click", function (event) {
-            event.preventDefault();
-            loginModal.style.display = "flex";
-        });
-    }
-    
-    // Mở modal đăng ký
-    if (openRegisterBtn) {
-        openRegisterBtn.addEventListener("click", function (event) {
-            event.preventDefault();
-            registerModal.style.display = "block";
-        });
-    }
-    
-    // Đóng modal đăng nhập
-    closeLoginBtn.addEventListener("click", function () {
-        loginModal.style.display = "none";
-    });
-    
-    // Đóng modal đăng ký
-    closeRegisterBtn.addEventListener("click", function () {
-        registerModal.style.display = "none";
-    });
-    
-    // Đóng modal khi click ra ngoài
-    window.addEventListener("click", function (event) {
-        if (event.target === loginModal) {
-            loginModal.style.display = "none";
-        } else if (event.target === registerModal) {
-            registerModal.style.display = "none";
+document.addEventListener('DOMContentLoaded', () => {
+    // Header scroll handling
+    const header = document.querySelector('.header');
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+        if (lastScrollY < window.scrollY) {
+            header.classList.add('header--hidden');
+        } else {
+            header.classList.remove('header--hidden');
         }
+        lastScrollY = window.scrollY;
     });
+
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menuHeader = document.querySelector('.menu-header');
     
-    // Chuyển từ đăng nhập sang đăng ký
-    registerLink.addEventListener("click", function (event) {
-        event.preventDefault();
-        loginModal.style.display = "none";
-        registerModal.style.display = "block";
-    });
+    if (menuToggle) {
+        menuToggle.innerHTML = `
+            <span></span>
+            <span></span>
+            <span></span>
+        `;
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            menuHeader.classList.toggle('active');
+        });
+    }
+
+    // Modal handling with animations
+    const modals = document.querySelectorAll('.modal');
+    const openLoginBtn = document.getElementById('openLogin');
+    const closeBtns = document.querySelectorAll('.close');
     
-    // Chuyển từ đăng ký sang đăng nhập
-    loginLink.addEventListener("click", function (event) {
-        event.preventDefault();
-        registerModal.style.display = "none";
-        loginModal.style.display = "flex";
-    });
-});
-document.addEventListener("DOMContentLoaded", function () {
-    const loginModal = document.getElementById("loginModal");
-    const registerModal = document.getElementById("registerModal");
-
-    const openLoginBtn = document.getElementById("openLogin");
-    const openRegisterBtn = document.getElementById("openRegister");
-
-    const closeLoginBtn = loginModal.querySelector(".close");
-    const closeRegisterBtn = registerModal.querySelector(".close");
-
-    const registerLink = loginModal.querySelector("a[href='#']");
-    const loginLink = registerModal.querySelector("a[href='#']");
-
-    // Mở modal đăng nhập
+    function openModal(modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(() => {
+            modal.classList.add('active');
+        });
+    }
+    
+    function closeModal(modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }, 300);
+    }
+    
     if (openLoginBtn) {
-        openLoginBtn.addEventListener("click", function (event) {
-            event.preventDefault();
-            loginModal.style.display = "flex";
-        });
-    }
-
-    // Mở modal đăng ký
-    if (openRegisterBtn) {
-        openRegisterBtn.addEventListener("click", function (event) {
-            event.preventDefault();
-            registerModal.style.display = "block";
-        });
-    }
-
-    // Đóng modal đăng nhập
-    closeLoginBtn.addEventListener("click", function () {
-        loginModal.style.display = "none";
-    });
-
-    // Đóng modal đăng ký
-    closeRegisterBtn.addEventListener("click", function () {
-        registerModal.style.display = "none";
-    });
-
-    // Đóng modal khi click ra ngoài
-    window.addEventListener("click", function (event) {
-        if (event.target === loginModal) {
-            loginModal.style.display = "none";
-        } else if (event.target === registerModal) {
-            registerModal.style.display = "none";
-        }
-    });
-
-    // Chuyển từ đăng nhập sang đăng ký
-    registerLink.addEventListener("click", function (event) {
-        event.preventDefault();
-        loginModal.style.display = "none";
-        registerModal.style.display = "block";
-    });
-
-    // Chuyển từ đăng ký sang đăng nhập
-    loginLink.addEventListener("click", function (event) {
-        event.preventDefault();
-        registerModal.style.display = "none";
-        loginModal.style.display = "flex";
-    });
-});
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const menuItems = document.querySelectorAll(".menu__account-item");
-    const sections = document.querySelectorAll(".container__account > div");
-
-    menuItems.forEach((item, index) => {
-        item.addEventListener("click", function (e) {
+        openLoginBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            const loginModal = document.getElementById('loginModal');
+            openModal(loginModal);
+        });
+    }
+    
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modal = btn.closest('.modal');
+            closeModal(modal);
+        });
+    });
+    
+    modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal(modal);
+            }
+        });
+    });
 
-            // Ẩn tất cả phần nội dung
-            sections.forEach(section => {
-                if (!section.classList.contains("menu__account")) {
-                    section.style.display = "none";
+    // Form validation with better UX
+    const forms = document.querySelectorAll('form');
+    
+    forms.forEach(form => {
+        const inputs = form.querySelectorAll('input');
+        
+        inputs.forEach(input => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'input-wrapper';
+            input.parentNode.insertBefore(wrapper, input);
+            wrapper.appendChild(input);
+            
+            const error = document.createElement('div');
+            error.className = 'input-error';
+            wrapper.appendChild(error);
+            
+            input.addEventListener('input', () => {
+                validateInput(input);
+            });
+        });
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!validateInput(input)) {
+                    isValid = false;
                 }
             });
-
-            // Hiển thị phần tương ứng
-            if (index === 1) { // "Thêm địa chỉ"
-                document.querySelector(".content__address").style.display = "block";
-            } else if (index === 0) {
-                document.querySelector(".content__account").style.display = "block";
-            } else if (index === 4) {
-                document.querySelector(".content__change-password").style.display = "block";
+            
+            if (isValid) {
+                // Add loading state
+                const submitBtn = form.querySelector('[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('loading');
+                }
+                
+                // Simulate form submission
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                    // Here you would normally submit the form
+                }, 1500);
             }
-            // bạn có thể thêm các trường hợp khác nếu cần
         });
+    });
+    
+    function validateInput(input) {
+        const error = input.parentNode.querySelector('.input-error');
+        let isValid = true;
+        let errorMessage = '';
+        
+        switch (input.type) {
+            case 'tel':
+            case 'number':
+                if (input.name === 'phone') {
+                    isValid = /^(0[3|5|7|8|9])+([0-9]{8})$/.test(input.value);
+                    errorMessage = 'Số điện thoại không hợp lệ';
+                }
+                break;
+            case 'password':
+                isValid = input.value.length >= 6;
+                errorMessage = 'Mật khẩu phải có ít nhất 6 ký tự';
+                break;
+            case 'text':
+                isValid = input.value.trim().length > 0;
+                errorMessage = 'Trường này không được để trống';
+                break;
+        }
+        
+        if (!isValid && input.value) {
+            error.textContent = errorMessage;
+            input.classList.add('error');
+        } else {
+            error.textContent = '';
+            input.classList.remove('error');
+        }
+        
+        return isValid || !input.value;
+    }
+
+    // Enhanced form validation and submission
+    const loginForm = document.querySelector('.sign-in-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.querySelector('input[name="username"]').value;
+            const password = document.querySelector('input[name="password"]').value;
+            const errorElement = document.querySelector('.error-message') || createErrorElement();
+
+            // Basic validation
+            if (!username || !password) {
+                showError(errorElement, 'Vui lòng nhập đầy đủ thông tin');
+                return;
+            }
+
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showSuccess(errorElement, data.message);
+                    setTimeout(() => {
+                        window.location.href = data.redirectUrl;
+                    }, 1000);
+                } else {
+                    showError(errorElement, data.message);
+                }
+            } catch (error) {
+                showError(errorElement, 'Lỗi kết nối, vui lòng thử lại sau');
+            }
+        });
+    }
+
+    function createErrorElement() {
+        const errorElement = document.createElement('div');
+        errorElement.className = 'error-message';
+        const form = document.querySelector('.sign-in-form');
+        form.insertBefore(errorElement, form.firstChild);
+        return errorElement;
+    }
+
+    function showError(element, message) {
+        element.textContent = message;
+        element.className = 'error-message error';
+        element.style.display = 'block';
+    }
+
+    function showSuccess(element, message) {
+        element.textContent = message;
+        element.className = 'error-message success';
+        element.style.display = 'block';
+    }
+
+    // Logout functionality
+    const logoutButton = document.querySelector('.logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+            try {
+                const response = await fetch('/auth/logout', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+    }
+
+    // Xử lý form đăng xuất
+    function showLogoutModal() {
+        const modalOverlay = document.querySelector('.modal-overlay');
+        if (modalOverlay) {
+            modalOverlay.style.display = 'flex';
+        }
+    }
+
+    function hideLogoutModal() {
+        const modalOverlay = document.querySelector('.modal-overlay');
+        if (modalOverlay) {
+            modalOverlay.style.display = 'none';
+        }
+    }
+
+    // Thêm sự kiện click cho nút đăng xuất
+    const logoutButtonModal = document.querySelector('.logout-button');
+    if (logoutButtonModal) {
+        logoutButtonModal.addEventListener('click', showLogoutModal);
+    }
+
+    const cancelButton = document.querySelector('.logout-cancel');
+    if (cancelButton) {
+        cancelButton.addEventListener('click', hideLogoutModal);
+    }
+
+    // Đóng modal khi click ra ngoài
+    window.addEventListener('click', function(event) {
+        const logoutModal = document.querySelector('.logout-modal');
+        if (event.target === logoutModal) {
+            hideLogoutModal();
+        }
+    });
+
+    // Lazy loading images
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        lazyImages.forEach(img => imageObserver.observe(img));
+    }
+
+    // Smooth reveal animation for sections
+    const revealSections = document.querySelectorAll('section');
+    
+    const revealOnScroll = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('section--visible');
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    revealSections.forEach(section => {
+        section.classList.add('section--hidden');
+        revealOnScroll.observe(section);
+    });
+
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                // Close mobile menu if open
+                menuToggle?.classList.remove('active');
+                menuHeader?.classList.remove('active');
+            }
+        });
+    });
+
+    // Add loading indicator
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.className = 'loading-indicator';
+    document.body.appendChild(loadingIndicator);
+
+    // Add page transition element
+    const pageTransition = document.createElement('div');
+    pageTransition.className = 'page-transition';
+    document.body.appendChild(pageTransition);
+
+    // Handle page transitions
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link && !link.target && !link.hasAttribute('download') && !link.classList.contains('no-transition')) {
+            e.preventDefault();
+            const href = link.href;
+            
+            pageTransition.classList.add('active');
+            loadingIndicator.style.display = 'block';
+            
+            setTimeout(() => {
+                window.location.href = href;
+            }, 500);
+        }
+    });
+
+    // Handle image loading
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    images.forEach(img => {
+        img.parentElement.classList.add('img-loading');
+        img.addEventListener('load', () => {
+            img.parentElement.classList.remove('img-loading');
+        });
+    });
+
+    // Add smooth reveal for cards and sections
+    const observerCallback = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('section--visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    };
+
+    const observerOptions = {
+        threshold: 0.15,
+        rootMargin: '0px'
+    };
+
+    const revealObserver = new IntersectionObserver(observerCallback, observerOptions);
+
+    document.querySelectorAll('.product-item, .feature-card, .content-section, .box2').forEach(el => {
+        el.classList.add('section--hidden');
+        revealObserver.observe(el);
+    });
+
+    // Password change form handling
+    function togglePassword(inputId) {
+        const passwordInput = document.getElementById(inputId);
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+    }
+
+    document.getElementById('passwordChangeForm')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (newPassword !== confirmPassword) {
+            alert('Mật khẩu mới không khớp!');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    currentPassword,
+                    newPassword
+                })
+            });
+
+            const data = await response.json();
+            
+            if (response.ok) {
+                alert('Đổi mật khẩu thành công!');
+                document.getElementById('passwordChangeForm').reset();
+            } else {
+                alert(data.message || 'Đổi mật khẩu thất bại!');
+            }
+        } catch (error) {
+            alert('Có lỗi xảy ra, vui lòng thử lại sau!');
+        }
+    });
+
+    // Toggle password visibility
+    function togglePasswordVisibility(inputId, iconId) {
+        const passwordInput = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    document.getElementById('passwordChangeForm')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Client-side validation
+        if (newPassword !== confirmPassword) {
+            alert('Mật khẩu mới và xác nhận mật khẩu không khớp!');
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            alert('Mật khẩu mới phải có ít nhất 6 ký tự!');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    currentPassword,
+                    newPassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Đổi mật khẩu thành công!');
+                // Clear the form
+                document.getElementById('passwordChangeForm').reset();
+            } else {
+                alert(data.message || 'Có lỗi xảy ra khi đổi mật khẩu!');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi đổi mật khẩu!');
+        }
     });
 });
 
-// Mở modal
-document.getElementById("openModal").addEventListener("click", function (e) {
-    e.preventDefault(); // tránh reload trang
-    document.getElementById("updateModal").style.display = "flex";
+window.addEventListener('load', () => {
+    document.querySelector('.loading-indicator')?.style.display = 'none';
+    document.querySelector('.page-transition')?.classList.remove('active');
 });
-
-// Đóng modal
-document.getElementById("closeModal").addEventListener("click", function () {
-    document.getElementById("updateModal").style.display = "none";
-});
-
-/*Thay đổi mật khẩu*/
-function togglePassword(id, iconElement) {
-    const input = document.getElementById(id);
-    if (input.type === 'password') {
-        input.type = 'text';
-        iconElement.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.2 9.01006C21.6 10.7001 21.6 13.3001 20.2 14.9901C18.2 17.4001 15.27 18.9401 12 18.9401C8.73001 18.9401 5.81 17.4101 3.8 14.9901C2.4 13.3001 2.4 10.7001 3.8 9.01006C5.8 6.60006 8.73001 5.06006 12 5.06006C15.27 5.06006 18.19 6.59006 20.2 9.01006Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M20.2 9.01006C21.6 10.7001 21.6 13.3001 20.2 14.9901C18.2 17.4001 15.27 18.9401 12 18.9401C8.73001 18.9401 5.81 17.4101 3.8 14.9901C2.4 13.3001 2.4 10.7001 3.8 9.01006C5.8 6.60006 8.73001 5.06006 12 5.06006C15.27 5.06006 18.19 6.59006 20.2 9.01006Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.9999 15.0802C13.7009 15.0802 15.0799 13.7012 15.0799 12.0002C15.0799 10.2991 13.7009 8.92017 11.9999 8.92017C10.2989 8.92017 8.91992 10.2991 8.91992 12.0002C8.91992 13.7012 10.2989 15.0802 11.9999 15.0802Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>'; // đổi biểu tượng thành "hiện"
-    } else {
-        input.type = 'password';
-        iconElement.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http:www.w3.org/2000/svg"><path d="M14.52 18.6297C13.71 18.8397 12.87 18.9397 12 18.9397C8.73 18.9397 5.8 17.4097 3.8 14.9897C2.4 13.2997 2.4 10.6897 3.8 9.00969C3.96 8.80969 4.14 8.61969 4.32 8.42969" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M20.2 14.9896C19.4 15.9496 18.45 16.7696 17.4 17.4096L6.58997 6.58957C8.17997 5.60957 10.02 5.05957 12 5.05957C15.27 5.05957 18.2 6.58957 20.2 9.00957C21.6 10.6896 21.6 13.3096 20.2 14.9896Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15.0799 11.9999C15.0799 12.8499 14.7299 13.6199 14.1799 14.1799L9.81995 9.81992C10.3699 9.25992 11.1499 8.91992 11.9999 8.91992C13.7099 8.91992 15.0799 10.2899 15.0799 11.9999Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2.75 2.75L6.59 6.59L9.82 9.82L14.18 14.18L17.41 17.41L21.25 21.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>'; // đổi biểu tượng thành "ẩn"
-    }
-}
-/*Thay đổi mật khẩu*/
-
-/*modal hiển thị thông tin giới thiệu người mới*/
-  // Lấy các phần tử
-  const wrapSvg = document.querySelector(".wrap-svg");
-  const modal = document.querySelector(".moda");
-  const closeBtn = document.querySelector(".close-button");
-  const pointerImg = document.querySelector(".content-img.pointer");
-
-  // Hàm hiển thị modal
-  function showModal() {
-    modal.style.display = "block";
-    document.body.style.overflow = "hidden"; // Ngăn cuộn nền
-  }
-
-  // Hàm đóng modal
-  function closeModal() {
-    modal.style.display = "none";
-    document.body.style.overflow = ""; // Cho phép cuộn trở lại
-  }
-
-  // Click vào icon SVG => mở modal
-  wrapSvg.addEventListener("click", showModal);
-
-  // Click vào ảnh => mở modal
-  pointerImg.addEventListener("click", showModal);
-
-  // Click vào nút đóng => đóng modal
-  closeBtn.addEventListener("click", closeModal);
-
-  // Click ra ngoài modal-content => đóng modal
-  window.addEventListener("click", function (e) {
-    if (e.target === modal) {
-      closeModal();
-    }
-  });
-/*modal hiển thị thông tin giới thiệu người mới*/

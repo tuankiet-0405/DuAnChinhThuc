@@ -1,14 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Liên Hệ - TKĐK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/css/styles.css">
-   
+    <style>
+        .contact-page {
+            margin-top: 100px;
+            padding: 2rem;
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 2rem;
+        }
+
+        .contact-info {
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .contact-info h2 {
+            font-size: 1.75rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item i {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-top: 0.25rem;
+        }
+
+        .info-content h3 {
+            font-size: 1.125rem;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .contact-form h2 {
+            font-size: 1.75rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .map-container {
+            margin-top: 3rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="header">
+    <header class="header">
         <div class="header-inner">
             <div class="logo-header">
                 <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
@@ -29,15 +156,93 @@
                 </ul>
             </div>
             <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
-                <a href="#" id="openLogin" class="btn btn-login">Đăng nhập</a>
+                <a href="login.html" id="openLogin" class="btn btn-login">Đăng nhập</a>
             </div>
         </div>
-    </div>
+    </header>
 
-    <div class ="iconx">
-        <a href="https://www.facebook.com/messages/t/100009036720265"><i class="icon fa-brands fa-facebook-messenger"></i></a><br>
-        <a href="https://www.facebook.com/47NDK/" target="_blank"><i class="icon fa-brands fa-facebook"></i></a><br>
-        <a href=""><i class="icon fa-solid fa-phone-volume"></i></a>
+    <main class="contact-page">
+        <div class="contact-container">
+            <div class="contact-info" data-aos="fade-right">
+                <h2>Thông Tin Liên Hệ</h2>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div class="info-content">
+                        <h3>Địa Chỉ</h3>
+                        <p>123 Nguyễn Văn Linh, Quận 7, TP.HCM</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <div class="info-content">
+                        <h3>Điện Thoại</h3>
+                        <p>+84 123 456 789</p>
+                        <p>+84 987 654 321</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div class="info-content">
+                        <h3>Email</h3>
+                        <p>info@tkdk.com</p>
+                        <p>support@tkdk.com</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div class="info-content">
+                        <h3>Giờ Làm Việc</h3>
+                        <p>Thứ 2 - Chủ Nhật: 07:00 - 22:00</p>
+                        <p>Hỗ trợ khẩn cấp 24/7</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form" data-aos="fade-left">
+                <h2>Gửi Tin Nhắn</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Họ và Tên</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số Điện Thoại</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Chủ Đề</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Nội Dung</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Gửi Tin Nhắn</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="map-container" data-aos="fade-up">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.8342935578785!2d106.70083011533433!3d10.748075992346437!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f6c6e8efe67%3A0x42d3c8a87f7b39db!2zTmd1eeG7hW4gVsSDbiBMaW5oLCBUw6JuIFBow7osIFF14bqtbiA3LCBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1650432985085!5m2!1svi!2s" 
+                width="100%" 
+                height="450" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>
+    </main>
+
+    <div class="contact-float">
+        <div class="iconx">
+            <a href="https://www.facebook.com/messages/t/100009036720265"><i class="icon fa-brands fa-facebook-messenger"></i></a><br>
+            <a href="https://www.facebook.com/47NDK/" target="_blank"><i class="icon fa-brands fa-facebook"></i></a><br>
+            <a href=""><i class="icon fa-solid fa-phone-volume"></i></a>
+        </div>
     </div>
 
     <div id="loginModal" class="modal">
@@ -93,74 +298,32 @@
         </div>
     </div>
 
-    <div class="container12">
-        <div class="header1">
-            <div class="booking-section">
-        
-                <div class="image-and-text">
-                    <div class="img-container-bus">
-                        <img src="https://dulichquanghuy68.com/wp-content/uploads/944619_457419431010973_127480731_n-9680.jpg" alt="Xe du lịch" class="bus-image">
-                    </div>
-                    <div class="company-text">
-                        <h1 style="color: #ff0000;">CÔNG TY DU LỊCH TKDK</h1>
-                        <p>Đội ngũ chúng tôi luôn nỗ lực để đảm bảo Quý khách hàng có những chiếc xe tuyệt vời nhất hoặc được phục vụ bởi đội ngũ tài xế tận tâm, nhiệt tình và chuyên nghiệp nhất.</p>
-                    </div>
-                </div>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true
+        });
 
-                <div class="form-book-car">
-                    
-                    
-                   
-                        <p style="color: #ff0000; font-size: 20px;"> Vui lòng điền thông tin bên dưới:</p>
-                        <form >
-                            <label for="name">Họ và tên:</label>
-                            <input type="text" id="name" name="name" required placeholder="Nhập họ và tên">
-                            <label for="phone">Số điện thoại:</label>
-                            <input type="text" id="phone" name="phone" required placeholder="Nhập số điện thoại">
-                            <label for="address">Điểm giao xe:</label>
-                            <input type="text" id="address" name="address" required placeholder="Nhập địa chỉ đón">
-                            <label for="date">Ngày dự kiến di chuyển:</label>
-                            <input type="date" id="date" name="date" required placeholder="Chọn ngày di chuyển">
-                            <label for="type of vehicle">Loại xe:</label>
-                            <select id="type of vehicle" name="type of vehicle" style="width: 100%; height: 40px;margin: 10px 0;" required>
-                                <option value="Chọn loại xe bạn muốn đặt" required> Chọn loại xe bạn muốn đặt </option>
-                                <option value=" Xe 4 chỗ" > Xe 4 chỗ</option>
-                                <option value=" Xe 7 chỗ"> Xe 7 chỗ</option>
-                                <option value=" Xe 16 chỗ"> Xe 16 chỗ</option>
-                                <option value=" Xe 29 chỗ"> Xe 29 chỗ</option>
-                            </select>
-                            <button type="submit" class="login-btn">Gửi thông tin đi</button>
-                        </form>
-                   
-                </div>
-            </div>
+        // Form handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = this.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
 
-            <div class="info">
-                <h2 style="text-align: center; color: #ff0000;">THÔNG TIN LIÊN HỆ</h2>
-                <div class="contact">
-                    <div class="contact-item">
-                        <div class="icon">📍</div>
-                        <h3>Văn phòng</h3>
-                        <p>Trường đại học HuTech, TPHCM</p>
-                    </div>
-                    <div class="contact-item red">
-                        <div class="icon">📞</div>
-                        <h3>Điện thoại</h3>
-                        <p>0397468827</p>
-                    </div>
-                    <div class="contact-item">
-                        <div class="icon">✉️</div>
-                        <h3>Email</h3>
-                        <p>dinhkhanhvn.2004@gmail.com</p>
-                    </div>
-                    <div class="contact-item red">
-                        <div class="icon">🕒</div>
-                        <h3>Giờ làm việc</h3>
-                        <p>8:00 - 17:00</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            // Simulate form submission
+            setTimeout(() => {
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Đã gửi thành công';
+                this.reset();
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Gửi Tin Nhắn';
+                }, 2000);
+            }, 1500);
+        });
+    </script>
+    <script src="../public/js/code.js"></script>
 </body>
 </html>

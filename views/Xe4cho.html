@@ -1,16 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xe 4 Chỗ - TKĐK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/css/styles.css">
-    <title>Thông tin tài khoản</title>
     <style>
-       
+        .content1 {
+            margin-top: 100px;
+            padding: 2rem;
+        }
+
+        .content-header {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-header h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .content-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .content-section strong {
+            color: var(--primary-color);
+        }
+
+        .image-container {
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.02);
+        }
+
+        .content-note {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .content-note ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-note li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .content-note li::before {
+            content: "•";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
+    <header class="header">
         <div class="header-inner">
             <div class="logo-header">
                 <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
@@ -31,15 +109,70 @@
                 </ul>
             </div>
             <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
-                <a href="#" id="openLogin" class="btn btn-login">Đăng nhập</a>
+                <a href="login.html" id="openLogin" class="btn btn-login">Đăng nhập</a>
             </div>
         </div>
+    </header>
+
+    <main class="content1">
+        <div class="content-header">
+            <h1>Thuê xe 4 chỗ</h1>
+            
+            <section class="content-section" data-aos="fade-up">
+                <p>Chúng tôi tự hào là doanh nghiệp hàng đầu trong dịch vụ cho thuê xe 4 chỗ tại TpHCM, đáp ứng nhu cầu đi lại cao của người dân và doanh nghiệp. Các sản phẩm chúng tôi cung cấp đáp ứng nhu cầu thuê xe đi công tác, thuê xe 4 chỗ tham quan, đi du lịch hành hương.</p>
+                <p>Với đa dạng các mẫu mã đến từ các hãng xe nổi tiếng như TOYOTA VIOS, HONDA CITY, KIA CERATO… Cao cấp hơn thì có các dòng xe như CAMRY, BMW, AUDI….</p>
+            </section>
+
+            <div class="image-container" data-aos="fade-up">
+                <img src="https://tuanphattravel.com/wp-content/uploads/2024/09/city3.jpg" alt="Xe 4 chỗ cao cấp">
+            </div>
+
+            <h2 class="section-title" data-aos="fade-up">Những tiện ích xe 4 chỗ</h2>
+            <section class="content-section" data-aos="fade-up">
+                <p><strong>Màn hình giải trí:</strong> Các loại xe 4 chỗ đều được trang bị hệ thống giải trí hiện đại như màn hình LCD 7 – 9 inch, hỗ trợ xem phim, hoạt hình, nghe nhạc online giúp hành khách thoải mái trong suốt hành trình.</p>
+                <p><strong>Ghế ngồi:</strong> Ghế được bọc da cao cấp, có độ đàn hồi tốt, tạo cảm giác thoải mái khi đi đường dài. Có thể điều chỉnh độ ngả giúp hành khách nghỉ ngơi thoải mái.</p>
+                <p><strong>Hệ thống điều hòa:</strong> Trang bị hệ thống điều hòa tự động, cho phép điều chỉnh nhiệt độ theo ý muốn, tạo không gian thoải mái.</p>
+            </section>
+
+            <h2 class="section-title" data-aos="fade-up">Bảng giá thuê xe 4 chỗ</h2>
+            <section class="content-section pricing-section" data-aos="fade-up">
+                <p><strong>Giá thuê theo tháng:</strong> 15 – 25 triệu đồng/tháng tùy dòng xe. Áp dụng cho thuê xe có tài hoặc tự lái.</p>
+                <p><strong>Giá thuê theo km:</strong> Từ 1.500.000đ/100km đầu tiên. Km tiếp theo được tính theo khung giá ưu đãi.</p>
+                <p><strong>Giá thuê theo ngày:</strong> 1.200.000đ - 2.500.000đ/ngày tùy dòng xe và thời điểm.</p>
+                <p><strong>Giá thuê theo giờ:</strong> 200.000đ - 500.000đ/giờ tùy dòng xe và thời gian thuê.</p>
+            </section>
+
+            <h2 class="section-title" data-aos="fade-up">Cam kết dịch vụ 24/7</h2>
+            <section class="content-section" data-aos="fade-up">
+                <p><strong>Đội ngũ nhân viên:</strong> Hỗ trợ và giải đáp thắc mắc 24/7, được đào tạo chuyên nghiệp để mang đến trải nghiệm tốt nhất.</p>
+                <p><strong>Đội ngũ tài xế:</strong> Chuyên nghiệp, nhiều năm kinh nghiệm, phục vụ tận tình, đảm bảo an toàn trọn hành trình.</p>
+                <p>Quý khách có thể liên hệ CSKH 24/24 để góp ý về chất lượng dịch vụ.</p>
+            </section>
+
+            <section class="content-note" data-aos="fade-up">
+                <h2>Lưu ý khi thuê xe:</h2>
+                <ul>
+                    <li>Giá đã bao gồm: xăng dầu, phí cầu đường/cao tốc, lương tài xế</li>
+                    <li>Giá chưa bao gồm thuế VAT</li>
+                    <li>Chi phí ăn nghỉ của tài xế khi đi qua đêm: 300.000đ/đêm</li>
+                    <li>Phí gửi xe tại điểm du lịch, sân bay, khách sạn (nếu có)</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <div class="contact-float">
+        <a href="https://m.me/100009036720265" class="contact-item messenger" target="_blank" rel="noopener">
+            <i class="fab fa-facebook-messenger"></i>
+        </a>
+        <a href="https://zalo.me/your-number" class="contact-item zalo" target="_blank" rel="noopener">
+            <img src="../public/image/zalo-icon.png" alt="Zalo">
+        </a>
+        <a href="tel:+84123456789" class="contact-item phone">
+            <i class="fas fa-phone-alt"></i>
+        </a>
     </div>
-    <div class ="iconx">
-        <a href="https://www.facebook.com/messages/t/100009036720265"><i class="icon fa-brands fa-facebook-messenger"></i></a><br>
-        <a href="https://www.facebook.com/47NDK/" target="_blank"><i class="icon fa-brands fa-facebook"></i></a><br>
-        <a href=""><i class="icon fa-solid fa-phone-volume"></i></a>
-    </div>
+
     <div id="loginModal" class="modal">
         <div class="modal-content"> 
             <span class="close">&times;</span>
@@ -91,80 +224,15 @@
             </div>
         </div>
     </div>
-    <div class="content1">
-        <div class="content-header">
-            <h1>Thuê xe 4 chỗ</h1>
-            <section class="content-section">
-                <p>Chúng tôi tự hào là doang nghiệp hàng đầu trong dịch vụ cho thuê xe 4 chỗ tại TpHCM, đáp ứng nhu cầu đi lại cao của người dân và doanh nghiệp. Các sản phẩm chúng tôi cung cấp đáp ứng nhu cầu thuê xe đi công tác, thuê xe 4 chỗ tham quan, đi du lịch hành hương. Với đa dạng các mẫu mã đến từ các hãng xe nỗi tiếng như TOYOTA VIOS, HONDA CITY, KIA CERATO… Cao cấp hơn thì có các dòng xe như CAMRY, BMW, AUDI….</p>
-                <p>Hãy lựa chọn dịch vụ cho thuê xe du lịch 4 chỗ tại tphcm của chúng tôi để được trải nghiệm trên những chiếc xe đời mới nhất, mẫu mã đẹp, sang trọng, tiện nghi.</p>
-                
-            </section>
-            <div class="image-container">
-                <img src="https://tuanphattravel.com/wp-content/uploads/2024/09/city3.jpg" alt="logo xe">
-            </div>
-            <h1>Những tiện ích xe 4 chỗ bên chúng tôi</h1>
-            <section class="content-section">
-                <p>
-                <strong>- Màn hình giải trí :</strong>
-                 Các loại xe 4 chỗ bên chúng tôi đều được trang bị hệ thống giải trí trên xe như : màn hình LCD 7 – 9 inch (có thể xem phim, xem hoạt hình, nghe nhạc online giúp khách hàng có được những phút giây thoải mái nhất khi đi xe)
-                 </p>
-                 <P>
-                    <strong>- Ghế ngồi :</strong>
-                 Ghế ngồi trên xe 4 chỗ bên chúng tôi đều được bọc da cao cấp, có độ đàn hồi tốt, tạo cảm giác thoải mái cho khách hàng khi đi đường dài. Ngoài ra ghế ngồi còn có thể điều chỉnh độ ngả của ghế giúp khách hàng có thể nằm nghỉ ngơi trong suốt hành trình.
-                 </P>
-                <p>
-                <strong>- Hệ thống điều hòa :</strong>
-                Hệ thống điều hòa trên xe 4 chỗ bên chúng tôi đều là hệ thống điều hòa tự động, giúp khách hàng có thể điều chỉnh nhiệt độ theo ý muốn của mình.
-                 </p>
 
-            </section>
-            
-            <h1>Giá thuê xe 4 chỗ giá rẻ uy tín</h1>
-            <section class="content-section">
-                <strong>- Giá thuê xe 4 chỗ theo tháng tại TPHCM.</strong>
-                <p>Hiện nay, thuê xe 4 chỗ có người lái hoặc tự lái theo tháng thường để phục vụ việc du lịch dài ngày . Mức giá thuê xe  4 chỗ theo tháng hiện nay đang rơi vào khoảng 15 – 25 triệu đồng. Dòng xe càng hiện đại, càng mới thì mức giá càng cao. Vì thế, bạn cần cân nhắc thu chi và khả năng tài chính để thuê một chiếc xe hợp lý.</p>
-            </section>
-            <section class="content-section">
-                <strong>- Giá thuê xe 4 chỗ theo km TPHCM.</strong>
-                <p>Giá thuê xe 4 chỗ tại TpHCM đi du lịch ,đi làm việc theo km đang dao động từ 1.500.000 cho 100km đầu. Với mỗi km nhiều hơn, mức giá với mỗi dòng xe có thể khác nhau. Các nhà xe thường chia các khung giá thành 50 km tiếp theo, km càng nhiều thì giá cả rẻ. Vì thế, bạn cần nắm rõ hành trình chuyến đi của mình và có trao đổi cụ thể với nhà xe về mức giá cho mỗi km nhiều hơn..</p>
-           </section>
-           <section class="content-section">
-            -<strong>Giá thuê xe 4 chỗ theo ngày TPHCM.</strong>
-            <p>Giá thuê xe 4 chỗ theo ngày tại TpHCM thường dao động từ 1.200.000 – 2.500.000 đồng/ ngày. Mức giá này có thể thay đổi tùy thuộc vào thời điểm bạn thuê xe, thời gian thuê xe và dòng xe bạn chọn.</p>
-           </section>
-              <section class="content-section">
-                <strong>- Giá thuê xe 4 chỗ theo giờ TPHCM.</strong>
-                <p>Giá thuê xe 4 chỗ theo giờ tại TpHCM thường dao động từ 200.000 – 500.000 đồng/ giờ. Mức giá này có thể thay đổi tùy thuộc vào thời điểm bạn thuê xe, thời gian thuê xe và dòng xe bạn chọn.</p>
-            </section>
-            
-           <h1 >Chúng tôi cam kết đội ngũ nhân viên phục vụ 24/24</h1>
-           <section class="content-section">
-                <p>
-                    <strong>- Đội ngũ nhân viên : </strong>
-                    chúng tôi hổ trợ và giải đáp thắc mắc của khách hàng xuyên suốt 24/7. Được đào tạo chuyên nghiệp mang đến sự hài lòng tốt nhất khi khách hàng sử dụng dịch vụ thuê xe bên chúng tôi.
-                </p>
-                <p>
-                    <strong>- Đội ngũ tài xế : </strong>
-                    Chúng tôi cam kết đội ngũ tài xế phục vụ tận tình, chu đáo, chuyên nghiệp và có nhiều năm kinh nghiệm trong nghề. Đảm bảo an toàn cho khách hàng trong suốt hành trình.
-                </p>
-                <p>
-                    Nếu quý khách không hài lòng về lái xe hoặc góp ý về thái độ phục vụ có thể liên hệ với bộ phận CSKH 24/24 để chúng tôi có cơ hội phục vụ quý khách 1 cách tốt nhất.
-                </p>
-            </section>
-            <h2 style="text-decoration: underline;">Xin quý khách lưu ý :</h2>   
-            <div class="content-note">
-            <ul>
-                <li>Giá thuê xe du lịch tại Tp.HCM bên trên đã bao gồm: xăng dầu, phí cầu đường / cao tốc,  lương tài xế lái xe .. </li>
-                <li>Giá trên Không bao gồm Thuế VAT</li>
-                <li>Giá chưa bao gồm: Ăn nghỉ của lái xe nếu đi qua đêm. (300k/đêm)</li>
-                <li>Phí giữ xe ở các địa điểm du lịch, sân bay, khách sạn và tiền tip cho tài xế (nếu có) </li>
-            </ul>
-           </div>
-          
-        </div>
-    </div>
-    <footer class="content-footer">
-
-    </footer>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true
+        });
+    </script>
+    <script src="../public/js/code.js"></script>
 </body>
 </html>

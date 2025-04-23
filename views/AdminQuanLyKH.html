@@ -1,80 +1,280 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Quản lý khách hàng - TKĐK Admin</title>
     <link rel="stylesheet" href="../public/css/stylesAdmin.css">
-    <style>
-        
-    
-
-
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="header">
         <div class="header-inner">
             <div class="logo-header">
-                <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+                <img src="../public/image/AutomotiveCar.png" alt="TKĐK Admin">
             </div>
-            <div class="menu-header">
-                <ul class="menu">
-                    <li class="menu-item"><a href="AdminTrangChu.html">Thống Kê</a></li>
-                    <li class="menu-item"><a href="AdminQuanLyKH.html">Quản Lý Khách Hàng</a></li>
-                    <li class="menu-item"><a href="AdminQLXe.html">Quản Lý Xe</a></li>
-                    <li class="menu-item"><a href="AdminQuanLyNguoiDung.html">Quản Lý Người Dùng</a></li>
-                    <li class="menu-item"><a href="LienHe.html">Quản Lý Giao Dịch</a></li>
-                    <li class="menu-item"><a href="LienHe.html">Quản Lý Voucher</a></li>
-                    <li class="menu-item"><a href="#">Đăng Nhập</a></li>
-                </ul>
+            <ul class="menu">
+                <li><a href="AdminTrangChu.html"><i class="fas fa-chart-line"></i> Thống Kê</a></li>
+                <li><a href="AdminQuanLyKH.html" class="active"><i class="fas fa-users"></i> Quản Lý Khách Hàng</a></li>
+                <li><a href="AdminQLXe.html"><i class="fas fa-car"></i> Quản Lý Xe</a></li>
+                <li><a href="AdminQuanLyNguoiDung.html"><i class="fas fa-user-cog"></i> Quản Lý Người Dùng</a></li>
+                <li><a href="AdminGiaoDich.html"><i class="fas fa-exchange-alt"></i> Quản Lý Giao Dịch</a></li>
+                <li><a href="AdminVoucher.html"><i class="fas fa-ticket-alt"></i> Quản Lý Voucher</a></li>
+                <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="rental-container">
+        <div class="header1">
+            <h2>Danh sách thuê xe</h2>
+            <div class="search-add">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Tìm kiếm khách hàng..." id="searchInput">
+                </div>
+                <button class="btn-add" id="exportBtn">
+                    <i class="fas fa-download"></i>
+                    Xuất Excel
+                </button>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-item active" data-status="all">Tất cả</button>
+            <button class="filter-item" data-status="renting">Đang thuê</button>
+            <button class="filter-item" data-status="returned">Đã trả</button>
+            <button class="filter-item" data-status="cancelled">Đã hủy</button>
+        </div>
+
+        <div class="rental-stats">
+            <div class="stat-card">
+                <i class="fas fa-car"></i>
+                <div class="stat-info">
+                    <h4>Tổng đơn thuê</h4>
+                    <p>7</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-info">
+                    <h4>Đang thuê</h4>
+                    <p>1</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-ban"></i>
+                <div class="stat-info">
+                    <h4>Đã hủy</h4>
+                    <p>4</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-exchange-alt"></i>
+                <div class="stat-info">
+                    <h4>Đổi trả</h4>
+                    <p>2</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="rental-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Khách hàng</th>
+                        <th>Ngày thuê</th>
+                        <th>Thời gian</th>
+                        <th>Xe</th>
+                        <th>Số lượng</th>
+                        <th>Voucher</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="customer-info">
+                                <img src="https://ui-avatars.com/api/?name=Minh+Nhự&background=2563eb&color=fff" alt="Avatar" class="avatar">
+                                <div>
+                                    <p class="customer-name">Minh Nhự</p>
+                                    <small class="customer-id">KH001</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>25/04/2022</td>
+                        <td>1 ngày</td>
+                        <td>Vinfast</td>
+                        <td>1</td>
+                        <td>-</td>
+                        <td class="price">10,000,000đ</td>
+                        <td><span class="status-badge cancelled">Đã hủy</span></td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="btn-action" title="Xem chi tiết">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Other rows with similar structure -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Chi tiết đơn thuê xe</h3>
+                <button class="btn-close">&times;</button>
+            </div>
+            <div class="order-details">
+                <div class="detail-section">
+                    <h4>Thông tin khách hàng</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>Họ tên:</label>
+                            <p>Minh Nhự</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Số điện thoại:</label>
+                            <p>0123456789</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Email:</label>
+                            <p>minhnhu@example.com</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>CMND/CCCD:</label>
+                            <p>123456789012</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4>Thông tin thuê xe</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>Xe thuê:</label>
+                            <p>Vinfast</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Ngày bắt đầu:</label>
+                            <p>25/04/2022</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Ngày kết thúc:</label>
+                            <p>26/04/2022</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Số lượng:</label>
+                            <p>1 xe</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Voucher:</label>
+                            <p>Không có</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Tổng tiền:</label>
+                            <p class="price">10,000,000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4>Trạng thái đơn hàng</h4>
+                    <div class="status-timeline">
+                        <div class="timeline-item active">
+                            <div class="timeline-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h5>Đặt xe</h5>
+                                <p>25/04/2022 08:30</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item active">
+                            <div class="timeline-icon">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h5>Hủy đơn</h5>
+                                <p>25/04/2022 10:15</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Đóng</button>
             </div>
         </div>
     </div>
 
-    <!-- Content goes here -->
-    <div class="rental-container">
-        <h2>Danh sách thuê xe</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>STT</th>
-              <th>Người dùng</th>
-              <th>Ngày thuê</th>
-              <th>Số ngày thuê</th>
-              <th>Tên xe</th>
-              <th>Số lượng xe</th>
-              <th>Mã voucher</th>
-              <th>Tổng tiền</th>
-              <th>Trạng thái</th>
-              <th>Thao tác</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td><td>Minh Nhự</td><td>2022-04-25</td><td>1</td><td>Vinfast</td><td>1</td><td></td><td>10,000,000 VND</td><td class="done">Đã hủy</td><td></td>
-            </tr>
-            <tr>
-              <td>2</td><td>Minh Nhự</td><td>2022-04-30</td><td>12</td><td>Vinfast</td><td>1</td><td></td><td>100,000,000 VND</td><td class="done">Đã hủy</td><td></td>
-            </tr>
-            <tr>
-              <td>3</td><td>Minh Nhự</td><td>2022-04-25</td><td>2</td><td>Vinfast</td><td>1</td><td>D101</td><td>180,000,000 VND</td><td class="done">Đã hủy</td><td></td>
-            </tr>
-            <tr>
-              <td>4</td><td>Minh Nhự</td><td>2022-04-26</td><td>2</td><td>Exceter V1</td><td>1</td><td>TESTA</td><td>4,000,000 VND</td><td class="reject">Đổi trả</td><td></td>
-            </tr>
-            <tr>
-              <td>5</td><td>Minh Nhự</td><td>2022-04-28</td><td>2</td><td>Exceter V1</td><td>3</td><td>D101</td><td>16,200,000 VND</td><td class="reject">Đổi trả</td><td></td>
-            </tr>
-            <tr>
-              <td>6</td><td>Minh Nhự</td><td>2022-04-30</td><td>1</td><td>Exceter V1</td><td>1</td><td></td><td>10,000,000 VND</td><td class="done">Đã hủy</td><td></td>
-            </tr>
-            <tr>
-              <td>7</td><td>Admin</td><td>2023-12-13</td><td>6</td><td>Vinfast</td><td>1</td><td></td><td>600,000,000 VND</td><td class="success">Đang thuê</td>
-              <td><button class="btn-edit">Cập nhật</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <script>
+        // Handle active menu item
+        document.querySelectorAll('.menu a').forEach(link => {
+            if (link.getAttribute('href') === location.pathname.split('/').pop()) {
+                link.classList.add('active');
+            }
+        });
+
+        // Filter handling
+        document.querySelectorAll('.filter-item').forEach(filter => {
+            filter.addEventListener('click', () => {
+                document.querySelector('.filter-item.active').classList.remove('active');
+                filter.classList.add('active');
+                // Implement filter logic here
+            });
+        });
+
+        // Modal handling
+        const modal = document.getElementById('orderModal');
+        const closeBtn = document.querySelector('.btn-close');
+
+        document.querySelectorAll('.btn-action').forEach(btn => {
+            btn.addEventListener('click', () => {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const customerName = row.querySelector('.customer-name').textContent.toLowerCase();
+                const customerId = row.querySelector('.customer-id').textContent.toLowerCase();
+                
+                if (customerName.includes(searchTerm) || customerId.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Export functionality
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            alert('Đang xuất dữ liệu...');
+            // Implement export logic here
+        });
+    </script>
 </body>
 </html>

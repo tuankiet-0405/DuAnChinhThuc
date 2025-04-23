@@ -4,105 +4,286 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Chính sách bảo mật</title>
+    <style>
+        .privacy-container {
+            max-width: 1200px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+        }
+
+        .privacy-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .privacy-header h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .privacy-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .privacy-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .privacy-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .privacy-section h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-section p {
+            color: #4b5563;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .password-change-section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .password-change-section h2 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .password-input input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            padding-right: 2.5rem;
+        }
+
+        .password-input input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .password-input i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .password-input i:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-change-password {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-change-password:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .btn-change-password i {
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .privacy-header h1 {
+                font-size: 2rem;
+            }
+
+            .privacy-content {
+                padding: 1.5rem;
+            }
+
+            .password-change-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="header">
         <div class="header-inner">
             <div class="logo-header">
-                <img src="/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+                <img src="/public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
             </div>
             <div class="menu-header">
                 <ul class="menu">
-                    <li class="menu-item"><a href="index.html">Trang chủ</a></li>
-                    <li class="menu-item"><a href="#gioithieu">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="/public/index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="/public/index.html#gioithieu">Giới thiệu</a></li>
                     <li class="menu-item"><a href="services.html">Dịch vụ</a>
                         <ul class="sub-menu">
-                            <li><a href="">Thuê xe 4 chỗ</a></li>
-                            <li><a href="">Thuê xe 7 chỗ</a></li>
+                            <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
                             <li><a href="">Thuê xe 16 chỗ</a></li>
                             <li><a href="">Thuê xe 29 chỗ</a></li>
                         </ul>
                     </li>
-                    <li class="menu-item"><a href="contact.html">Liên hệ</a></li>
+                    <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
                 </ul>
             </div>
             <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
-                <a href="#" id="openLogin" class="btn btn-login">Đăng nhập</a>
+                <a href="login.html" id="openLogin" class="btn btn-login">Đăng nhập</a>
             </div>
         </div>
     </div>
-    <div id="loginModal" class="modal">
-        <div class="modal-content"> 
-            <span class="close">&times;</span>
-            <h2>Đăng nhập</h2>
-            <form>
-                <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required>
-                <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
-                <button type="submit" class="login-btn">Đăng nhập</button>
-                <p><a href="#d" style="color: green;">Quên mật khẩu?</a></p>
-                <p>Bạn chưa là thành viên? <a href="#" style="color: green;">Đăng ký ngay</a></p>
-                <div class="social-login">
-                    <button class="social-btn facebook">Facebook</button>
-                    <button class="social-btn google">Google</button>
-                </div>
-            </form>
+
+    <div class="privacy-container">
+        <div class="privacy-header">
+            <h1>Chính sách bảo mật</h1>
+            <p><i class="fas fa-shield-alt"></i> Bảo vệ thông tin của bạn là ưu tiên hàng đầu của chúng tôi</p>
         </div>
-    </div>
-    <div class="modal" id="registerModal">
-        <div class="form-register">
-            <span class="close">&times;</span>
-            <h2>Đăng ký</h2>
-            <form>
-                <div class="phone">
-                    <label for="phone">Số điện thoại:</label>
-                    <input type="number" id="phone" name="phone" required>
-                </div>
-                <div class="name">
-                    <label for="name">Họ và tên:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="password">
-                    <label for="password">Mật khẩu:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <div class="Repass">
-                    <label for="Repass">Nhập lại mật khẩu:</label>
-                    <input type="password" id="Repass" name="Repass" required>
-                </div>
-                <div class="ref">
-                    <label for="ref">Người giới thiệu:</label>
-                    <input type="text" id="ref" name="ref">
-                </div>
-                <button type="button" class="btn-register">Đăng ký</button>
-            </form>
-            <p>Bạn đã có tài khoản? <a href="#" style="color: #ff0000;">Đăng nhập ngay</a></p>
-            <div class="social-login">
-                <button class="social-btn facebook">Facebook</button>
-                <button class="social-btn google">Google</button>
+
+        <div class="privacy-content">
+            <div class="privacy-section">
+                <h2><i class="fas fa-user-shield"></i> Cam kết bảo mật</h2>
+                <p>Công ty TKDK cam kết bảo mật tuyệt đối thông tin khách hàng theo chính sách bảo mật của chúng tôi.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h2><i class="fas fa-info-circle"></i> Mục đích và phạm vi thu thập thông tin</h2>
+                <p>Thông tin cá nhân mà Công ty thu thập bao gồm:</p>
+                <ul class="privacy-list">
+                    <li><i class="fas fa-check"></i> Họ tên</li>
+                    <li><i class="fas fa-check"></i> Số điện thoại</li>
+                    <li><i class="fas fa-check"></i> Địa chỉ email</li>
+                    <li><i class="fas fa-check"></i> Địa chỉ giao hàng</li>
+                    <li><i class="fas fa-check"></i> Thông tin thanh toán (nếu có)</li>
+                </ul>
+                <p>Thông tin của bạn được sử dụng cho các mục đích:</p>
+                <ul class="privacy-list">
+                    <li><i class="fas fa-angle-right"></i> Cung cấp dịch vụ cho bạn</li>
+                    <li><i class="fas fa-angle-right"></i> Liên lạc về dịch vụ đã đăng ký</li>
+                    <li><i class="fas fa-angle-right"></i> Gửi thông tin khuyến mãi và ưu đãi</li>
+                    <li><i class="fas fa-angle-right"></i> Cải thiện chất lượng dịch vụ</li>
+                    <li><i class="fas fa-angle-right"></i> Thực hiện nghĩa vụ pháp lý</li>
+                </ul>
+            </div>
+
+            <div class="password-change-section">
+                <h2>Đổi mật khẩu</h2>
+                <form id="passwordChangeForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Mật khẩu hiện tại</label>
+                        <div class="password-input">
+                            <input type="password" id="currentPassword" name="currentPassword" required>
+                            <i class="fas fa-eye toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">Mật khẩu mới</label>
+                        <div class="password-input">
+                            <input type="password" id="newPassword" name="newPassword" required>
+                            <i class="fas fa-eye toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Xác nhận mật khẩu mới</label>
+                        <div class="password-input">
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                            <i class="fas fa-eye toggle-password"></i>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-change-password">
+                        <i class="fas fa-key"></i>
+                        Đổi mật khẩu
+                    </button>
+                </form>
             </div>
         </div>
     </div>
-    <div class="content1">
-        <div class="content-header">
-            <section class="content-header-inner">
-                <strong style="color: red;">Công ty TKDK cam kết bảo mật thông tin khách hàng.</strong>
-                <p>
-                    <strong>1. Mục đích và phạm vi thu nhập thông tin</strong>
-                    <p>Thông tin cá nhân mà Công ty thu thập bao gồm: Họ tên, số điện thoại, địa chỉ email, địa chỉ giao hàng, thông tin thanh toán (nếu có).</p>
-                    <p>Thông tin cá nhân của bạn sẽ được sử dụng cho các mục đích sau:</p>
-                    <p>- Để cung cấp dịch vụ cho bạn.</p>
-                    <p>- Để liên lạc với bạn về các dịch vụ mà bạn đã đăng ký.</p>
-                    <p>- Để gửi thông tin khuyến mãi, ưu đãi và các thông tin khác liên quan đến dịch vụ của chúng tôi.</p>
-                    <p>- Để cải thiện chất lượng dịch vụ và trải nghiệm của bạn.</p>
-                    <p>- Để thực hiện các nghĩa vụ pháp lý của chúng tôi.</p>  
-                    <p>Khách hàng có quyền từ chối hoặc không cung cấp đầy đủ các thông tin được yêu cầu khi cần thiết. Trong trường hợp đó, phía chúng tôi có thể sẽ không cung cấp cho Khách hàng những dịch vụ đầy đủ và chất lượng vì sự thiếu hụt thông tin.</p>
-                </p>
-            </section>
 
+    <script>
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        });
 
-        </div>
-
-    </div>
+        // Handle password change form
+        document.getElementById('passwordChangeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add your password change logic here
+            alert('Chức năng đổi mật khẩu sẽ được cập nhật sớm!');
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký xe - TKĐK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../public/css/styles.css">
+    <style>
+        .register-container {
+            margin-top: 100px;
+            background: #f8f9fa;
+            min-height: calc(100vh - 100px);
+            padding: 2rem 0;
+        }
+
+        .m-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .back-button:hover {
+            color: #10b981;
+        }
+
+        .register-header {
+            margin-bottom: 2rem;
+        }
+
+        .register-header h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-header p {
+            color: #6b7280;
+            font-size: 1.125rem;
+        }
+
+        .register-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .register-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-card:hover {
+            border-color: #10b981;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .register-card.selected {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+
+        .register-card .icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem;
+            background: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .register-card:hover .icon {
+            background: #10b981;
+            color: white;
+        }
+
+        .register-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .register-card p {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .register-card .features {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .feature-item i {
+            color: #10b981;
+        }
+
+        .btn-register {
+            background: #10b981;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-register:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .steps-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .steps-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .steps-title h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .steps-title p {
+            color: #6b7280;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .step-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-item .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-item .step-content {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            height: 100%;
+        }
+
+        .step-item h4 {
+            color: #1f2937;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-item p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .step-connector {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .register-options {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-connector {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+            </div>
+            <div class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="../public/index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="../public/index.html">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="../services.html">Dịch vụ</a>
+                        <ul class="sub-menu">
+                            <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="#">Thuê xe 16 chỗ</a></li>
+                            <li><a href="#">Thuê xe 29 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
+                <a href="login.html" id="openLogin" class="btn btn-login">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="register-container">
+        <div class="m-container">
+            <!-- Back Button -->
+            <a href="mycars.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Quay lại</span>
+            </a>
+
+            <!-- Register Header -->
+            <div class="register-header">
+                <h1>Đăng ký xe của bạn</h1>
+                <p>Chọn hình thức cho thuê phù hợp với bạn</p>
+            </div>
+
+            <!-- Register Options -->
+            <div class="register-options">
+                <!-- Self-drive Option -->
+                <div class="register-card">
+                    <div class="icon">
+                        <i class="fas fa-car fa-2x"></i>
+                    </div>
+                    <h3>Cho thuê xe tự lái</h3>
+                    <p>Cho thuê xe tự lái, khách hàng tự điều khiển phương tiện</p>
+                    <div class="features">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Tự do quản lý lịch xe</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Thu nhập ổn định</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Bảo hiểm toàn diện</span>
+                        </div>
+                    </div>
+                    <a href="carregister/selfdrive.html" class="btn-register">
+                        <span>Đăng ký ngay</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- With Driver Option -->
+                <div class="register-card">
+                    <div class="icon">
+                        <i class="fas fa-user-tie fa-2x"></i>
+                    </div>
+                    <h3>Cho thuê xe có tài xế</h3>
+                    <p>Cho thuê xe kèm tài xế, phù hợp với các chuyến đi xa</p>
+                    <div class="features">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Tài xế chuyên nghiệp</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>An toàn tối đa</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Doanh thu cao hơn</span>
+                        </div>
+                    </div>
+                    <a href="carregister/withdriver.html" class="btn-register">
+                        <span>Đăng ký ngay</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Steps Section -->
+            <div class="steps-container">
+                <div class="steps-title">
+                    <h2>Quy trình đăng ký đơn giản</h2>
+                    <p>Chỉ 4 bước đơn giản để bắt đầu cho thuê xe</p>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-connector"></div>
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Điền thông tin xe</h4>
+                            <p>Cung cấp thông tin cơ bản về xe của bạn</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Tải hình ảnh xe</h4>
+                            <p>Upload hình ảnh chi tiết của xe</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Xét duyệt</h4>
+                            <p>TK-DK sẽ xem xét và phê duyệt xe của bạn</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Bắt đầu cho thuê</h4>
+                            <p>Xe của bạn sẵn sàng cho thuê</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Card selection animation
+        const cards = document.querySelectorAll('.register-card');
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                cards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+            });
+        });
+
+        // Smooth scroll for steps
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Card hover effect
+        const cardsHover = document.querySelectorAll('.register-card');
+        cardsHover.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+                card.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.12)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xe của tôi - TKĐK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../public/css/styles.css">
+    <style>
+        .owner-car {
+            margin-top: 100px;
+            background: #f8f9fa;
+            min-height: calc(100vh - 100px);
+            padding: 2rem 0;
+        }
+
+        .m-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-add-car {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #10b981;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add-car:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #10b981;
+        }
+
+        .stat-info p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-info h5 {
+            color: #1f2937;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            text-decoration: none; /* Thêm dòng này để loại bỏ gạch chân của liên kết */
+        }
+
+        /* Đảm bảo tab active vẫn hoạt động đúng khi là một liên kết */
+        .tab.active, 
+        .tab[href]:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        .tab:hover:not(.active):not([href]) {
+            background: #f3f4f6;
+            color: #10b981;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .status-filter {
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.875rem;
+            color: #374151;
+            cursor: pointer;
+            min-width: 200px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-state img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+        }
+
+        .empty-state h3 {
+            color: #374151;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #10b981;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .status-filter {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="/public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+            </div>
+            <div class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="/public/index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="/public/index.html">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="/services.html">Dịch vụ</a>
+                        <ul class="sub-menu">
+                            <li><a href="/views/Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="/views/Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="">Thuê xe 16 chỗ</a></li>
+                            <li><a href="">Thuê xe 29 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="/views/LienHe.html">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
+                <a href="login.html" id="openLogin" class="btn btn-login">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+    <div class="owner-car">
+        <div class="m-container">
+            <!-- Summary Section -->
+            <div class="mycar-main">
+                <div class="flex-between" style="margin-bottom: 1.5rem;">
+                    <h4>Xe của tôi</h4>
+                    <a href="carregistermode.html" class="btn-add-car">
+                        <i class="fas fa-plus"></i>
+                        Đăng ký xe mới
+                    </a>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p>Tổng số xe</p>
+                            <h5>0</h5>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p>Đang hoạt động</p>
+                            <h5>0</h5>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p>Chờ duyệt</p>
+                            <h5>0</h5>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p>Tổng doanh thu</p>
+                            <h5>0đ</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="tabs-container">
+                <div class="tab active" data-tab="cars">
+                    <i class="fas fa-car"></i>
+                    Danh sách xe
+                </div>
+                <a href="mywallet.html" class="tab" data-tab="wallet">
+                    <i class="fas fa-wallet"></i>
+                    Ví của tôi
+                </a>
+                <a href="carregistermode.html" class="tab" data-tab="wallet">
+                    <i class="fas fa-wallet"></i>
+                    Đăng ký xe
+                </a>
+            </div>
+
+            <!-- Main Content -->
+            <div class="car-container">
+                <!-- Filters -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <div class="custom-radio-selected">
+                            <input type="radio" id="self-drive" name="car-type" value="self-drive" checked>
+                            <label for="self-drive">
+                                <i class="fas fa-car"></i>
+                                Xe tự lái
+                            </label>
+                        </div>
+                        <div class="custom-radio-selected">
+                            <input type="radio" id="with-driver" name="car-type" value="with-driver">
+                            <label for="with-driver">
+                                <i class="fas fa-user-tie"></i>
+                                Xe có tài xế
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Tìm kiếm xe...">
+                        </div>
+                        <select class="status-filter">
+                            <option value="all">Tất cả trạng thái</option>
+                            <option value="active">Đang hoạt động</option>
+                            <option value="pending">Đang chờ duyệt</option>
+                            <option value="rejected">Đã bị từ chối</option>
+                            <option value="paused">Đang tạm ngưng</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Car List -->
+                <div class="car-grid">
+                    <!-- Empty State -->
+                    <div class="empty-state">
+                        <img src="../public/image/empty-register-car.b13d058f.svg" alt="No cars">
+                        <h3>Chưa có xe nào</h3>
+                        <p>Bạn chưa đăng ký xe nào. Hãy bắt đầu bằng cách đăng ký xe đầu tiên của bạn!</p>
+                        <a href="carregistermode.html" class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Đăng ký xe ngay
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Radio button handling
+        const radioButtons = document.querySelectorAll('input[name="car-type"]');
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', () => {
+                // Handle car type filter change
+                console.log('Selected car type:', radio.value);
+            });
+        });
+
+        // Status filter handling
+        const statusFilter = document.querySelector('.status-filter');
+        statusFilter.addEventListener('change', (e) => {
+            // Handle status filter change
+            console.log('Selected status:', e.target.value);
+        });
+
+        // Search handling
+        const searchInput = document.querySelector('.search-box input');
+        let searchTimeout;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                // Handle search
+                console.log('Searching for:', e.target.value);
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

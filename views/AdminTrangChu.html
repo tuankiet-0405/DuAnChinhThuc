@@ -1,96 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Header Menu</title>
+  <title>Dashboard - TKĐK Admin</title>
   <link rel="stylesheet" href="../public/css/stylesAdmin.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="header">
     <div class="header-inner">
       <div class="logo-header">
-        <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" />
+        <img src="../public/image/AutomotiveCar.png" alt="TKĐK Admin" />
       </div>
       <ul class="menu">
-        <li><a href="AdminTrangChu.html">Thống Kê</a></li>
-        <li><a href="AdminQuanLyKH.html">Quản Lý Khách Hàng</a></li>
-        <li><a href="AdminQLXe.html">Quản Lý Xe</a></li>
-        <li><a href="AdminQuanLyNguoiDung.html">Quản Lý Người Dùng</a></li>
-        <li><a href="LienHe.html">Quản Lý Giao Dịch</a></li>
-        <li><a href="LienHe.html">Quản Lý Voucher</a></li>
-        <li><a href="LienHe.html">Đăng Nhập</a></li>
+        <li><a href="AdminTrangChu.html" class="active"><i class="fas fa-chart-line"></i> Thống Kê</a></li>
+        <li><a href="AdminQuanLyKH.html"><i class="fas fa-users"></i> Quản Lý Khách Hàng</a></li>
+        <li><a href="AdminQLXe.html"><i class="fas fa-car"></i> Quản Lý Xe</a></li>
+        <li><a href="AdminQuanLyNguoiDung.html"><i class="fas fa-user-cog"></i> Quản Lý Người Dùng</a></li>
+        <li><a href="AdminGiaoDich.html"><i class="fas fa-exchange-alt"></i> Quản Lý Giao Dịch</a></li>
+        <li><a href="AdminVoucher.html"><i class="fas fa-ticket-alt"></i> Quản Lý Voucher</a></li>
+        <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a></li>
       </ul>
     </div>
   </div>
-  <!-- Dashboard Section -->
-<div class="dashboard">
-    <div class="card">
-      <h3>KHÁCH HÀNG</h3>
-      <p class="red">2 kh <span>👥</span></p>
+
+  <div class="dashboard">
+    <div class="card red">
+      <h3>Khách Hàng</h3>
+      <p>2 <span>👥</span></p>
+      <div class="card-trend up">
+        <i class="fas fa-arrow-up"></i>
+        <span>+5% so với tháng trước</span>
+      </div>
     </div>
-    <div class="card">
-      <h3>TỔNG XE</h3>
-      <p class="blue">7 xe <span>🚗</span></p>
+    <div class="card blue">
+      <h3>Tổng Xe</h3>
+      <p>7 <span>🚗</span></p>
+      <div class="card-trend up">
+        <i class="fas fa-arrow-up"></i>
+        <span>+2 xe mới trong tháng</span>
+      </div>
     </div>
-    <div class="card">
-      <h3>DOANH THU</h3>
-      <p class="green">68,600,000 đồng <span>💸</span></p>
+    <div class="card green">
+      <h3>Doanh Thu</h3>
+      <p>68.6M <span>💸</span></p>
+      <div class="card-trend up">
+        <i class="fas fa-arrow-up"></i>
+        <span>+12% so với tháng trước</span>
+      </div>
     </div>
   </div>
   
-  <!-- Tables Section -->
   <div class="table-area">
-    <!-- Table Left -->
     <div>
+      <div class="table-header">
+        <h4>Danh Sách Cho Thuê Xe Hôm Nay</h4>
+        <div class="table-actions">
+          <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm...">
+            <i class="fas fa-search"></i>
+          </div>
+          <button class="btn-export"><i class="fas fa-download"></i> Xuất Excel</button>
+        </div>
+      </div>
       <table>
         <thead>
-          <tr>
-            <th colspan="4">Danh sách cho thuê xe ngày 30/03/2020</th>
-          </tr>
           <tr>
             <th>STT</th>
             <th>Xe</th>
             <th>Khách hàng</th>
             <th>Thành tiền</th>
+            <th>Trạng thái</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td colspan="4" style="text-align:center; padding: 20px;">Không có dữ liệu</td>
+            <td colspan="5" class="empty-state">
+              <div>
+                <img src="../public/image/empty-register-car.b13d058f.svg" alt="No data" style="width: 150px;">
+                <p>Chưa có dữ liệu cho ngày hôm nay</p>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   
-    <!-- Table Right -->
     <div class="table-right">
-      <h4>XE CHO THUÊ NHIỀU</h4>
+      <div class="table-header">
+        <h4>Top Xe Cho Thuê Nhiều Nhất</h4>
+        <select class="time-filter">
+          <option value="week">Tuần này</option>
+          <option value="month" selected>Tháng này</option>
+          <option value="year">Năm nay</option>
+        </select>
+      </div>
       <table>
         <thead>
           <tr>
-            <th>#No</th>
+            <th>#</th>
             <th>Tên xe</th>
             <th>Số lần</th>
+            <th>Tỷ lệ</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>1</td><td>Audi A5</td><td>3 lần</td>
+            <td><div class="rank rank-1">1</div></td>
+            <td>Audi A5</td>
+            <td>3 lần</td>
+            <td>42.8%</td>
           </tr>
           <tr>
-            <td>2</td><td>Mercedes C200</td><td>2 lần</td>
+            <td><div class="rank rank-2">2</div></td>
+            <td>Mercedes C200</td>
+            <td>2 lần</td>
+            <td>28.6%</td>
           </tr>
           <tr>
-            <td>3</td><td>Thaco</td><td>1 lần</td>
+            <td><div class="rank rank-3">3</div></td>
+            <td>Thaco</td>
+            <td>1 lần</td>
+            <td>14.3%</td>
           </tr>
           <tr>
-            <td>4</td><td>Ford Transit</td><td>1 lần</td>
+            <td><div class="rank">4</div></td>
+            <td>Ford Transit</td>
+            <td>1 lần</td>
+            <td>14.3%</td>
           </tr>
         </tbody>
       </table>
     </div>
+  </div>
+
+  <script>
+    // Add active state to current menu item
+    document.querySelectorAll('.menu a').forEach(link => {
+      if (link.getAttribute('href') === location.pathname.split('/').pop()) {
+        link.classList.add('active');
+      }
+    });
+
+    // Handle logout
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      if (confirm('Bạn có chắc muốn đăng xuất?')) {
+        // Handle logout logic here
+        window.location.href = '/login.html';
+      }
+    });
+
+    // Handle table search
+    const searchInput = document.querySelector('.search-box input');
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      // Implement search logic here
+    });
+
+    // Handle time filter change
+    document.querySelector('.time-filter').addEventListener('change', (e) => {
+      const timeFrame = e.target.value;
+      // Update table data based on selected time frame
+    });
+
+    // Add export functionality
+    document.querySelector('.btn-export').addEventListener('click', () => {
+      // Implement export logic here
+      alert('Đang xuất file Excel...');
+    });
+  </script>
 </body>
 </html>
