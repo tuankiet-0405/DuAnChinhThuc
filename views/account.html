@@ -692,6 +692,19 @@
         </div>
     </div>
 
+    <footer>
+        <!-- Include the footer dynamically -->
+        <div id="footer-placeholder"></div>
+    </footer>
+    <script>
+        // Dynamically load the footer
+        fetch('/views/partials/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
+
     <script>
         // Modal handling
         const modal = document.getElementById('updateModal');

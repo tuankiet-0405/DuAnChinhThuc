@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../public/css/stylesAdmin.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="header">
@@ -27,28 +28,36 @@
   </div>
 
   <div class="dashboard">
-    <div class="card red">
-      <h3>Khách Hàng</h3>
-      <p>2 <span>👥</span></p>
-      <div class="card-trend up">
-        <i class="fas fa-arrow-up"></i>
-        <span>+5% so với tháng trước</span>
-      </div>
-    </div>
-    <div class="card blue">
-      <h3>Tổng Xe</h3>
-      <p>7 <span>🚗</span></p>
-      <div class="card-trend up">
-        <i class="fas fa-arrow-up"></i>
-        <span>+2 xe mới trong tháng</span>
-      </div>
-    </div>
-    <div class="card green">
-      <h3>Doanh Thu</h3>
-      <p>68.6M <span>💸</span></p>
+    <div class="card">
+      <h3>Doanh Thu Tháng</h3>
+      <p>68.6M <i class="fas fa-coins"></i></p>
       <div class="card-trend up">
         <i class="fas fa-arrow-up"></i>
         <span>+12% so với tháng trước</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Số Lượt Thuê</h3>
+      <p>24 <i class="fas fa-car-side"></i></p>
+      <div class="card-trend up">
+        <i class="fas fa-arrow-up"></i>
+        <span>+8 lượt so với tháng trước</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Khách Hàng Mới</h3>
+      <p>12 <i class="fas fa-users"></i></p>
+      <div class="card-trend up">
+        <i class="fas fa-arrow-up"></i>
+        <span>+5 khách hàng tuần này</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Tỷ Lệ Hoàn Thành</h3>
+      <p>95% <i class="fas fa-check-circle"></i></p>
+      <div class="card-trend up">
+        <i class="fas fa-arrow-up"></i>
+        <span>+2% so với tháng trước</span>
       </div>
     </div>
   </div>
@@ -59,10 +68,13 @@
         <h4>Danh Sách Cho Thuê Xe Hôm Nay</h4>
         <div class="table-actions">
           <div class="search-box">
-            <input type="text" placeholder="Tìm kiếm...">
             <i class="fas fa-search"></i>
+            <input type="text" placeholder="Tìm kiếm...">
           </div>
-          <button class="btn-export"><i class="fas fa-download"></i> Xuất Excel</button>
+          <button class="btn-export">
+            <i class="fas fa-download"></i>
+            Xuất Excel
+          </button>
         </div>
       </div>
       <table>
@@ -71,24 +83,71 @@
             <th>STT</th>
             <th>Xe</th>
             <th>Khách hàng</th>
+            <th>Thời gian</th>
             <th>Thành tiền</th>
             <th>Trạng thái</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td colspan="5" class="empty-state">
-              <div>
-                <img src="../public/image/empty-register-car.b13d058f.svg" alt="No data" style="width: 150px;">
-                <p>Chưa có dữ liệu cho ngày hôm nay</p>
+            <td>1</td>
+            <td>
+              <div class="car-info">
+                <img src="https://i.imgur.com/qbT8JmH.jpg" alt="Mercedes" class="car-img">
+                <span>Mercedes C200</span>
               </div>
             </td>
+            <td>
+              <div class="customer-info">
+                <img src="https://ui-avatars.com/api/?name=Minh+Nhự&background=4f46e5&color=fff" alt="Avatar" class="avatar">
+                <div>
+                  <p class="customer-name">Minh Nhự</p>
+                  <small class="customer-id">KH001</small>
+                </div>
+              </div>
+            </td>
+            <td>08:00 - 17:00</td>
+            <td class="price">6,200,000đ</td>
+            <td><span class="status-badge completed">Đã hoàn thành</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>
+              <div class="car-info">
+                <img src="https://i.imgur.com/3lGGgzr.jpg" alt="Audi" class="car-img">
+                <span>Audi A5</span>
+              </div>
+            </td>
+            <td>
+              <div class="customer-info">
+                <img src="https://ui-avatars.com/api/?name=Văn+An&background=4f46e5&color=fff" alt="Avatar" class="avatar">
+                <div>
+                  <p class="customer-name">Văn An</p>
+                  <small class="customer-id">KH002</small>
+                </div>
+              </div>
+            </td>
+            <td>09:30 - 16:30</td>
+            <td class="price">5,800,000đ</td>
+            <td><span class="status-badge pending">Đang thuê</span></td>
           </tr>
         </tbody>
       </table>
     </div>
   
     <div class="table-right">
+      <div class="table-header">
+        <h4>Thống Kê Doanh Thu</h4>
+        <select class="time-filter" id="revenueTimeFilter">
+          <option value="week">Tuần này</option>
+          <option value="month" selected>Tháng này</option>
+          <option value="year">Năm nay</option>
+        </select>
+      </div>
+      <div class="chart-container" style="position: relative; height: 300px; margin-bottom: 2rem;">
+        <canvas id="revenueChart"></canvas>
+      </div>
+
       <div class="table-header">
         <h4>Top Xe Cho Thuê Nhiều Nhất</h4>
         <select class="time-filter">
@@ -109,26 +168,26 @@
         <tbody>
           <tr>
             <td><div class="rank rank-1">1</div></td>
-            <td>Audi A5</td>
-            <td>3 lần</td>
+            <td>Mercedes C200</td>
+            <td>8 lần</td>
             <td>42.8%</td>
           </tr>
           <tr>
             <td><div class="rank rank-2">2</div></td>
-            <td>Mercedes C200</td>
-            <td>2 lần</td>
+            <td>Audi A5</td>
+            <td>6 lần</td>
             <td>28.6%</td>
           </tr>
           <tr>
             <td><div class="rank rank-3">3</div></td>
-            <td>Thaco</td>
-            <td>1 lần</td>
+            <td>BMW 530i</td>
+            <td>4 lần</td>
             <td>14.3%</td>
           </tr>
           <tr>
             <td><div class="rank">4</div></td>
-            <td>Ford Transit</td>
-            <td>1 lần</td>
+            <td>Vinfast VF8</td>
+            <td>2 lần</td>
             <td>14.3%</td>
           </tr>
         </tbody>
@@ -137,7 +196,47 @@
   </div>
 
   <script>
-    // Add active state to current menu item
+    // Revenue Chart
+    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(revenueCtx, {
+      type: 'line',
+      data: {
+        labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+        datasets: [{
+          label: 'Doanh thu (triệu đồng)',
+          data: [12, 19, 15, 17, 22, 25, 18],
+          fill: true,
+          borderColor: '#4f46e5',
+          backgroundColor: 'rgba(79, 70, 229, 0.1)',
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              display: true,
+              color: 'rgba(0, 0, 0, 0.05)'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+
+    // Handle active menu item
     document.querySelectorAll('.menu a').forEach(link => {
       if (link.getAttribute('href') === location.pathname.split('/').pop()) {
         link.classList.add('active');
@@ -148,8 +247,7 @@
     document.getElementById('logoutBtn').addEventListener('click', (e) => {
       e.preventDefault();
       if (confirm('Bạn có chắc muốn đăng xuất?')) {
-        // Handle logout logic here
-        window.location.href = '/login.html';
+        window.location.href = 'AdminLogin.html';
       }
     });
 
@@ -157,19 +255,26 @@
     const searchInput = document.querySelector('.search-box input');
     searchInput.addEventListener('input', (e) => {
       const searchTerm = e.target.value.toLowerCase();
-      // Implement search logic here
+      const rows = document.querySelectorAll('tbody tr');
+      
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+      });
     });
 
-    // Handle time filter change
-    document.querySelector('.time-filter').addEventListener('change', (e) => {
-      const timeFrame = e.target.value;
-      // Update table data based on selected time frame
+    // Handle time filter changes
+    document.querySelectorAll('.time-filter').forEach(filter => {
+      filter.addEventListener('change', (e) => {
+        const timeFrame = e.target.value;
+        // Update relevant data based on selected time frame
+      });
     });
 
-    // Add export functionality
+    // Export functionality
     document.querySelector('.btn-export').addEventListener('click', () => {
-      // Implement export logic here
-      alert('Đang xuất file Excel...');
+      alert('Đang xuất dữ liệu...');
+      // Implement export logic
     });
   </script>
 </body>

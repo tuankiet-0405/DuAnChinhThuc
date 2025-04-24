@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý voucher - TKĐK Admin</title>
+    <link rel="stylesheet" href="../public/css/stylesAdmin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="../public/image/AutomotiveCar.png" alt="TKĐK Admin">
+            </div>
+            <ul class="menu">
+                <li><a href="AdminTrangChu.html"><i class="fas fa-chart-line"></i> Thống Kê</a></li>
+                <li><a href="AdminQuanLyKH.html"><i class="fas fa-users"></i> Quản Lý Khách Hàng</a></li>
+                <li><a href="AdminQLXe.html"><i class="fas fa-car"></i> Quản Lý Xe</a></li>
+                <li><a href="AdminQuanLyNguoiDung.html"><i class="fas fa-user-cog"></i> Quản Lý Người Dùng</a></li>
+                <li><a href="AdminGiaoDich.html"><i class="fas fa-exchange-alt"></i> Quản Lý Giao Dịch</a></li>
+                <li><a href="AdminVoucher.html" class="active"><i class="fas fa-ticket-alt"></i> Quản Lý Voucher</a></li>
+                <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="voucher-container">
+        <div class="header1">
+            <h2>Quản lý voucher</h2>
+            <div class="search-add">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Tìm kiếm voucher..." id="searchInput">
+                </div>
+                <button class="btn-add" id="addVoucherBtn">
+                    <i class="fas fa-plus"></i>
+                    Tạo voucher mới
+                </button>
+            </div>
+        </div>
+
+        <div class="voucher-stats">
+            <div class="stat-card">
+                <i class="fas fa-ticket-alt"></i>
+                <div class="stat-info">
+                    <h4>Tổng voucher</h4>
+                    <p>24</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-info">
+                    <h4>Đang hoạt động</h4>
+                    <p>12</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-calendar"></i>
+                <div class="stat-info">
+                    <h4>Sắp hết hạn</h4>
+                    <p>5</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle"></i>
+                <div class="stat-info">
+                    <h4>Đã sử dụng</h4>
+                    <p>156</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-item active" data-status="all">Tất cả</button>
+            <button class="filter-item" data-status="active">Đang hoạt động</button>
+            <button class="filter-item" data-status="scheduled">Sắp diễn ra</button>
+            <button class="filter-item" data-status="expired">Đã hết hạn</button>
+        </div>
+
+        <div class="voucher-grid">
+            <div class="voucher-card">
+                <div class="voucher-header">
+                    <div class="voucher-type">Giảm giá trực tiếp</div>
+                    <div class="voucher-value">200,000đ</div>
+                    <div class="voucher-code" title="Click để sao chép">WELCOME200K</div>
+                </div>
+                <div class="voucher-body">
+                    <div class="voucher-info">
+                        <div class="info-item">
+                            <span class="info-label">Điều kiện:</span>
+                            <span class="info-value">Đơn tối thiểu 1,000,000đ</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Thời gian:</span>
+                            <span class="info-value">01/04 - 30/04/2025</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Số lượng:</span>
+                            <span class="info-value">100/200</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="voucher-footer">
+                    <div class="voucher-status">
+                        <span class="status-dot active"></span>
+                        <span>Đang hoạt động</span>
+                    </div>
+                    <div class="voucher-actions">
+                        <button class="btn-action btn-edit" title="Chỉnh sửa">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-action btn-delete" title="Xóa">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="voucher-card">
+                <div class="voucher-header">
+                    <div class="voucher-type">Giảm giá phần trăm</div>
+                    <div class="voucher-value">15%</div>
+                    <div class="voucher-code" title="Click để sao chép">SUMMER15</div>
+                </div>
+                <div class="voucher-body">
+                    <div class="voucher-info">
+                        <div class="info-item">
+                            <span class="info-label">Điều kiện:</span>
+                            <span class="info-value">Đơn tối thiểu 2,000,000đ</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Thời gian:</span>
+                            <span class="info-value">01/05 - 31/05/2025</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Số lượng:</span>
+                            <span class="info-value">50/50</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="voucher-footer">
+                    <div class="voucher-status">
+                        <span class="status-dot scheduled"></span>
+                        <span>Sắp diễn ra</span>
+                    </div>
+                    <div class="voucher-actions">
+                        <button class="btn-action btn-edit" title="Chỉnh sửa">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-action btn-delete" title="Xóa">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Voucher Modal -->
+    <div class="modal" id="voucherModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tạo voucher mới</h3>
+                <button class="btn-close">&times;</button>
+            </div>
+            <form id="voucherForm" class="voucher-form">
+                <div class="form-group">
+                    <label>Loại voucher</label>
+                    <div class="discount-type">
+                        <label>
+                            <input type="radio" name="discountType" value="fixed" checked>
+                            Giảm giá trực tiếp
+                        </label>
+                        <label>
+                            <input type="radio" name="discountType" value="percentage">
+                            Giảm giá phần trăm
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Mã voucher</label>
+                        <input type="text" required placeholder="Ví dụ: SUMMER2025">
+                    </div>
+                    <div class="form-group">
+                        <label>Giá trị</label>
+                        <input type="number" required placeholder="Nhập giá trị giảm">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Điều kiện áp dụng</label>
+                    <input type="number" required placeholder="Giá trị đơn hàng tối thiểu">
+                </div>
+
+                <div class="form-group">
+                    <label>Thời gian áp dụng</label>
+                    <div class="date-range">
+                        <input type="datetime-local" required>
+                        <input type="datetime-local" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Số lượng</label>
+                        <input type="number" required placeholder="Số lượng voucher">
+                    </div>
+                    <div class="form-group">
+                        <label>Giới hạn mỗi người dùng</label>
+                        <input type="number" required placeholder="Số lần sử dụng tối đa">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    <textarea rows="3" placeholder="Nhập mô tả về voucher"></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Hủy</button>
+                    <button type="submit" class="btn-add">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Handle active menu item
+        document.querySelectorAll('.menu a').forEach(link => {
+            if (link.getAttribute('href') === location.pathname.split('/').pop()) {
+                link.classList.add('active');
+            }
+        });
+
+        // Filter handling
+        document.querySelectorAll('.filter-item').forEach(filter => {
+            filter.addEventListener('click', () => {
+                document.querySelector('.filter-item.active').classList.remove('active');
+                filter.classList.add('active');
+                // Implement filter logic here
+            });
+        });
+
+        // Modal handling
+        const modal = document.getElementById('voucherModal');
+        const addBtn = document.getElementById('addVoucherBtn');
+        const closeBtn = document.querySelector('.btn-close');
+
+        function openModal() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        addBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+
+        // Copy voucher code
+        document.querySelectorAll('.voucher-code').forEach(code => {
+            code.addEventListener('click', () => {
+                navigator.clipboard.writeText(code.textContent).then(() => {
+                    const originalText = code.textContent;
+                    code.textContent = 'Đã sao chép!';
+                    setTimeout(() => {
+                        code.textContent = originalText;
+                    }, 1500);
+                });
+            });
+        });
+
+        // Handle discount type change
+        document.querySelectorAll('input[name="discountType"]').forEach(input => {
+            input.addEventListener('change', (e) => {
+                const valueInput = document.querySelector('input[placeholder="Nhập giá trị giảm"]');
+                if (e.target.value === 'percentage') {
+                    valueInput.setAttribute('max', '100');
+                    valueInput.setAttribute('placeholder', 'Nhập % giảm giá (1-100)');
+                } else {
+                    valueInput.removeAttribute('max');
+                    valueInput.setAttribute('placeholder', 'Nhập giá trị giảm');
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('voucherForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add loading state
+            const submitBtn = e.target.querySelector('[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
+
+            // Simulate API call
+            setTimeout(() => {
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Đã lưu';
+                setTimeout(() => {
+                    closeModal();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Lưu';
+                }, 1000);
+            }, 1500);
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const vouchers = document.querySelectorAll('.voucher-card');
+            
+            vouchers.forEach(voucher => {
+                const code = voucher.querySelector('.voucher-code').textContent.toLowerCase();
+                const type = voucher.querySelector('.voucher-type').textContent.toLowerCase();
+                const value = voucher.querySelector('.voucher-value').textContent.toLowerCase();
+                
+                if (code.includes(searchTerm) || type.includes(searchTerm) || value.includes(searchTerm)) {
+                    voucher.style.display = '';
+                } else {
+                    voucher.style.display = 'none';
+                }
+            });
+        });
+
+        // Confirm delete
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (confirm('Bạn có chắc muốn xóa voucher này?')) {
+                    // Implement delete logic here
+                    const card = btn.closest('.voucher-card');
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        card.remove();
+                    }, 300);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

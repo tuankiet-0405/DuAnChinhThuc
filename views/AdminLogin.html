@@ -51,9 +51,10 @@
                 </button>
             </form>
 
-            <div class="login-footer">
-                <p>&copy; 2025 Car Rental System. All rights reserved.</p>
-            </div>
+            <footer>
+                <!-- Include the footer dynamically -->
+                <div id="footer-placeholder"></div>
+            </footer>
         </div>
     </div>
 
@@ -102,6 +103,13 @@
                     errorMessage.textContent = 'Có lỗi xảy ra. Vui lòng thử lại sau.';
                 }
             });
+
+            // Dynamically load the footer
+            fetch('/views/partials/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-placeholder').innerHTML = data;
+                });
         });
     </script>
 </body>
