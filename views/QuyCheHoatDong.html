@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Quy chế hoạt động - TKĐK</title>
+    <style>
+        .rules-container {
+            max-width: 1200px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+        }
+
+        .rules-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .rules-header h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .rules-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .rules-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .rules-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .rules-section h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rules-section p {
+            color: #4b5563;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .rules-list {
+            list-style: none;
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .rules-list li {
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.5rem;
+            color: #4b5563;
+        }
+
+        .rules-list li i {
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+            color: var(--primary-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .rules-header h1 {
+                font-size: 2rem;
+            }
+
+            .rules-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+            </div>
+            <div class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="/public/index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="/public/index.html#gioithieu">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="services.html">Dịch vụ</a>
+                        <ul class="sub-menu">
+                            <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="">Thuê xe 16 chỗ</a></li>
+                            <li><a href="">Thuê xe 29 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="rules-container">
+        <div class="rules-header">
+            <h1>Quy chế hoạt động</h1>
+            <p><i class="fas fa-book"></i> Các quy định và hướng dẫn khi sử dụng dịch vụ của TKĐK</p>
+        </div>
+
+        <div class="rules-content">
+            <div class="rules-section">
+                <h2><i class="fas fa-clipboard-list"></i> Điều khoản chung</h2>
+                <p>TKĐK là nền tảng kết nối giữa chủ xe và khách hàng có nhu cầu thuê xe, hoạt động theo các quy định của pháp luật Việt Nam.</p>
+                <ul class="rules-list">
+                    <li><i class="fas fa-check"></i> Tuân thủ pháp luật Việt Nam</li>
+                    <li><i class="fas fa-check"></i> Đảm bảo tính minh bạch trong giao dịch</li>
+                    <li><i class="fas fa-check"></i> Bảo vệ quyền lợi của các bên tham gia</li>
+                </ul>
+            </div>
+
+            <div class="rules-section">
+                <h2><i class="fas fa-user-shield"></i> Quy định về đăng ký và xác thực</h2>
+                <p>Để sử dụng dịch vụ trên TKĐK, người dùng cần:</p>
+                <ul class="rules-list">
+                    <li><i class="fas fa-angle-right"></i> Cung cấp thông tin chính xác và đầy đủ</li>
+                    <li><i class="fas fa-angle-right"></i> Xác thực số điện thoại và email</li>
+                    <li><i class="fas fa-angle-right"></i> Đối với chủ xe: Cung cấp giấy tờ xe hợp lệ</li>
+                    <li><i class="fas fa-angle-right"></i> Đối với khách thuê: Cung cấp bằng lái xe phù hợp</li>
+                </ul>
+            </div>
+
+            <div class="rules-section">
+                <h2><i class="fas fa-handshake"></i> Quy trình thuê xe</h2>
+                <ul class="rules-list">
+                    <li><i class="fas fa-angle-right"></i> Đặt xe trước tối thiểu 24 giờ</li>
+                    <li><i class="fas fa-angle-right"></i> Kiểm tra xe kỹ lưỡng trước khi nhận</li>
+                    <li><i class="fas fa-angle-right"></i> Ký biên bản bàn giao xe</li>
+                    <li><i class="fas fa-angle-right"></i> Tuân thủ thời gian trả xe đã thỏa thuận</li>
+                </ul>
+            </div>
+
+            <div class="rules-section">
+                <h2><i class="fas fa-money-bill-wave"></i> Chính sách thanh toán</h2>
+                <ul class="rules-list">
+                    <li><i class="fas fa-angle-right"></i> Đặt cọc tối thiểu 30% giá trị đơn hàng</li>
+                    <li><i class="fas fa-angle-right"></i> Thanh toán đầy đủ trước khi nhận xe</li>
+                    <li><i class="fas fa-angle-right"></i> Hoàn tiền theo quy định khi hủy đơn</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Về TKĐK</h3>
+                    <p>TKĐK là nền tảng chia sẻ xe hàng đầu, kết nối khách hàng với đội xe chất lượng cao và đáng tin cậy.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Dịch vụ</h3>
+                    <ul class="footer-links">
+                        <li><a href="Xe4cho.html"><i class="fas fa-car"></i> Thuê xe 4 chỗ</a></li>
+                        <li><a href="Xe7cho.html"><i class="fas fa-car-side"></i> Thuê xe 7 chỗ</a></li>
+                        <li><a href="#"><i class="fas fa-shuttle-van"></i> Thuê xe 16 chỗ</a></li>
+                        <li><a href="#"><i class="fas fa-bus"></i> Thuê xe 29 chỗ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Chính sách</h3>
+                    <ul class="footer-links">
+                        <li><a href="Chinhsachbaomat.html">Chính sách bảo mật</a></li>
+                        <li><a href="QuyCheHoatDong.html">Quy chế hoạt động</a></li>
+                        <li><a href="GiaiQuyetKhieuNai.html">Giải quyết khiếu nại</a></li>
+                        <li><a href="DieuKhoanDichVu.html">Điều khoản dịch vụ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Liên hệ</h3>
+                    <div class="footer-contact">
+                        <div class="contact-item-footer">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Nguyễn Văn Linh, Quận 7, TP.HCM</span>
+                        </div>
+                        <div class="contact-item-footer">
+                            <i class="fas fa-phone"></i>
+                            <span>+84 123 456 789</span>
+                        </div>
+                        <div class="contact-item-footer">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@tkdk.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 TKĐK. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

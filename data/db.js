@@ -1,18 +1,14 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'khanh472004',
-  database: 'dacs_quanlyxe'
+// Tạo pool connection
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root', // Thay bằng username của bạn
+    password: '', // Thay bằng password của bạn
+    database: 'car_rental_db',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-connection.connect(err => {
-  if (err) {
-    console.error('Lỗi kết nối: ' + err.stack);
-    return;
-  }
-  console.log('✅ Kết nối MySQL thành công!');
-});
-
-module.exports = connection;
+module.exports = pool;
