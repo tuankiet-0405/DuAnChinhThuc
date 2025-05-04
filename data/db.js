@@ -1,14 +1,32 @@
 const mysql = require('mysql2/promise');
 
-// Tạo pool connection
 const pool = mysql.createPool({
     host: 'localhost',
-    user: 'root', // Thay bằng username của bạn
-    password: '', // Thay bằng password của bạn
-    database: 'car_rental_db',
+    user: 'root',
+    password: 'khanh472004',
+    database: 'ql_web',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 });
+
+// Test connection
+async function testConnection() {
+    try {
+        const connection = await pool.getConnection();
+        console.log('✅ Kết nối MySQL thành công!');
+        
+        // Test query
+        const [rows] = await connection.query('SELECT 1');
+        console.log('✅ Test query thành công!');
+        
+        connection.release();
+    } catch (err) {
+        console.error('Lỗi kết nối MySQL:', err);
+        process.exit(1);
+    }
+}
+
+testConnection();
 
 module.exports = pool;

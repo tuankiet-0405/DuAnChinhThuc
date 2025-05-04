@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Enhanced form validation and submission
-    const loginForm = document.querySelector('.sign-in-form');
+    const loginForm = document.getElementById('loginForm') || document.querySelector('.sign-in-form');
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -484,6 +484,245 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Có lỗi xảy ra khi đổi mật khẩu!');
         }
     });
+
+    // Hàm kiểm tra form
+    function validateForm(formData, type) {
+        const errors = [];
+        
+        if (type === 'register') {
+            if (!formData.ho_ten || formData.ho_ten.length < 2) {
+                errors.push('Họ tên phải có ít nhất 2 ký tự');
+            }
+            if (!formData.so_dien_thoai || !/^[0-9]{10}$/.test(formData.so_dien_thoai)) {
+                errors.push('Số điện thoại không hợp lệ');
+            }
+        }
+        
+        if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            errors.push('Email không hợp lệ');
+        }
+        if (!formData.mat_khau || formData.mat_khau.length < 6) {
+            errors.push('Mật khẩu phải có ít nhất 6 ký tự');
+        }
+        
+        return errors;
+    }
+
+    // Xử lý đăng ký
+    async function handleRegister(event) {
+        event.preventDefault();
+        
+        // Lấy dữ liệu từ form
+        const formData = {
+            ho_ten: document.getElementById('registerName').value,
+            email: document.getElementById('registerEmail').value,
+            so_dien_thoai: document.getElementById('registerPhone').value,
+            mat_khau: document.getElementById('registerPassword').value,
+            gioi_tinh: document.querySelector('input[name="gioi_tinh"]:checked')?.value
+        };
+
+        console.log('Sending registration data:', formData);
+        
+        // Validate form
+        const errors = validateForm(formData, 'register');
+        if (errors.length > 0) {
+            alert(errors.join('\n'));
+            return;
+        }
+        
+        try {
+            const response = await fetch('/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            const data = await response.json();
+            console.log('Server response:', data);
+            
+            if (response.ok) {
+                alert('Đăng ký thành công!');
+                // Chuyển đến trang đăng nhập sau khi đăng ký thành công
+                window.location.href = '/views/login.html';
+            } else {
+                alert(data.message || 'Đăng ký thất bại');
+            }
+        } catch (error) {
+            console.error('Lỗi đăng ký:', error);
+            alert('Có lỗi xảy ra, vui lòng thử lại sau');
+        }
+    }
+
+    // Remove duplicate event listeners
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        // Remove any existing listeners
+        const newRegisterForm = registerForm.cloneNode(true);
+        registerForm.parentNode.replaceChild(newRegisterForm, registerForm);
+        
+        // Add single event listener
+        newRegisterForm.addEventListener('submit', handleRegister);
+    }
+
+    // Xử lý đăng nhập
+    async function handleLogin(event) {
+        event.preventDefault();
+        
+        const formData = {
+            email: document.getElementById('loginEmail').value,
+            mat_khau: document.getElementById('loginPassword').value
+        };
+
+        // Lưu thông tin remember me
+        const rememberMe = document.getElementById('rememberMe').checked;
+        if (rememberMe) {
+            localStorage.setItem('rememberedEmail', formData.email);
+            localStorage.setItem('rememberMe', 'true');
+        }
+        
+        try {
+            const response = await fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                // Chuyển hướng ngay lập tức về trang chủ sau khi đăng nhập thành công
+                window.location.replace('/');
+            } else {
+                // Hiển thị lỗi
+                const errorElement = document.getElementById('loginEmailError');
+                if (errorElement) {
+                    errorElement.textContent = data.message || 'Đăng nhập thất bại';
+                    errorElement.style.display = 'block';
+                } else {
+                    alert(data.message || 'Đăng nhập thất bại');
+                }
+            }
+        } catch (error) {
+            console.error('Lỗi:', error);
+            alert('Có lỗi xảy ra, vui lòng thử lại sau');
+        }
+    }
+    
+    // Thêm event listener cho form đăng nhập
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+
+    // Xử lý đăng xuất
+    async function handleLogout() {
+        try {
+            const response = await fetch('/auth/logout', {
+                method: 'POST',
+            });
+            
+            if (response.ok) {
+                window.location.href = '/';
+            }
+        } catch (error) {
+            console.error('Lỗi đăng xuất:', error);
+        }
+    }
+
+    // Kiểm tra trạng thái đăng nhập và hiển thị tên người dùng
+    async function checkAuthStatus() {
+        try {
+            const response = await fetch('/auth/me');
+            const data = await response.json();
+            
+            if (response.ok) {
+                // User đã đăng nhập
+                document.querySelectorAll('.auth-required').forEach(el => {
+                    el.style.display = 'block';
+                });
+                document.querySelectorAll('.guest-only').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                // Hiển thị tên người dùng
+                const userNameElements = document.querySelectorAll('.user-name');
+                userNameElements.forEach(el => {
+                    el.textContent = data.ho_ten;
+                });
+
+                // Hiển thị menu user
+                const userInfoElement = document.querySelector('.user-info');
+                if (userInfoElement) {
+                    userInfoElement.style.display = 'flex';
+                }
+            } else {
+                // User chưa đăng nhập
+                document.querySelectorAll('.auth-required').forEach(el => {
+                    el.style.display = 'none';
+                });
+                document.querySelectorAll('.guest-only').forEach(el => {
+                    el.style.display = 'block';
+                });
+            }
+        } catch (error) {
+            console.error('Lỗi kiểm tra đăng nhập:', error);
+        }
+    }
+
+    // Thêm event listeners
+    const registerForm = document.getElementById('registerForm');
+    const logoutBtn = document.getElementById('logoutBtn');
+    
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegister);
+    }
+    
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
+    
+    // Kiểm tra trạng thái đăng nhập khi tải trang
+    checkAuthStatus();
+
+    // Xử lý hiển thị mật khẩu form đăng nhập
+    const toggleLoginPassword = document.getElementById('toggleLoginPassword');
+    const loginPassword = document.getElementById('loginPassword');
+    
+    if (toggleLoginPassword && loginPassword) {
+        toggleLoginPassword.addEventListener('click', () => {
+            const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            loginPassword.setAttribute('type', type);
+            toggleLoginPassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+    }
+
+    // Xử lý xác nhận mật khẩu form đăng ký
+    const registerPassword = document.getElementById('registerPassword');
+    const confirmPassword = document.getElementById('registerConfirmPassword');
+    const checkIcon = document.getElementById('passwordMatchIcon');
+    
+    if (registerPassword && confirmPassword && checkIcon) {
+        const validatePasswords = () => {
+            if (confirmPassword.value === '') {
+                checkIcon.style.display = 'none';
+            } else if (registerPassword.value === confirmPassword.value) {
+                checkIcon.innerHTML = '<i class="fas fa-check-circle" style="color: #2ecc71;"></i>';
+                checkIcon.style.display = 'block';
+                confirmPassword.style.borderColor = '#2ecc71';
+            } else {
+                checkIcon.innerHTML = '<i class="fas fa-times-circle" style="color: #e74c3c;"></i>';
+                checkIcon.style.display = 'block';
+                confirmPassword.style.borderColor = '#e74c3c';
+            }
+        };
+
+        registerPassword.addEventListener('input', validatePasswords);
+        confirmPassword.addEventListener('input', validatePasswords);
+    }
 });
 
 window.addEventListener('load', () => {

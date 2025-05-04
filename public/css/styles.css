@@ -143,6 +143,75 @@ main {
   background: var(--light-bg);
 }
 
+/* User menu styles */
+.user-header {
+    position: relative;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.user-info:hover {
+    background: #e9ecef;
+}
+
+.user-info i {
+    margin-right: 8px;
+    color: #495057;
+}
+
+.user-name {
+    color: #495057;
+    font-weight: 500;
+}
+
+.user-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 200px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 8px 0;
+    display: none;
+    z-index: 1000;
+}
+
+.user-info:hover .user-menu {
+    display: block;
+}
+
+.user-menu li {
+    list-style: none;
+}
+
+.user-menu li a {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    color: #495057;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.user-menu li a:hover {
+    background-color: #f8f9fa;
+}
+
+.user-menu li a i {
+    margin-right: 8px;
+    width: 20px;
+    text-align: center;
+}
+
 /* Hero section */
 .hero {
   margin-top: 80px;

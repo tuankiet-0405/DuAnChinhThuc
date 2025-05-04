@@ -36,10 +36,22 @@
                     <li class="menu-item"><a href="/views/LienHe.html"><i class="fas fa-phone"></i> Liên hệ</a></li>
                 </ul>
             </nav>
-            <div class="login-header">
+            <div class="login-header guest-only">
                 <a href="/views/login.html" class="btn btn-login">
                     <i class="fas fa-user"></i> Đăng nhập
                 </a>
+            </div>
+            <div class="user-header auth-required" style="display: none;">
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span class="user-name"></span>
+                    <ul class="user-menu">
+                        <li><a href="/views/account.html"><i class="fas fa-user-circle"></i> Tài khoản</a></li>
+                        <li><a href="/views/mycars.html"><i class="fas fa-car"></i> Xe của tôi</a></li>
+                        <li><a href="/views/mywallet.html"><i class="fas fa-wallet"></i> Ví của tôi</a></li>
+                        <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>
