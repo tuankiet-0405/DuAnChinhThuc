@@ -19,6 +19,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             min-height: 100vh;
             margin: 0;
         }
@@ -359,18 +360,120 @@
                 display: none;
             }
         }
+
+        .footer {
+            background-color: #f7fafc;
+            padding: 20px 0;
+            width: 100%;
+        }
+
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            color: #1a365d;
+            margin-bottom: 10px;
+        }
+
+        .footer-section p {
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.5;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .footer-social a {
+            color: #4a5568;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            color: #3182ce;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #3182ce;
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .contact-item-footer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer-bottom p {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .admin-login {
+            text-decoration: none;
+            color: #718096;
+            transition: color 0.3s ease;
+        }
+
+        .admin-login:hover {
+            color: #3182ce;
+        }
     </style>
 </head>
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up-container">
             <form id="registerForm">
-                <h1 style="margin-top: 10px;">Tạo tài khoản</h1>
-                <div class="social-container">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-google"></i></a>
-                </div>
-                <span>hoặc đăng ký bằng email</span>
+                <h1 style="margin-top: 2rem;">Tạo tài khoản</h1>
+            
                 <div class="form-group">
                     <input type="text" id="registerName" name="ho_ten" placeholder="Họ và tên" required />
                     <div class="error-message" id="nameError"></div>
@@ -421,7 +524,7 @@
                 <div class="form-group password-group">
                     <input type="password" id="loginPassword" name="mat_khau" placeholder="Mật khẩu" required />
                     <button type="button" class="toggle-password" onclick="togglePassword('loginPassword', this)">
-                        <i class="fas fa-eye" style="margin-bottom: 25px;"></i>
+                       
                     </button>
                     <div class="error-message" id="loginPasswordError"></div>
                 </div>
@@ -429,7 +532,7 @@
                     <input type="checkbox" id="rememberMe" name="remember">
                     <label for="rememberMe">Ghi nhớ đăng nhập</label>
                 </div>
-                <a href="#">Quên mật khẩu?</a>
+                <a href="/views/QuenMatKhau.html">Quên mật khẩu?</a>
                 <button type="submit">Đăng nhập</button>
             </form>
         </div>
@@ -449,6 +552,7 @@
         </div>
     </div>
 
+    
     <script>
         const signUpButton = document.getElementById('signUp');
         const signInButton = document.getElementById('signIn');

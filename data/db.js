@@ -16,10 +16,7 @@ async function testConnection() {
         const connection = await pool.getConnection();
         console.log('✅ Kết nối MySQL thành công!');
         
-        // Test query
-        const [rows] = await connection.query('SELECT 1');
-        console.log('✅ Test query thành công!');
-        
+     
         connection.release();
     } catch (err) {
         console.error('Lỗi kết nối MySQL:', err);

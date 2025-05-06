@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách xe cho thuê - TKĐK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../public/css/styles.css">
+    <style>
+        .car-listing {
+            margin-top: 100px;
+            padding: 2rem;
+            background: #f8f9fa;
+            min-height: calc(100vh - 100px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .filter-input {
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Cars Grid */
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .car-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .car-details {
+            padding: 1.5rem;
+        }
+
+        .car-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .car-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .car-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2563eb;
+            margin: 1rem 0;
+        }
+
+        .car-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-rent {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            color: #1f2937;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .cars-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .car-listing {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .car-actions {
+                flex-direction: column;
+            }
+
+            .btn-rent {
+                width: 100%;
+            }
+        }
+
+        /* Sort Section */
+        .sort-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .sort-dropdown {
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            min-width: 200px;
+        }
+
+        .results-count {
+            color: #6b7280;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .status-rented {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="../public/image/AutomotiveCar.png" alt="TKĐK" class="logo">
+            </div>
+            <div class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="../public/index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="../public/index.html">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="services.html">Dịch vụ</a>
+                        <ul class="sub-menu">
+                            <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="Xe16cho.html">Thuê xe 16 chỗ</a></li>
+                            <li><a href="#">Thuê xe 29 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="car-listing">
+        <div class="container">
+            <!-- Filters Section -->
+            <div class="filters-section">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="location">Địa điểm</label>
+                        <input type="text" id="location" class="filter-input" placeholder="Nhập địa điểm">
+                    </div>
+                    <div class="filter-group">
+                        <label for="carType">Loại xe</label>
+                        <select id="carType" class="filter-input">
+                            <option value="">Tất cả</option>
+                            <option value="4">Xe 4 chỗ</option>
+                            <option value="7">Xe 7 chỗ</option>
+                            <option value="16">Xe 16 chỗ</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="priceRange">Giá thuê</label>
+                        <select id="priceRange" class="filter-input">
+                            <option value="">Tất cả giá</option>
+                            <option value="0-500000">Dưới 500,000đ</option>
+                            <option value="500000-1000000">500,000đ - 1,000,000đ</option>
+                            <option value="1000000-2000000">1,000,000đ - 2,000,000đ</option>
+                            <option value="2000000+">Trên 2,000,000đ</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="transmission">Hộp số</label>
+                        <select id="transmission" class="filter-input">
+                            <option value="">Tất cả</option>
+                            <option value="auto">Tự động</option>
+                            <option value="manual">Số sàn</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sort Section -->
+            <div class="sort-section">
+                <div class="results-count">
+                    Hiển thị 1-12 trong tổng số 36 xe
+                </div>
+                <select class="sort-dropdown">
+                    <option value="price-asc">Giá: Thấp đến cao</option>
+                    <option value="price-desc">Giá: Cao đến thấp</option>
+                    <option value="rating-desc">Đánh giá cao nhất</option>
+                    <option value="newest">Mới nhất</option>
+                </select>
+            </div>
+
+            <!-- Cars Grid -->
+            <div class="cars-grid">
+                <!-- Car Card 1 -->
+                <div class="car-card">
+                    <img src="../public/image/MercedesC300.png" alt="Mercedes C300" class="car-image">
+                    <div class="car-details">
+                        <h3 class="car-title">Mercedes C300 AMG</h3>
+                        <span class="status-badge status-available">
+                            <i class="fas fa-check-circle"></i>
+                            Có sẵn
+                        </span>
+                        <div class="car-info">
+                            <div class="info-item">
+                                <i class="fas fa-car"></i>
+                                <span>4 chỗ</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Tự động</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-gas-pump"></i>
+                                <span>Xăng</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-star"></i>
+                                <span>4.8/5</span>
+                            </div>
+                        </div>
+                        <div class="car-price">2,000,000đ/ngày</div>
+                        <div class="car-actions">
+                            <a href="ShowChiTietXe.html" class="btn-rent btn-primary">Thuê ngay</a>
+                            <button class="btn-rent btn-secondary">Chi tiết</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Car Card 2 -->
+                <div class="car-card">
+                    <img src="../public/image/VINFASTvf62024.png" alt="VinFast VF6" class="car-image">
+                    <div class="car-details">
+                        <h3 class="car-title">VinFast VF6 2024</h3>
+                        <span class="status-badge status-available">
+                            <i class="fas fa-check-circle"></i>
+                            Có sẵn
+                        </span>
+                        <div class="car-info">
+                            <div class="info-item">
+                                <i class="fas fa-car"></i>
+                                <span>4 chỗ</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Tự động</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-charging-station"></i>
+                                <span>Điện</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-star"></i>
+                                <span>4.9/5</span>
+                            </div>
+                        </div>
+                        <div class="car-price">1,500,000đ/ngày</div>
+                        <div class="car-actions">
+                            <a href="ShowChiTietXe.html" class="btn-rent btn-primary">Thuê ngay</a>
+                            <button class="btn-rent btn-secondary">Chi tiết</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Car Card 3 -->
+                <div class="car-card">
+                    <img src="../public/image/Xe16Cho.png" alt="Ford Transit" class="car-image">
+                    <div class="car-details">
+                        <h3 class="car-title">Ford Transit 16 Chỗ</h3>
+                        <span class="status-badge status-rented">
+                            <i class="fas fa-clock"></i>
+                            Đã được thuê
+                        </span>
+                        <div class="car-info">
+                            <div class="info-item">
+                                <i class="fas fa-users"></i>
+                                <span>16 chỗ</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Số sàn</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-gas-pump"></i>
+                                <span>Dầu</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-star"></i>
+                                <span>4.7/5</span>
+                            </div>
+                        </div>
+                        <div class="car-price">2,500,000đ/ngày</div>
+                        <div class="car-actions">
+                            <button class="btn-rent btn-primary" disabled>Đã được thuê</button>
+                            <button class="btn-rent btn-secondary">Chi tiết</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">4</button>
+                <button class="page-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div class="contact-float">
+        <a href="https://www.facebook.com/47NDK/" class="contact-item facebook" target="_blank" rel="noopener">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://m.me/100009036720265" class="contact-item messenger" target="_blank" rel="noopener">
+            <i class="fab fa-facebook-messenger"></i>
+        </a>
+        <a href="https://zalo.me/your-number" class="contact-item zalo" target="_blank" rel="noopener">
+            <i class="fas fa-comment-dots"></i>
+        </a>
+        <a href="tel:+84397468827" class="contact-item phone" data-tooltip="0397468827">
+            <i class="fas fa-phone-alt"></i>
+        </a>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Về TKĐK</h3>
+                    <p>TKĐK là nền tảng chia sẻ xe hàng đầu, kết nối khách hàng với đội xe chất lượng cao và đáng tin cậy.</p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/47NDK/" class="social-icon" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/47ndk/" class="social-icon" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Dịch vụ</h3>
+                    <ul class="footer-links">
+                        <li><a href="/views/Xe4cho.html"><i class="fas fa-car"></i> Thuê xe 4 chỗ</a></li>
+                        <li><a href="/views/Xe7cho.html"><i class="fas fa-car-side"></i> Thuê xe 7 chỗ</a></li>
+                        <li><a href="/views/Xe16cho.html"><i class="fas fa-shuttle-van"></i> Thuê xe 16 chỗ</a></li>
+                        <li><a href="/views/carregistermode.html"><i class="fas fa-car-side"></i> Đăng ký xe</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Chính sách</h3>
+                    <ul class="footer-links">
+                        <li><a href="/views/Chinhsachbaomat.html">Chính sách bảo mật</a></li>
+                        <li><a href="/views/QuyCheHoatDong.html">Quy chế hoạt động</a></li>
+                        <li><a href="/views/GiaiQuyetKhieuNai.html">Giải quyết khiếu nại</a></li>
+                        <li><a href="/views/DieuKhoanDichVu.html">Điều khoản dịch vụ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Liên hệ</h3>
+                    <div class="footer-contact">
+                        <div class="contact-item-footer">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>HuTech</span>
+                        </div>
+                        <div class="contact-item-footer">
+                            <i class="fas fa-phone"></i>
+                            <span>0397468827</span>
+                        </div>
+                        <div class="contact-item-footer">
+                            <i class="fas fa-envelope"></i>
+                            <span>dinhkhanhvn.2004@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <a href="/views/AdminLogin.html" class="admin-login">
+                    <p>&copy; 2025 TKĐK. Tất cả quyền được bảo lưu.</p>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Filters Functionality
+        const filters = document.querySelectorAll('.filter-input');
+        filters.forEach(filter => {
+            filter.addEventListener('change', () => {
+                // TODO: Implement filter logic
+                console.log('Filter changed:', filter.id, filter.value);
+            });
+        });
+
+        // Sort Functionality
+        const sortDropdown = document.querySelector('.sort-dropdown');
+        sortDropdown.addEventListener('change', () => {
+            // TODO: Implement sort logic
+            console.log('Sort changed:', sortDropdown.value);
+        });
+
+        // Pagination Functionality
+        const pageButtons = document.querySelectorAll('.page-btn');
+        pageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                pageButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                // TODO: Implement pagination logic
+                console.log('Page changed:', button.textContent);
+            });
+        });
+
+        // Detail Button Functionality
+        const detailButtons = document.querySelectorAll('.btn-secondary');
+        detailButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const carCard = button.closest('.car-card');
+                const carTitle = carCard.querySelector('.car-title').textContent;
+                // TODO: Implement detail view logic
+                console.log('Show details for:', carTitle);
+            });
+        });
+    </script>
+</body>
+</html>
