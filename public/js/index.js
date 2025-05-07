@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const passport = require('passport');
 const session = require('express-session');
-
+const path = require('path');
 
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -63,15 +63,15 @@ app.get("/", (req, res) => {
 app.get(
     "/auth/google",passport.authenticate("google", { scope: ["profile", "email"] })
 );
-app.get("/auth/google/callback", passport.authenticate('google', { failureRedirect: "/" }),(req, res) => {
-    res.redirect("/profile")
+app.get("/auth/google/callback", passport.authenticate('google', { failureRedirect: "/views/login.html" }),(req, res) => {
+    res.redirect("/views/account.html")
  }) // Redirect to your desired route after successful authentication
 app.get("/profile", (req, res) => {
-    res.send(`Welcome {req.user.displayName}!`);
+    res.sendFile(path.join(__dirname, 'views', 'account.html'));
 });
 app.get("/logout", (req, res) => {
     req.logOut();
-    res.redirect("/");
+    res.redirect("/views/login.html");
 });
 app.listen(3000, () => { 
     console.log("Server is running on port 3000");

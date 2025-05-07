@@ -1,31 +1,26 @@
 {
+  "name": "car-rental-system",
+  "version": "1.0.0",
+  "description": "Hệ thống cho thuê xe",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "bcryptjs": "^3.0.2",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "express-rate-limit": "^7.5.0",
+    "express": "^4.21.2",
+    "express-rate-limit": "^6.11.2",
     "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.14.0",
-    "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0"
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.2.4"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "supertest": "^6.3.3"
-  },
-  "name": "ql_web",
-  "version": "1.0.0",
-  "description": "This project is a simple website built using HTML, CSS, and JavaScript. Below are the details on how to set up and run the website.",
-  "main": "app.js",
-  "scripts": {
-    "test": "jest --detectOpenHandles"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "nodemon": "^2.0.22"
+  }
 }

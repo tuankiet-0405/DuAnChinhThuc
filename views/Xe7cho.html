@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xe 7 Chỗ - TKĐK</title>
+    <link rel="stylesheet" href="/public/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css">
     <style>
         .content1 {
             margin-top: 100px;
@@ -88,24 +88,28 @@
     </style>
 </head>
 <body>
+    <!-- Header navigation -->
     <header class="header">
         <div class="header-inner">
             <div class="logo-header">
-                <img src="../public/image/AutomotiveCar.png" alt="AutomotiveCar" class="logo">
+                <a href="/public/index.html">
+                    <img src="/public/image/TK-DK.PNG" alt="Logo" class="logo">
+                </a>
             </div>
             <div class="menu-header">
                 <ul class="menu">
-                    <li class="menu-item"><a href="/public/index.html">Trang chủ</a></li>
-                    <li class="menu-item"><a href="/public/index.html">Giới thiệu</a></li>
-                    <li class="menu-item"><a href="services.html">Dịch vụ</a>
+                    <li class="menu-item"><a href="/public/index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
+                    <li class="menu-item"><a href="/public/index.html#gioithieu"><i class="fas fa-info-circle"></i> Giới thiệu</a></li>
+                    <li class="menu-item">
+                        <a href="#"><i class="fas fa-car"></i> Dịch vụ <i class="fas fa-chevron-down"></i></a>
                         <ul class="sub-menu">
                             <li><a href="/views/Xe4cho.html">Thuê xe 4 chỗ</a></li>
                             <li><a href="/views/Xe7cho.html">Thuê xe 7 chỗ</a></li>
                             <li><a href="/views/Xe16cho.html">Thuê xe 16 chỗ</a></li>
-                            <li><a href="">Thuê xe 29 chỗ</a></li>
                         </ul>
                     </li>
-                    <li class="menu-item"><a href="/views/LienHe.html">Liên hệ</a></li>
+                    <li class="menu-item"><a href="/views/DanhSachXeChoThue.html"><i class="fas fa-list"></i> Danh sách xe</a></li>
+                    <li class="menu-item"><a href="/views/LienHe.html"><i class="fas fa-phone"></i> Liên hệ</a></li>
                 </ul>
             </div>
         </div>
@@ -121,7 +125,7 @@
             </section>
 
             <div class="image-container" data-aos="fade-up">
-                <img src="https://tuanphattravel.com/wp-content/uploads/2024/09/city3.jpg" alt="Xe 7 chỗ cao cấp">
+                <img src="/public/image/limoside.jpg" alt="Car" class="car-image">
             </div>
 
             <h2 class="section-title" data-aos="fade-up">Những tiện ích xe 7 chỗ</h2>
@@ -248,6 +252,6 @@
             once: true
         });
     </script>
-    <script src="../public/js/code.js"></script>
+    <script src="/public/js/code.js"></script>
 </body>
 </html>

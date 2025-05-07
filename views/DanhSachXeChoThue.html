@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh sách xe cho thuê - TKĐK</title>
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <script src="/public/js/code.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../public/css/styles.css">
     <style>
         .car-listing {
             margin-top: 100px;
@@ -251,13 +252,13 @@
     <header class="header">
         <div class="header-inner">
             <div class="logo-header">
-                <img src="../public/image/AutomotiveCar.png" alt="TKĐK" class="logo">
+                <img src="/public/image/AutomotiveCar.png" alt="TKĐK" class="logo">
             </div>
             <div class="menu-header">
                 <ul class="menu">
-                    <li class="menu-item"><a href="../public/index.html">Trang chủ</a></li>
-                    <li class="menu-item"><a href="../public/index.html">Giới thiệu</a></li>
-                    <li class="menu-item"><a href="services.html">Dịch vụ</a>
+                    <li class="menu-item"><a href="/public/index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="/public/index.html#gioithieu">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="">Dịch vụ</a>
                         <ul class="sub-menu">
                             <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
                             <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
@@ -326,7 +327,7 @@
             <!-- Cars Grid -->
             <div class="cars-grid">
                 <!-- Car Card 1 -->
-                <div class="car-card">
+                <div class="car-card" data-car-id="1">
                     <img src="../public/image/MercedesC300.png" alt="Mercedes C300" class="car-image">
                     <div class="car-details">
                         <h3 class="car-title">Mercedes C300 AMG</h3>
@@ -354,14 +355,14 @@
                         </div>
                         <div class="car-price">2,000,000đ/ngày</div>
                         <div class="car-actions">
-                            <a href="ShowChiTietXe.html" class="btn-rent btn-primary">Thuê ngay</a>
-                            <button class="btn-rent btn-secondary">Chi tiết</button>
+                            <button class="btn-rent btn-primary" onclick="viewCarDetails(1)">Thuê ngay</button>
+                            <button class="btn-rent btn-secondary" onclick="viewCarDetails(1)">Chi tiết</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Car Card 2 -->
-                <div class="car-card">
+                <div class="car-card" data-car-id="2">
                     <img src="../public/image/VINFASTvf62024.png" alt="VinFast VF6" class="car-image">
                     <div class="car-details">
                         <h3 class="car-title">VinFast VF6 2024</h3>
@@ -389,14 +390,14 @@
                         </div>
                         <div class="car-price">1,500,000đ/ngày</div>
                         <div class="car-actions">
-                            <a href="ShowChiTietXe.html" class="btn-rent btn-primary">Thuê ngay</a>
-                            <button class="btn-rent btn-secondary">Chi tiết</button>
+                            <button class="btn-rent btn-primary" onclick="viewCarDetails(2)">Thuê ngay</button>
+                            <button class="btn-rent btn-secondary" onclick="viewCarDetails(2)">Chi tiết</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Car Card 3 -->
-                <div class="car-card">
+                <div class="car-card" data-car-id="3">
                     <img src="../public/image/Xe16Cho.png" alt="Ford Transit" class="car-image">
                     <div class="car-details">
                         <h3 class="car-title">Ford Transit 16 Chỗ</h3>
@@ -425,7 +426,7 @@
                         <div class="car-price">2,500,000đ/ngày</div>
                         <div class="car-actions">
                             <button class="btn-rent btn-primary" disabled>Đã được thuê</button>
-                            <button class="btn-rent btn-secondary">Chi tiết</button>
+                            <button class="btn-rent btn-secondary" onclick="viewCarDetails(3)">Chi tiết</button>
                         </div>
                     </div>
                 </div>
@@ -526,43 +527,361 @@
     </footer>
 
     <script>
-        // Filters Functionality
-        const filters = document.querySelectorAll('.filter-input');
-        filters.forEach(filter => {
-            filter.addEventListener('change', () => {
-                // TODO: Implement filter logic
-                console.log('Filter changed:', filter.id, filter.value);
-            });
+        // Khai báo các biến toàn cục
+        let allCars = [];
+        let currentPage = 1;
+        const carsPerPage = 9;
+        let filteredCars = [];
+
+        // Hàm khởi tạo khi trang được tải
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Lấy dữ liệu xe từ API
+            await fetchCars();
+            
+            // Thiết lập các bộ lọc
+            setupFilters();
+            
+            // Thiết lập phân trang
+            setupPagination();
         });
 
-        // Sort Functionality
-        const sortDropdown = document.querySelector('.sort-dropdown');
-        sortDropdown.addEventListener('change', () => {
-            // TODO: Implement sort logic
-            console.log('Sort changed:', sortDropdown.value);
-        });
+        // Hàm lấy dữ liệu xe từ API
+        async function fetchCars() {
+            try {
+                const response = await fetch('/api/cars');
+                if (!response.ok) {
+                    throw new Error('Không thể lấy dữ liệu xe');
+                }
+                
+                const data = await response.json();
+                
+                if (data.success && data.data.length > 0) {
+                    allCars = data.data;
+                    filteredCars = [...allCars];
+                    
+                    // Cập nhật số lượng kết quả
+                    updateResultsCount();
+                    
+                    // Hiển thị dữ liệu xe trang đầu tiên
+                    renderCars(filteredCars, currentPage);
+                } else {
+                    // Nếu không có dữ liệu từ API, hiển thị thông báo
+                    document.querySelector('.cars-grid').innerHTML = `
+                        <div class="no-results">
+                            <h3>Không tìm thấy xe nào</h3>
+                            <p>Vui lòng thử lại với bộ lọc khác</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Lỗi khi lấy dữ liệu xe:', error);
+                document.querySelector('.cars-grid').innerHTML = `
+                    <div class="no-results">
+                        <h3>Đã xảy ra lỗi khi tải dữ liệu</h3>
+                        <p>Vui lòng thử lại sau</p>
+                    </div>
+                `;
+            }
+        }
 
-        // Pagination Functionality
-        const pageButtons = document.querySelectorAll('.page-btn');
-        pageButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                pageButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                // TODO: Implement pagination logic
-                console.log('Page changed:', button.textContent);
+        // Hàm hiển thị danh sách xe
+        function renderCars(cars, page) {
+            const startIndex = (page - 1) * carsPerPage;
+            const endIndex = Math.min(startIndex + carsPerPage, cars.length);
+            const carsToShow = cars.slice(startIndex, endIndex);
+            
+            const carsGrid = document.querySelector('.cars-grid');
+            carsGrid.innerHTML = '';
+            
+            if (carsToShow.length === 0) {
+                carsGrid.innerHTML = `
+                    <div class="no-results">
+                        <h3>Không tìm thấy xe nào</h3>
+                        <p>Vui lòng thử lại với bộ lọc khác</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            carsToShow.forEach(car => {
+                // Xác định trạng thái xe
+                const isAvailable = car.tinh_trang === 'san_sang';
+                const statusClass = isAvailable ? 'status-available' : 'status-rented';
+                const statusText = isAvailable ? 'Có sẵn' : 'Đã được thuê';
+                const statusIcon = isAvailable ? 'fa-check-circle' : 'fa-clock';
+                
+                // Xác định giá hiển thị
+                const price = formatCurrency(car.gia_thue);
+                
+                // Xác định đường dẫn hình ảnh
+                let imageSrc = '/public/image/lazy.svg'; // Hình mặc định
+                
+                // Nếu có hình ảnh từ API
+                if (car.hinh_anh) {
+                    if (typeof car.hinh_anh === 'string') {
+                        // Chỉnh sửa đường dẫn hình ảnh
+                        imageSrc = car.hinh_anh;
+                        
+                        // Nếu đường dẫn bắt đầu bằng /image/ thì thêm /public vào trước
+                        if (imageSrc.startsWith('/image/')) {
+                            imageSrc = '/public' + imageSrc;
+                        }
+                        // Nếu không có tiền tố / thì thêm vào
+                        else if (!imageSrc.startsWith('/') && !imageSrc.startsWith('http')) {
+                            imageSrc = '/public/image/' + imageSrc;
+                        }
+                    } else if (Array.isArray(car.hinh_anh) && car.hinh_anh.length > 0) {
+                        // Trường hợp hinh_anh là một mảng URL
+                        const firstImage = car.hinh_anh[0];
+                        if (firstImage.startsWith('/image/')) {
+                            imageSrc = '/public' + firstImage;
+                        } else if (!firstImage.startsWith('/') && !firstImage.startsWith('http')) {
+                            imageSrc = '/public/image/' + firstImage;
+                        } else {
+                            imageSrc = firstImage;
+                        }
+                    }
+                }
+                
+                // Xác định loại nhiên liệu và icon
+                let fuelIcon = 'fa-gas-pump';
+                let fuelText = 'Xăng';
+                
+                switch(car.nhien_lieu) {
+                    case 'xang':
+                        fuelText = 'Xăng';
+                        fuelIcon = 'fa-gas-pump';
+                        break;
+                    case 'dau':
+                        fuelText = 'Dầu';
+                        fuelIcon = 'fa-gas-pump';
+                        break;
+                    case 'dien':
+                        fuelText = 'Điện';
+                        fuelIcon = 'fa-charging-station';
+                        break;
+                    case 'hybrid':
+                        fuelText = 'Hybrid';
+                        fuelIcon = 'fa-leaf';
+                        break;
+                    default:
+                        fuelText = car.nhien_lieu || 'Xăng';
+                }
+                
+                // Xác định loại hộp số
+                const transmissionText = car.hop_so === 'tu_dong' ? 'Tự động' : 'Số sàn';
+                
+                // Tạo HTML cho mỗi xe
+                const carHtml = `
+                    <div class="car-card" data-car-id="${car.id}">
+                        <img src="${imageSrc}" alt="${car.ten_xe}" class="car-image" onerror="this.src='/public/image/lazy.svg'">
+                        <div class="car-details">
+                            <h3 class="car-title">${car.ten_xe}</h3>
+                            <span class="status-badge ${statusClass}">
+                                <i class="fas ${statusIcon}"></i>
+                                ${statusText}
+                            </span>
+                            <div class="car-info">
+                                <div class="info-item">
+                                    <i class="fas fa-car"></i>
+                                    <span>${car.so_cho} chỗ</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-cog"></i>
+                                    <span>${transmissionText}</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas ${fuelIcon}"></i>
+                                    <span>${fuelText}</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-star"></i>
+                                    <span>${parseFloat(car.danh_gia || 0).toFixed(1)}/5</span>
+                                </div>
+                            </div>
+                            <div class="car-price">${price}/ngày</div>
+                            <div class="car-actions">
+                                <button class="btn-rent btn-primary" onclick="viewCarDetails(${car.id})" ${!isAvailable ? 'disabled' : ''}>
+                                    ${isAvailable ? 'Thuê ngay' : 'Đã được thuê'}
+                                </button>
+                                <button class="btn-rent btn-secondary" onclick="viewCarDetails(${car.id})">Chi tiết</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                carsGrid.innerHTML += carHtml;
             });
-        });
+        }
 
-        // Detail Button Functionality
-        const detailButtons = document.querySelectorAll('.btn-secondary');
-        detailButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const carCard = button.closest('.car-card');
-                const carTitle = carCard.querySelector('.car-title').textContent;
-                // TODO: Implement detail view logic
-                console.log('Show details for:', carTitle);
+        // Thiết lập các bộ lọc
+        function setupFilters() {
+            const filters = document.querySelectorAll('.filter-input');
+            
+            filters.forEach(filter => {
+                filter.addEventListener('change', () => {
+                    applyFilters();
+                });
             });
-        });
+            
+            // Bộ lọc sắp xếp
+            const sortDropdown = document.querySelector('.sort-dropdown');
+            sortDropdown.addEventListener('change', () => {
+                applySorting(sortDropdown.value);
+            });
+        }
+
+        // Áp dụng bộ lọc
+        function applyFilters() {
+            const location = document.getElementById('location').value.toLowerCase();
+            const carType = document.getElementById('carType').value;
+            const priceRange = document.getElementById('priceRange').value;
+            const transmission = document.getElementById('transmission').value;
+            
+            filteredCars = allCars.filter(car => {
+                // Lọc theo địa điểm
+                if (location && !car.dia_chi_xe.toLowerCase().includes(location)) {
+                    return false;
+                }
+                
+                // Lọc theo loại xe (số chỗ)
+                if (carType) {
+                    if (carType === '4' && car.so_cho != 4 && car.loai_xe !== '4_cho') return false;
+                    if (carType === '7' && car.so_cho != 7 && car.loai_xe !== '7_cho') return false;
+                    if (carType === '16' && car.so_cho != 16 && car.loai_xe !== '16_cho') return false;
+                }
+                
+                // Lọc theo khoảng giá
+                if (priceRange) {
+                    const price = car.gia_thue;
+                    
+                    if (priceRange === '0-500000' && price > 500000) return false;
+                    if (priceRange === '500000-1000000' && (price < 500000 || price > 1000000)) return false;
+                    if (priceRange === '1000000-2000000' && (price < 1000000 || price > 2000000)) return false;
+                    if (priceRange === '2000000+' && price < 2000000) return false;
+                }
+                
+                // Lọc theo hộp số
+                if (transmission) {
+                    if (transmission === 'auto' && car.hop_so !== 'tu_dong') return false;
+                    if (transmission === 'manual' && car.hop_so === 'tu_dong') return false;
+                }
+                
+                return true;
+            });
+            
+            // Cập nhật số lượng kết quả
+            updateResultsCount();
+            
+            // Reset về trang đầu tiên
+            currentPage = 1;
+            
+            // Cập nhật phân trang
+            setupPagination();
+            
+            // Hiển thị xe đã lọc
+            renderCars(filteredCars, currentPage);
+        }
+
+        // Áp dụng sắp xếp
+        function applySorting(sortType) {
+            switch(sortType) {
+                case 'price-asc':
+                    filteredCars.sort((a, b) => a.gia_thue - b.gia_thue);
+                    break;
+                case 'price-desc':
+                    filteredCars.sort((a, b) => b.gia_thue - a.gia_thue);
+                    break;
+                case 'rating-desc':
+                    filteredCars.sort((a, b) => (parseFloat(b.danh_gia) || 0) - (parseFloat(a.danh_gia) || 0));
+                    break;
+                case 'newest':
+                    filteredCars.sort((a, b) => new Date(b.ngay_tao || 0) - new Date(a.ngay_tao || 0));
+                    break;
+            }
+            
+            renderCars(filteredCars, currentPage);
+        }
+
+        // Thiết lập phân trang
+        function setupPagination() {
+            const totalPages = Math.ceil(filteredCars.length / carsPerPage);
+            const pagination = document.querySelector('.pagination');
+            
+            pagination.innerHTML = '';
+            
+            // Nếu chỉ có 1 trang hoặc không có dữ liệu, không hiển thị phân trang
+            if (totalPages <= 1) {
+                return;
+            }
+            
+            // Tạo nút cho các trang
+            for (let i = 1; i <= Math.min(totalPages, 5); i++) {
+                const pageButton = document.createElement('button');
+                pageButton.classList.add('page-btn');
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.textContent = i;
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    renderCars(filteredCars, currentPage);
+                    
+                    // Cập nhật CSS cho nút phân trang
+                    document.querySelectorAll('.page-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    pageButton.classList.add('active');
+                    
+                    // Cập nhật số lượng kết quả
+                    updateResultsCount();
+                });
+                
+                pagination.appendChild(pageButton);
+            }
+            
+            // Nếu có nhiều trang, thêm nút Next
+            if (totalPages > 5) {
+                const nextButton = document.createElement('button');
+                nextButton.classList.add('page-btn');
+                nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextButton.addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        renderCars(filteredCars, currentPage);
+                        setupPagination();
+                        updateResultsCount();
+                    }
+                });
+                
+                pagination.appendChild(nextButton);
+            }
+        }
+
+        // Cập nhật số lượng kết quả hiển thị
+        function updateResultsCount() {
+            const start = filteredCars.length > 0 ? (currentPage - 1) * carsPerPage + 1 : 0;
+            const end = Math.min(start + carsPerPage - 1, filteredCars.length);
+            const total = filteredCars.length;
+            
+            document.querySelector('.results-count').textContent = 
+                `Hiển thị ${start}-${end} trong tổng số ${total} xe`;
+        }
+
+        // Hàm xem chi tiết xe
+        function viewCarDetails(carId) {
+            window.location.href = `/views/ShowChiTietXe.html?id=${carId}`;
+        }
+
+        // Hàm định dạng tiền tệ
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
     </script>
 </body>
 </html>

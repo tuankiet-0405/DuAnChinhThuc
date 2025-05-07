@@ -7,7 +7,12 @@
     <title>Tài Khoản - TKĐK</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../public/css/styles.css">
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <!-- Thêm sweetalert2 để hiển thị thông báo đẹp hơn -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <!-- Thêm axios để gọi API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         :root {
             --primary-color: #10b981;
@@ -473,9 +478,9 @@
             </div>
             <div class="menu-header">
                 <ul class="menu">
-                    <li class="menu-item"><a href="../public/index.html">Trang chủ</a></li>
-                    <li class="menu-item"><a href="../public/index.html">Giới thiệu</a></li>
-                    <li class="menu-item"><a href="../services.html">Dịch vụ</a>
+                    <li class="menu-item"><a href="/public/index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="/public/index.html#guoithieu">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="">Dịch vụ</a>
                         <ul class="sub-menu">
                             <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
                             <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
@@ -485,9 +490,6 @@
                     </li>
                     <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
                 </ul>
-            </div>
-            <div class="login-header" style="display: flex; min-height: 100px; align-items: center;">
-                <a href="login.html" id="openLogin" class="btn btn-login">Đăng nhập</a>
             </div>
         </div>
     </div>
@@ -560,50 +562,50 @@
                         </a>
                     </div>
                     <div class="avatar-box">
-                        <div class="avatar">
-                            <img src="https://via.placeholder.com/120" alt="Avatar">
+                        <div class="avatar" id="avatar-container">
+                            <img id="user-avatar" src="https://via.placeholder.com/120" alt="Avatar">
                         </div>
-                        <h4 style="margin: 0.5rem 0; color: var(--text-color);">Nguyễn Văn A</h4>
-                        <p style="color: #6b7280;">Thành viên từ 05/04/2023</p>
+                        <h4 id="user-fullname" style="margin: 0.5rem 0; color: var(--text-color);">Đang tải...</h4>
+                        <p id="user-joined" style="color: #6b7280;">Thành viên từ 05/04/2023</p>
                     </div>
                     <div class="info-box">
                         <div class="info-box__item">
                             <p>Email</p>
-                            <h3>user@example.com</h3>
+                            <h3 id="user-email">Đang tải...</h3>
                         </div>
                         <div class="info-box__item">
                             <p>Số điện thoại</p>
-                            <h3>0345840642</h3>
+                            <h3 id="user-phone">Đang tải...</h3>
                         </div>
                         <div class="info-box__item">
                             <p>Ngày sinh</p>
-                            <h3>01/01/1990</h3>
+                            <h3 id="user-birthday">Đang tải...</h3>
                         </div>
                     </div>
                 </div>
 
-                <div class="content-item">
+                <div class="content-item" id="license-info">
                     <div class="title__edit">
                         <h3>Giấy phép lái xe</h3>
-                        <div class="auth">
+                        <div class="auth" id="license-status">
                             <span class="note__icon">
-                                <i class="fas fa-check-circle"></i>
-                                Đã xác thực
+                                <i class="fas fa-spinner fa-spin"></i>
+                                Đang tải...
                             </span>
                         </div>
                     </div>
                     <div class="info-box">
                         <div class="info-box__item">
                             <p>Số GPLX</p>
-                            <h3>123456789</h3>
+                            <h3 id="license-number">Đang tải...</h3>
                         </div>
                         <div class="info-box__item">
                             <p>Hạng</p>
-                            <h3>B2</h3>
+                            <h3 id="license-class">Đang tải...</h3>
                         </div>
                         <div class="info-box__item">
                             <p>Ngày hết hạn</p>
-                            <h3>31/12/2030</h3>
+                            <h3 id="license-expire">Đang tải...</h3>
                         </div>
                     </div>
                 </div>
@@ -615,15 +617,15 @@
                     <div class="info-box">
                         <div class="info-box__item">
                             <p>Chuyến đã đặt</p>
-                            <h3>0</h3>
+                            <h3 id="stats-total">Đang tải...</h3>
                         </div>
                         <div class="info-box__item">
                             <p>Chuyến đã hoàn thành</p>
-                            <h3>0</h3>
+                            <h3 id="stats-completed">Đang tải...</h3>
                         </div>
                         <div class="info-box__item">
                             <p>Tỷ lệ hoàn thành</p>
-                            <h3>0%</h3>
+                            <h3 id="stats-rate">Đang tải...</h3>
                         </div>
                     </div>
                 </div>
@@ -644,7 +646,7 @@
                 <form id="updateForm" class="edit-form">
                     <div class="form-group">
                         <label for="fullName">Họ và tên</label>
-                        <input type="text" id="fullName" name="fullName" class="form-control" required>
+                        <input type="text" id="fullName" name="ho_ten" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
@@ -654,21 +656,26 @@
                     
                     <div class="form-group">
                         <label for="phone">Số điện thoại</label>
-                        <input type="tel" id="phone" name="phone" class="form-control" required>
+                        <input type="tel" id="phone" name="so_dien_thoai" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
                         <label for="birthday">Ngày sinh</label>
-                        <input type="date" id="birthday" name="birthday" class="form-control" required>
+                        <input type="date" id="birthday" name="ngay_sinh" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
                         <label for="gender">Giới tính</label>
-                        <select id="gender" name="gender" class="form-control">
-                            <option value="male">Nam</option>
-                            <option value="female">Nữ</option>
-                            <option value="other">Khác</option>
+                        <select id="gender" name="gioi_tinh" class="form-control">
+                            <option value="nam">Nam</option>
+                            <option value="nu">Nữ</option>
+                            <option value="khac">Khác</option>
                         </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Địa chỉ</label>
+                        <input type="text" id="address" name="dia_chi" class="form-control">
                     </div>
                     
                     <div class="form-actions">
@@ -679,6 +686,11 @@
             </div>
         </div>
     </div>
+
+    <!-- Form ẩn cho upload avatar -->
+    <form id="avatarForm" style="display: none;">
+        <input type="file" id="avatarInput" name="avatar" accept="image/*">
+    </form>
 
     <!-- Logout Modal -->
     <div class="modal-overlay">
@@ -703,10 +715,254 @@
             .then(data => {
                 document.getElementById('footer-placeholder').innerHTML = data;
             });
+
+        // Thiết lập token cho tất cả các yêu cầu axios
+        axios.interceptors.request.use(function (config) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        }, function (error) {
+            return Promise.reject(error);
+        });
     </script>
 
     <script>
-        // Modal handling
+        // Biến lưu trữ thông tin người dùng hiện tại
+        let currentUser = null;
+
+        // Hàm chuyển đổi định dạng ngày
+        function formatDate(dateString) {
+            if (!dateString) return 'Chưa cập nhật';
+            
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return dateString;
+            
+            return new Intl.DateTimeFormat('vi-VN', {
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric'
+            }).format(date);
+        }
+
+        // Hàm lấy thông tin người dùng từ API
+        async function fetchUserData() {
+            try {
+                // Lấy token từ localStorage
+                const token = localStorage.getItem('token');
+                console.log('Đang gửi yêu cầu lấy thông tin người dùng...');
+                console.log('Token sẵn có:', token ? 'Có (độ dài: ' + token.length + ')' : 'Không');
+                
+                if (!token) {
+                    throw new Error('Không tìm thấy token xác thực');
+                }
+                
+                // Decode token để kiểm tra
+                try {
+                    const base64Url = token.split('.')[1];
+                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                    const payload = JSON.parse(window.atob(base64));
+                    console.log('Token payload:', JSON.stringify(payload));
+                } catch (e) {
+                    console.error('Không thể decode token:', e);
+                }
+                
+                const response = await axios.get('/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.data.success) {
+                    console.log('Lấy thông tin người dùng thành công, ID:', response.data.user.id);
+                    currentUser = response.data.user;
+                    
+                    // Lưu thông tin user mới vào localStorage để đảm bảo đồng bộ
+                    localStorage.setItem('user', JSON.stringify(currentUser));
+                    
+                    updateUIWithUserData(currentUser);
+                    return true;
+                } else {
+                    console.error('API trả về lỗi:', response.data);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi xác thực',
+                        text: response.data.message || 'Không thể lấy thông tin người dùng',
+                        confirmButtonText: 'Đăng nhập lại',
+                        confirmButtonColor: '#10b981'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            clearAuthData();
+                            window.location.href = '/views/login.html';
+                        }
+                    });
+                    return false;
+                }
+            } catch (error) {
+                console.error('Chi tiết lỗi khi lấy thông tin người dùng:', error);
+                
+                // Hiển thị thông tin lỗi chi tiết hơn
+                const errorMessage = error.response ? 
+                    `Lỗi ${error.response.status}: ${error.response.data?.message || error.message}` : 
+                    `Lỗi kết nối: ${error.message}`;
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi xác thực',
+                    text: errorMessage,
+                    footer: 'Bạn cần đăng nhập lại để xem trang này',
+                    confirmButtonText: 'Đăng nhập',
+                    confirmButtonColor: '#10b981'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        clearAuthData();
+                        window.location.href = '/views/login.html';
+                    }
+                });
+                return false;
+            }
+        }
+        
+        // Hàm xóa dữ liệu xác thực để đăng nhập lại
+        function clearAuthData() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            // Xóa cookies nếu có
+            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+
+        // Cập nhật giao diện với thông tin người dùng
+        function updateUIWithUserData(user) {
+            // Cập nhật avatar
+            const avatarImg = document.getElementById('user-avatar');
+            avatarImg.src = user.anh_dai_dien || 'https://via.placeholder.com/120?text=Avatar';
+            
+            // Cập nhật thông tin cá nhân
+            document.getElementById('user-fullname').textContent = user.ho_ten || 'Chưa cập nhật';
+            document.getElementById('user-email').textContent = user.email || 'Chưa cập nhật';
+            document.getElementById('user-phone').textContent = user.so_dien_thoai || 'Chưa cập nhật';
+            document.getElementById('user-birthday').textContent = formatDate(user.ngay_sinh);
+            
+            // Cập nhật ngày tham gia
+            const joinedDate = formatDate(user.ngay_tao);
+            document.getElementById('user-joined').textContent = `Thành viên từ ${joinedDate}`;
+            
+            // Điền thông tin vào form cập nhật
+            document.getElementById('fullName').value = user.ho_ten || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('phone').value = user.so_dien_thoai || '';
+            document.getElementById('address').value = user.dia_chi || '';
+            
+            // Cập nhật ngày sinh trong form
+            if (user.ngay_sinh) {
+                const birthDate = new Date(user.ngay_sinh);
+                if (!isNaN(birthDate.getTime())) {
+                    document.getElementById('birthday').value = birthDate.toISOString().split('T')[0];
+                }
+            }
+            
+            // Cập nhật giới tính
+            if (user.gioi_tinh) {
+                document.getElementById('gender').value = user.gioi_tinh;
+            }
+        }
+
+        // Lấy thông tin GPLX
+        async function fetchDriverLicense() {
+            try {
+                const response = await axios.get('/api/auth/driver-license', {
+                    withCredentials: true
+                });
+                
+                if (response.data.success) {
+                    const license = response.data.license;
+                    
+                    // Cập nhật trạng thái xác thực
+                    const licenseStatus = document.getElementById('license-status');
+                    const isVerified = license.da_xac_thuc === 1;
+                    
+                    licenseStatus.innerHTML = isVerified ? 
+                        `<span class="note__icon" style="color: var(--primary-color);">
+                            <i class="fas fa-check-circle"></i>
+                            Đã xác thực
+                        </span>` :
+                        `<span class="note__icon" style="color: #f59e0b;">
+                            <i class="fas fa-clock"></i>
+                            Chờ xác thực
+                        </span>`;
+                    
+                    // Cập nhật thông tin GPLX
+                    document.getElementById('license-number').textContent = license.so_gplx || 'Chưa cập nhật';
+                    document.getElementById('license-class').textContent = license.hang || 'Chưa cập nhật';
+                    document.getElementById('license-expire').textContent = formatDate(license.ngay_het_han);
+                    
+                } else {
+                    // Nếu không có thông tin GPLX
+                    const licenseInfo = document.getElementById('license-info');
+                    licenseInfo.innerHTML = `
+                        <div class="title__edit">
+                            <h3>Giấy phép lái xe</h3>
+                            <div class="auth">
+                                <span class="note__icon" style="color: #ef4444;">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    Chưa cập nhật
+                                </span>
+                            </div>
+                        </div>
+                        <div style="text-align: center; padding: 2rem;">
+                            <p style="margin-bottom: 1rem;">Bạn chưa cập nhật thông tin giấy phép lái xe</p>
+                            <a href="#" class="btn-save" style="display: inline-block; text-decoration: none; padding: 0.75rem 1.5rem;">Cập nhật GPLX</a>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Lỗi khi lấy thông tin GPLX:', error);
+                
+                // Hiển thị thông báo lỗi hoặc form cập nhật GPLX
+                const licenseInfo = document.getElementById('license-info');
+                licenseInfo.innerHTML = `
+                    <div class="title__edit">
+                        <h3>Giấy phép lái xe</h3>
+                        <div class="auth">
+                            <span class="note__icon" style="color: #ef4444;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Chưa cập nhật
+                            </span>
+                        </div>
+                    </div>
+                    <div style="text-align: center; padding: 2rem;">
+                        <p style="margin-bottom: 1rem;">Bạn chưa cập nhật thông tin giấy phép lái xe</p>
+                        <a href="#" class="btn-save" style="display: inline-block; text-decoration: none; padding: 0.75rem 1.5rem;">Cập nhật GPLX</a>
+                    </div>
+                `;
+            }
+        }
+
+        // Lấy thống kê người dùng
+        async function fetchUserStats() {
+            try {
+                const response = await axios.get('/api/auth/stats', {
+                    withCredentials: true
+                });
+                
+                if (response.data.success) {
+                    const stats = response.data.stats;
+                    
+                    document.getElementById('stats-total').textContent = stats.totalBookings;
+                    document.getElementById('stats-completed').textContent = stats.completedBookings;
+                    document.getElementById('stats-rate').textContent = `${stats.completionRate}%`;
+                }
+            } catch (error) {
+                console.error('Lỗi khi lấy thống kê người dùng:', error);
+                
+                document.getElementById('stats-total').textContent = '0';
+                document.getElementById('stats-completed').textContent = '0';
+                document.getElementById('stats-rate').textContent = '0%';
+            }
+        }
+
+        // Modal xử lý
         const modal = document.getElementById('updateModal');
         const openModalBtn = document.getElementById('openModal');
         const closeModalBtn = document.getElementById('closeModal');
@@ -727,33 +983,11 @@
 
         function openModal(e) {
             if (e) {
-                e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ a
-                e.stopPropagation(); // Ngăn chặn sự kiện lan truyền
+                e.preventDefault();
+                e.stopPropagation();
             }
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden'; // Khóa scroll của body
-            
-            // Lấy thông tin hiện tại
-            const currentName = document.querySelector('.avatar-box h4').textContent;
-            const currentEmail = document.querySelector('.info-box__item:nth-child(1) h3').textContent;
-            const currentPhone = document.querySelector('.info-box__item:nth-child(2) h3').textContent;
-            
-            // Điền thông tin vào form
-            document.getElementById('fullName').value = currentName;
-            document.getElementById('email').value = currentEmail;
-            document.getElementById('phone').value = currentPhone;
-
-            // Set ngày sinh nếu có
-            const birthdayInput = document.getElementById('birthday');
-            const currentBirthday = document.querySelector('.info-box__item:nth-child(3) h3').textContent;
-            if (currentBirthday) {
-                try {
-                    const date = new Date(currentBirthday);
-                    birthdayInput.value = date.toISOString().split('T')[0];
-                } catch (error) {
-                    console.log('Không thể parse ngày sinh');
-                }
-            }
         }
 
         function closeModal(e) {
@@ -764,6 +998,11 @@
             modal.style.display = 'none';
             document.body.style.overflow = ''; // Khôi phục scroll của body
             form.reset();
+            
+            // Điền lại thông tin hiện tại vào form
+            if (currentUser) {
+                updateUIWithUserData(currentUser);
+            }
         }
 
         // Event listeners
@@ -771,8 +1010,8 @@
         closeModalBtn.addEventListener('click', closeModal);
         cancelBtn.addEventListener('click', closeModal);
 
-        // Form submission
-        form.addEventListener('submit', function(e) {
+        // Xử lý cập nhật thông tin
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
             e.stopPropagation();
             
@@ -788,28 +1027,22 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang cập nhật...';
 
             // Lấy dữ liệu từ form
-            const formData = {
-                fullName: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                birthday: document.getElementById('birthday').value,
-                gender: document.getElementById('gender').value
-            };
-
-            // Giả lập API call
-            setTimeout(() => {
-                try {
-                    // Cập nhật UI
-                    document.querySelector('.avatar-box h4').textContent = formData.fullName;
-                    document.querySelector('.info-box__item:nth-child(1) h3').textContent = formData.email;
-                    document.querySelector('.info-box__item:nth-child(2) h3').textContent = formData.phone;
+            const formData = new FormData(this);
+            const userData = Object.fromEntries(formData.entries());
+            
+            try {
+                const response = await axios.put('/api/auth/profile', userData, {
+                    withCredentials: true
+                });
+                
+                if (response.data.success) {
+                    // Cập nhật dữ liệu người dùng
+                    currentUser = response.data.user;
+                    updateUIWithUserData(currentUser);
                     
-                    const formattedDate = new Date(formData.birthday).toLocaleDateString('vi-VN');
-                    document.querySelector('.info-box__item:nth-child(3) h3').textContent = formattedDate;
-
                     // Hiển thị thông báo thành công
                     submitBtn.innerHTML = '<i class="fas fa-check"></i> Đã cập nhật';
-
+                    
                     // Đóng modal và reset form sau 2 giây
                     setTimeout(() => {
                         submitBtn.disabled = false;
@@ -817,81 +1050,197 @@
                         closeModalBtn.disabled = false;
                         submitBtn.textContent = originalBtnText;
                         closeModal();
-                    }, 2000);
-
-                } catch (error) {
-                    console.error('Lỗi khi cập nhật:', error);
-                    submitBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Lỗi cập nhật';
-                    
-                    // Reset trạng thái trong trường hợp lỗi
-                    setTimeout(() => {
-                        submitBtn.disabled = false;
-                        cancelBtn.disabled = false;
-                        closeModalBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
-                    }, 2000);
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: 'Cập nhật thông tin thành công',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }, 1000);
+                } else {
+                    throw new Error(response.data.message || 'Có lỗi xảy ra');
                 }
-            }, 1500);
+            } catch (error) {
+                console.error('Lỗi khi cập nhật:', error);
+                
+                submitBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Lỗi cập nhật';
+                
+                // Reset trạng thái trong trường hợp lỗi
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    cancelBtn.disabled = false;
+                    closeModalBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: error.response?.data?.message || error.message || 'Có lỗi xảy ra khi cập nhật thông tin',
+                        confirmButtonColor: '#10b981'
+                    });
+                }, 1000);
+            }
         });
 
-        // Avatar upload
-        const avatar = document.querySelector('.avatar');
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/*';
-
-        avatar.addEventListener('click', function(e) {
-            e.stopPropagation();
-            fileInput.click();
+        // Xử lý upload avatar
+        const avatarContainer = document.getElementById('avatar-container');
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarForm = document.getElementById('avatarForm');
+        
+        avatarContainer.addEventListener('click', function() {
+            avatarInput.click();
         });
-
-        fileInput.addEventListener('change', function(e) {
+        
+        avatarInput.addEventListener('change', async function() {
             if (this.files && this.files[0]) {
+                // Hiển thị ảnh tạm thời
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    avatar.querySelector('img').src = e.target.result;
+                    document.getElementById('user-avatar').src = e.target.result;
                 };
                 reader.readAsDataURL(this.files[0]);
+                
+                // Upload ảnh lên server
+                const formData = new FormData();
+                formData.append('avatar', this.files[0]);
+                
+                try {
+                    // Hiển thị loading
+                    Swal.fire({
+                        title: 'Đang tải ảnh lên...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    const response = await axios.post('/api/auth/avatar', formData, {
+                        withCredentials: true,
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                    
+                    if (response.data.success) {
+                        // Cập nhật avatar trong dữ liệu người dùng
+                        if (currentUser) {
+                            currentUser.anh_dai_dien = response.data.avatarPath;
+                        }
+                        
+                        // Đóng loading và hiển thị thông báo thành công
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: 'Cập nhật ảnh đại diện thành công',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    } else {
+                        throw new Error(response.data.message || 'Có lỗi xảy ra');
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi upload avatar:', error);
+                    
+                    // Hiển thị lại avatar cũ
+                    if (currentUser && currentUser.anh_dai_dien) {
+                        document.getElementById('user-avatar').src = currentUser.anh_dai_dien;
+                    } else {
+                        document.getElementById('user-avatar').src = 'https://via.placeholder.com/120?text=Avatar';
+                    }
+                    
+                    // Hiển thị thông báo lỗi
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: error.response?.data?.message || error.message || 'Có lỗi xảy ra khi tải ảnh lên',
+                        confirmButtonColor: '#10b981'
+                    });
+                }
             }
         });
 
         // Xử lý đăng xuất
         const logoutButton = document.querySelector('[data-logout]');
         const logoutModal = document.querySelector('.modal-overlay');
-        const cancelLogoutBtn = document.querySelector('.modal-btn-cancel');
-        const confirmLogoutBtn = document.querySelector('.modal-btn-confirm');
-
+        
         // Mở modal đăng xuất
         logoutButton.addEventListener('click', function(e) {
             e.preventDefault();
             logoutModal.style.display = 'flex';
         });
-
-        // Đóng modal khi click nút hủy
-        cancelLogoutBtn.addEventListener('click', function() {
-            logoutModal.style.display = 'none';
-        });
-
+        
         // Đóng modal khi click ra ngoài
         logoutModal.addEventListener('click', function(e) {
             if (e.target === logoutModal) {
-                logoutModal.style.display = 'none';
+                hideLogoutModal();
             }
         });
-
-        // Xử lý khi xác nhận đăng xuất
-        confirmLogoutBtn.addEventListener('click', function() {
-            // Chuyển hướng về trang đăng nhập
-            window.location.href = '/public/index.html';
-        });
-
+        
         function hideLogoutModal() {
             logoutModal.style.display = 'none';
         }
-
-        function logout() {
-            window.location.href = 'login.html';
+        
+        async function logout() {
+            try {
+                const response = await axios.post('/api/auth/logout', {}, {
+                    withCredentials: true
+                });
+                
+                if (response.data.success) {
+                    // Chuyển hướng về trang đăng nhập
+                    window.location.href = '/views/login.html';
+                } else {
+                    throw new Error(response.data.message || 'Có lỗi xảy ra');
+                }
+            } catch (error) {
+                console.error('Lỗi khi đăng xuất:', error);
+                
+                // Hiển thị thông báo lỗi
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: error.response?.data?.message || error.message || 'Có lỗi xảy ra khi đăng xuất',
+                    confirmButtonColor: '#10b981'
+                });
+                
+                // Đóng modal đăng xuất
+                hideLogoutModal();
+            }
         }
+
+        // Khởi tạo trang
+    document.addEventListener('DOMContentLoaded', async function() {
+        console.log('Account page initialized');
+        
+        // Kiểm tra token trước khi thực hiện các hàm khác
+        const token = localStorage.getItem('token');
+        console.log('Token from localStorage:', token ? 'Exists (length: ' + token.length + ')' : 'Not found');
+        
+        if (!token) {
+            console.log('No token found, redirecting to login page');
+            Swal.fire({
+                icon: 'error',
+                title: 'Phiên đăng nhập hết hạn',
+                text: 'Vui lòng đăng nhập lại để tiếp tục',
+                confirmButtonText: 'Đăng nhập',
+                confirmButtonColor: '#10b981'
+            }).then(() => {
+                window.location.href = '/views/login.html';
+            });
+            return;
+        }
+        
+        // Lấy thông tin người dùng
+        const userDataSuccess = await fetchUserData();
+        
+        if (userDataSuccess) {
+            // Chỉ lấy thông tin GPLX và thống kê nếu lấy thông tin người dùng thành công
+            await fetchDriverLicense();
+            await fetchUserStats();
+        }
+    });
     </script>
 </body>
 

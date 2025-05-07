@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hóa Đơn - TKĐK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <style>
+        .invoice-container {
+            max-width: 800px;
+            margin: 100px auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .invoice-header h1 {
+            color: #1f2937;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .invoice-number {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .invoice-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-group h3 {
+            color: #1f2937;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-item {
+            margin-bottom: 0.5rem;
+            color: #4b5563;
+        }
+
+        .car-details {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .car-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .price-details {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: #4b5563;
+        }
+
+        .price-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 2px solid #e5e7eb;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-outline {
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #4b5563;
+        }
+
+        .btn-outline:hover {
+            background: #f9fafb;
+        }
+
+        .payment-methods {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .payment-methods h3 {
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .payment-option {
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover {
+            border-color: #2563eb;
+            background: #f8fafc;
+        }
+
+        .payment-option.active {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .payment-option i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #2563eb;
+        }
+
+        @media (max-width: 640px) {
+            .invoice-container {
+                margin: 80px 1rem;
+                padding: 1rem;
+            }
+
+            .invoice-info {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <script src="/public/js/code.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <div class="logo-header">
+                <img src="/public/image/TK-DK.PNG" alt="Logo" class="logo">
+            </div>
+            <div class="menu-header">
+                <ul class="menu">
+                    <li class="menu-item"><a href="../public/index.html">Trang chủ</a></li>
+                    <li class="menu-item"><a href="../public/index.html">Giới thiệu</a></li>
+                    <li class="menu-item"><a href="services.html">Dịch vụ</a>
+                        <ul class="sub-menu">
+                            <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="Xe16cho.html">Thuê xe 16 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <h1>Hóa Đơn Thuê Xe</h1>
+            <div class="invoice-number">Mã đơn: #INV-2025001</div>
+        </div>
+
+        <div class="invoice-info">
+            <div class="info-group">
+                <h3>Thông tin khách hàng</h3>
+                <div class="info-item">Họ tên: <span id="customerName">Nguyễn Văn A</span></div>
+                <div class="info-item">Email: <span id="customerEmail">nguyenvana@gmail.com</span></div>
+                <div class="info-item">Số điện thoại: <span id="customerPhone">0123456789</span></div>
+            </div>
+
+            <div class="info-group">
+                <h3>Thông tin thuê xe</h3>
+                <div class="info-item">Ngày bắt đầu: <span id="startDate">25/05/2025</span></div>
+                <div class="info-item">Ngày kết thúc: <span id="endDate">28/05/2025</span></div>
+                <div class="info-item">Địa điểm nhận xe: <span id="location">Quận Bình Thạnh, TP.HCM</span></div>
+            </div>
+        </div>
+
+        <div class="car-details">
+            <img src="../public/image/MercedesC300.png" alt="Mercedes C300" class="car-image">
+            <h3>Mercedes C300 AMG</h3>
+            <div class="info-item">Biển số: 51H-888.88</div>
+            <div class="info-item">Loại xe: 4 chỗ</div>
+            <div class="info-item">Nhiên liệu: Xăng</div>
+        </div>
+
+        <div class="price-details">
+            <div class="price-item">
+                <span>Giá thuê (3 ngày)</span>
+                <span>18,600,000đ</span>
+            </div>
+            <div class="price-item">
+                <span>Phí dịch vụ</span>
+                <span>100,000đ</span>
+            </div>
+            <div class="price-item">
+                <span>Giảm giá</span>
+                <span>-100,000đ</span>
+            </div>
+            <div class="price-total">
+                <span>Tổng cộng</span>
+                <span>18,600,000đ</span>
+            </div>
+        </div>
+
+        <div class="payment-methods">
+            <h3>Phương thức thanh toán</h3>
+            <div class="payment-options">
+                <div class="payment-option active" onclick="selectPayment(this)">
+                    <i class="fas fa-wallet"></i>
+                    <div>Ví TKĐK</div>
+                </div>
+                <div class="payment-option" onclick="selectPayment(this)">
+                    <i class="fas fa-credit-card"></i>
+                    <div>Thẻ ngân hàng</div>
+                </div>
+                <div class="payment-option" onclick="selectPayment(this)">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div>Tiền mặt</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-outline" onclick="window.history.back()">Quay lại</button>
+            <button class="btn btn-primary" onclick="confirmPayment()">Xác nhận thanh toán</button>
+        </div>
+    </div>
+
+    <script>
+        // Lấy thông tin từ URL parameters
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            // Cập nhật thông tin từ parameters vào các elements
+            if(params.get('startDate')) document.getElementById('startDate').textContent = params.get('startDate');
+            if(params.get('endDate')) document.getElementById('endDate').textContent = params.get('endDate');
+            if(params.get('location')) document.getElementById('location').textContent = params.get('location');
+        }
+
+        // Xử lý chọn phương thức thanh toán
+        function selectPayment(element) {
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+
+        // Xử lý xác nhận thanh toán
+        function confirmPayment() {
+            // Thêm logic xử lý thanh toán ở đây
+            alert('Thanh toán thành công!');
+            window.location.href = '../public/index.html';
+        }
+
+        // Load thông tin khi trang được tải
+        window.onload = getUrlParams;
+    </script>
+</body>
+</html>

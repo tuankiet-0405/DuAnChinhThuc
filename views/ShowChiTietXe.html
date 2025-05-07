@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết xe - TKĐK</title>
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <script src="/public/js/code.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-   <link rel="stylesheet" href="/css/styles.css">
+    
+    <!-- Giữ lại các styles hiện có -->
     <style>
         :root {
             --primary-color: #2563eb;
@@ -543,228 +546,396 @@
                 font-size: 1.25rem;
             }
         }
+        
+        /* Styles cho map */
+        #locationMap {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+        }
+        
+        .map-controls {
+            display: flex;
+            margin-bottom: 1rem;
+            gap: 0.5rem;
+        }
+        
+        .map-search {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        .map-pin {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            color: var(--primary-color);
+            font-size: 2rem;
+            z-index: 100;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+        
+        .selected-location {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
-
+    <!-- Google Maps API - Đã thay đổi cách tải script để tránh lỗi -->
     <script>
-        // Initialize Google Maps
-        let map;
-        let marker;
-        let autocomplete;
-
+        // Biến toàn cục cho map, geocoder, infowindow, selectedPosition và autocomplete
+        let map, geocoder, infowindow, selectedPosition, autocomplete;
+        
+        // Hàm callback sẽ được gọi sau khi Google Maps API được tải
         function initMap() {
-            const defaultLocation = { lat: 10.762622, lng: 106.660172 }; // Default to Ho Chi Minh City
+            console.log("Đang khởi tạo Google Maps...");
             
-            map = new google.maps.Map(document.getElementById('locationMap'), {
-                center: defaultLocation,
-                zoom: 13,
-                styles: [
-                    {
-                        featureType: "poi",
-                        elementType: "labels",
-                        stylers: [{ visibility: "off" }]
-                    }
-                ]
-            });
-
-            marker = new google.maps.Marker({
-                map: map,
-                position: defaultLocation,
-                draggable: true
-            });
-
-            // Initialize autocomplete
-            autocomplete = new google.maps.places.Autocomplete(
-                document.getElementById('customLocation'),
-                { 
-                    componentRestrictions: { country: 'vn' },
-                    fields: ['formatted_address', 'geometry']
-                }
-            );
-
-            autocomplete.addListener('place_changed', () => {
-                const place = autocomplete.getPlace();
-                if (place.geometry) {
-                    map.setCenter(place.geometry.location);
-                    marker.setPosition(place.geometry.location);
-                }
-            });
-
-            // Update marker position when dragged
-            marker.addListener('dragend', () => {
-                const position = marker.getPosition();
-                reverseGeocode(position);
-            });
-        }
-
-        function reverseGeocode(position) {
-            const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ location: position }, (results, status) => {
-                if (status === 'OK' && results[0]) {
-                    document.getElementById('customLocation').value = results[0].formatted_address;
-                }
-            });
-        }
-
-        // Load map when popup opens
-        function openLocationPopup() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('locationPopup').style.display = 'block';
-            setTimeout(() => {
-                if (!map) {
-                    initMap();
-                }
-            }, 100);
-        }
-
-        // Update delivery location when confirming
-        function confirmLocation() {
-            const selectedOption = document.querySelector('.delivery-option.active');
-            let locationText = '';
-            
-            if (selectedOption.querySelector('input').value === 'custom') {
-                locationText = document.getElementById('customLocation').value;
-            } else {
-                locationText = selectedOption.querySelector('.delivery-title').textContent;
+            // Kiểm tra nếu phần tử bản đồ đã được tạo
+            const mapElement = document.getElementById("locationMap");
+            if (!mapElement) {
+                console.error("Không tìm thấy phần tử locationMap");
+                return;
             }
             
-            document.getElementById('deliveryLocation').value = locationText;
-            closeLocationPopup();
+            try {
+                // Vị trí mặc định (Tp. Hồ Chí Minh)
+                const defaultLocation = { lat: 10.762622, lng: 106.660172 };
+                
+                // Tạo map với tùy chọn cơ bản
+                map = new google.maps.Map(mapElement, {
+                    center: defaultLocation,
+                    zoom: 13,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    fullscreenControl: false
+                });
+                
+                // Tạo geocoder để chuyển đổi tọa độ thành địa chỉ và ngược lại
+                geocoder = new google.maps.Geocoder();
+                infowindow = new google.maps.InfoWindow();
+                
+                // Đánh dấu vị trí mặc định ban đầu
+                const marker = new google.maps.Marker({
+                    position: defaultLocation,
+                    map: map,
+                    title: "Vị trí đã chọn",
+                    animation: google.maps.Animation.DROP
+                });
+                
+                // Tạo autocomplete cho ô tìm kiếm sau khi bản đồ đã được tạo
+                setTimeout(() => {
+                    const input = document.getElementById("mapSearch");
+                    if (input) {
+                        autocomplete = new google.maps.places.Autocomplete(input);
+                        autocomplete.bindTo("bounds", map);
+                        
+                        // Sự kiện khi chọn một địa điểm từ autocomplete
+                        autocomplete.addListener("place_changed", () => {
+                            const place = autocomplete.getPlace();
+                            
+                            if (!place.geometry || !place.geometry.location) {
+                                return;
+                            }
+                            
+                            // Nếu nơi này có viewport thì hiển thị nó, không thì zoom đến vị trí
+                            if (place.geometry.viewport) {
+                                map.fitBounds(place.geometry.viewport);
+                            } else {
+                                map.setCenter(place.geometry.location);
+                                map.setZoom(17);
+                            }
+                            
+                            // Di chuyển marker đến vị trí mới
+                            marker.setPosition(place.geometry.location);
+                            
+                            // Cập nhật vị trí đã chọn
+                            selectedPosition = {
+                                lat: place.geometry.location.lat(),
+                                lng: place.geometry.location.lng(),
+                                address: place.formatted_address
+                            };
+                            
+                            // Hiển thị địa chỉ đã chọn
+                            showSelectedLocation();
+                            
+                            // Cập nhật input location
+                            document.getElementById("customLocation").value = place.formatted_address;
+                            
+                            // Đảm bảo tab custom location được chọn
+                            document.querySelectorAll('.delivery-option').forEach(option => {
+                                option.classList.remove('active');
+                            });
+                            document.querySelector('.delivery-option:nth-child(3)').classList.add('active');
+                        });
+                    }
+                }, 500);
+                
+                // Sự kiện khi click vào map
+                map.addListener("click", (e) => {
+                    // Lấy tọa độ của điểm click
+                    const clickedPosition = {
+                        lat: e.latLng.lat(),
+                        lng: e.latLng.lng()
+                    };
+                    
+                    // Di chuyển marker
+                    marker.setPosition(e.latLng);
+                    
+                    // Chuyển tọa độ thành địa chỉ
+                    geocodePosition(clickedPosition);
+                    
+                    // Đảm bảo tab custom location được chọn
+                    document.querySelectorAll('.delivery-option').forEach(option => {
+                        option.classList.remove('active');
+                    });
+                    document.querySelector('.delivery-option:nth-child(3)').classList.add('active');
+                });
+                
+                // Lưu trữ marker trong biến toàn cục để sử dụng sau này
+                window.currentMarker = marker;
+                
+                console.log("Google Maps đã được khởi tạo thành công!");
+            } catch (error) {
+                console.error("Lỗi khi khởi tạo bản đồ:", error);
+                // Hiển thị thông báo lỗi cho người dùng
+                mapElement.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <p>Không thể tải Google Maps. Vui lòng thử lại sau.</p>
+                        <button onclick="loadGoogleMaps()" class="btn-rent" style="max-width: 200px; margin: 10px auto;">
+                            <i class="fas fa-sync"></i> Thử lại
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        // Hàm chuyển đổi tọa độ thành địa chỉ
+        function geocodePosition(pos) {
+            geocoder.geocode({
+                location: pos
+            }, (results, status) => {
+                if (status === google.maps.GeocoderStatus.OK && results[0]) {
+                    // Cập nhật vị trí đã chọn
+                    selectedPosition = {
+                        lat: pos.lat,
+                        lng: pos.lng,
+                        address: results[0].formatted_address
+                    };
+                    
+                    // Hiển thị địa chỉ đã chọn
+                    showSelectedLocation();
+                    
+                    // Cập nhật input customLocation với địa chỉ đã chọn
+                    document.getElementById("customLocation").value = results[0].formatted_address;
+                    
+                    // Tùy chọn: hiển thị infowindow trên bản đồ
+                    if (infowindow) {
+                        infowindow.setContent(results[0].formatted_address);
+                        infowindow.open(map, window.currentMarker);
+                    }
+                } else {
+                    console.error('Không thể lấy địa chỉ từ vị trí này: ' + status);
+                }
+            });
+        }
+        
+        // Hiển thị địa chỉ đã chọn
+        function showSelectedLocation() {
+            const selectedLocationElement = document.getElementById("selectedLocation");
+            const selectedLocationTextElement = document.getElementById("selectedLocationText");
+            
+            if (selectedPosition && selectedPosition.address) {
+                selectedLocationElement.style.display = "block";
+                selectedLocationTextElement.textContent = selectedPosition.address;
+            } else {
+                selectedLocationElement.style.display = "none";
+            }
+        }
+        
+        // Lấy vị trí hiện tại của người dùng
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        
+                        map.setCenter(pos);
+                        map.setZoom(17);
+                        
+                        if (window.currentMarker) {
+                            window.currentMarker.setPosition(pos);
+                        }
+                        
+                        geocodePosition(pos);
+                    },
+                    (error) => {
+                        console.error("Lỗi khi lấy vị trí hiện tại:", error);
+                        alert("Không thể lấy vị trí hiện tại. Vui lòng kiểm tra quyền truy cập vị trí của trình duyệt.");
+                    }
+                );
+            } else {
+                alert("Trình duyệt của bạn không hỗ trợ định vị.");
+            }
+        }
+        
+        // Hàm tải Google Maps API
+        function loadGoogleMaps() {
+            const mapElement = document.getElementById("locationMap");
+            if (mapElement) {
+                mapElement.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <p>Đang tải bản đồ...</p>
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Xóa script cũ nếu có
+            const oldScript = document.getElementById("google-maps-api");
+            if (oldScript) {
+                oldScript.remove();
+            }
+            
+            // Tạo script mới
+            const script = document.createElement("script");
+            script.id = "google-maps-api";
+            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDaIUWnCuFx_EHEqade7WElJholfTrEONU&libraries=places&callback=initMap";
+            script.async = true;
+            script.defer = true;
+            
+            // Xử lý lỗi tải script
+            script.onerror = function() {
+                const mapElement = document.getElementById("locationMap");
+                if (mapElement) {
+                    mapElement.innerHTML = `
+                        <div style="text-align: center; padding: 20px;">
+                            <p>Không thể tải Google Maps. Vui lòng thử lại sau.</p>
+                            <button onclick="loadGoogleMaps()" class="btn-rent" style="max-width: 200px; margin: 10px auto;">
+                                <i class="fas fa-sync"></i> Thử lại
+                            </button>
+                        </div>
+                    `;
+                }
+            };
+            
+            // Thêm script vào document
+            document.head.appendChild(script);
         }
     </script>
 </head>
 <body>
-    <div class="header">
+    <header class="header">
         <div class="header-inner">
             <div class="logo-header">
-                <img src="../public/image/AutomotiveCar.png" alt="TKĐK" class="logo">
+                <a href="/public/index.html">
+                    <img src="/public/image/AutomotiveCar.png" alt="TKĐK Logo" class="logo">
+                </a>
             </div>
-            <div class="menu-header">
+            <nav class="menu-header">
                 <ul class="menu">
-                    <li class="menu-item"><a href="../public/index.html">Trang chủ</a></li>
-                    <li class="menu-item"><a href="Xe4cho.html">Xe 4 chỗ</a></li>
-                    <li class="menu-item"><a href="Xe7cho.html">Xe 7 chỗ</a></li>
-                    <li class="menu-item"><a href="Xe16cho.html">Xe 16 chỗ</a></li>
-                    <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
+                    <li class="menu-item"><a href="/public/index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
+                    <li class="menu-item"><a href="/public/index.html#gioithieu"><i class="fas fa-info-circle"></i> Giới thiệu</a></li>
+                    <li class="menu-item">
+                        <a href="#"><i class="fas fa-car"></i> Dịch vụ <i class="fas fa-chevron-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="/views/Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="/views/Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="/views/Xe16cho.html">Thuê xe 16 chỗ</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item"><a href="/views/DanhSachXeChoThue.html"><i class="fas fa-list"></i> Danh sách xe</a></li>
+                    <li class="menu-item"><a href="/views/LienHe.html"><i class="fas fa-phone"></i> Liên hệ</a></li>
                 </ul>
+            </nav>
+            <div class="login-header guest-only">
+                <a href="/views/login.html" class="btn btn-login">
+                    <i class="fas fa-user"></i> Đăng nhập
+                </a>
             </div>
         </div>
+    </header>
+    
+    <!-- Debug Information Panel -->
+    <div id="debug-info" style="background: #f8d7da; color: #721c24; padding: 10px; margin: 100px 10px 10px 10px; border-radius: 5px;">
+        <h3>Debug Information</h3>
+        <p>Car ID: <span id="debug-car-id">Loading...</span></p>
+        <p>API Status: <span id="debug-api-status">Not called yet</span></p>
+        <button onclick="fetchCarDetails()" style="padding: 5px 10px;">Thử lại tải dữ liệu xe</button>
     </div>
 
-    <div class="car-detail-container">
-        <!-- Phần hình ảnh -->
-        <div class="car-images-section">
-            <img src="../public/image/MercedesC300.png" alt="Mercedes C300" class="main-image" id="mainImage">
+    <!-- Main Content -->
+    <main class="car-detail-container">
+        <!-- Car Images Section -->
+        <section class="car-images-section">
+            <img id="mainImage" src="/public/image/lazy.svg" alt="Hình ảnh xe" class="main-image">
             <div class="image-gallery">
-                <img src="../public/image/MercedesC300.png" alt="Mercedes C300 - 1" class="thumbnail active" onclick="changeImage(this)">
-                <img src="../public/image/MercedesC300.png" alt="Mercedes C300 - 2" class="thumbnail" onclick="changeImage(this)">
-                <img src="../public/image/MercedesC300.png" alt="Mercedes C300 - 3" class="thumbnail" onclick="changeImage(this)">
-                <img src="../public/image/MercedesC300.png" alt="Mercedes C300 - 4" class="thumbnail" onclick="changeImage(this)">
+                <!-- Thumbnails will be added dynamically -->
             </div>
-        </div>
+        </section>
 
-        <!-- Phần content và form -->
+        <!-- Grid Layout for Content and Form -->
         <div class="content-form-grid">
-            <!-- Phần content bên trái -->
+            <!-- Car Content Section (Left) -->
             <div class="car-content">
                 <div class="car-header">
-                    <h1 class="car-title">Mercedes C300 AMG</h1>
-                   
+                    <h1 class="car-title">Đang tải thông tin xe...</h1>
+                    <div class="car-price">Đang tải...</div>
                     <span class="car-status status-available">
                         <i class="fas fa-check-circle"></i>
-                        Có sẵn để thuê
+                        Đang kiểm tra tình trạng
                     </span>
                 </div>
 
+                <!-- Owner Information -->
                 <div class="owner-info">
-                    <img src="https://ui-avatars.com/api/?name=Chu+Xe&background=2563eb&color=fff" alt="Chủ xe" class="owner-avatar">
+                    <img src="/public/image/lazy.svg" alt="Owner" class="owner-avatar">
                     <div class="owner-details">
-                        <h4>Chủ xe: Minh Nhự</h4>
-                        <p>Tỉ lệ phản hồi: 98% · Thời gian phản hồi: 5 phút</p>
-                    </div>
-                </div>
-                <h3 style="margin-bottom: 10px;">Đặc điểm</h3>
-                <div class="car-details">
-                
-                    <div class="detail-item">
-                        <div class="detail-icon">
-                            <i class="fas fa-car"></i>
-                        </div>
-                        <div class="detail-info">
-                            <h4>Hãng xe</h4>
-                            <p>Mercedes-Benz</p>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon">
-                            <i class="fa-solid fa-chair"></i>
-                        </div>
-                        <div class="detail-info">
-                            <h4>Số ghế</h4>
-                            <p>4 chỗ</p>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon">
-                            <i class="fas fa-cog"></i>
-                        </div>
-                        <div class="detail-info">
-                            <h4>Hộp số</h4>
-                            <p>Tự động</p>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon">
-                            <i class="fas fa-gas-pump"></i>
-                        </div>
-                        <div class="detail-info">
-                            <h4>Nhiên liệu</h4>
-                            <p>Xăng</p>
-                        </div>
+                        <h4>Chủ xe: Đang tải thông tin...</h4>
+                        <p>Liên hệ: <span id="ownerContact">Đang tải thông tin...</span></p>
                     </div>
                 </div>
 
-                <div class="car-description">
-                    <h3>Mô tả</h3>
-                    <p>Mercedes C300 AMG 2023 là một trong những mẫu sedan hạng sang được ưa chuộng nhất. Xe được trang bị động cơ 2.0L mạnh mẽ, nội thất sang trọng với nhiều công nghệ hiện đại, mang lại trải nghiệm lái tuyệt vời cho người thuê.</p>
+                <!-- Car Details -->
+                <h3>Thông số kỹ thuật</h3>
+                <div class="car-details">
+                    <!-- Car details will be added dynamically -->
                 </div>
-                <h3 style="margin-bottom: 10px;">Các tiện nghi </h3>
+
+                <!-- Car Description -->
+                <div class="car-description">
+                    <h3>Mô tả xe</h3>
+                    <p>Đang tải mô tả xe...</p>
+                </div>
+
+                <!-- Car Features -->
+                <h3>Tính năng nổi bật</h3>
                 <div class="features-list">
-                    <div class="feature-item">
-                        <i class="fas fa-check"></i>
-                        <span>Định vị GPS</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check"></i>
-                        <span>Camera 360°</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check"></i>
-                        <span>Cảm biến lùi</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check"></i>
-                        <span>Bluetooth</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check"></i>
-                        <span>Bảo hiểm 2 chiều</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check"></i>
-                        <span>Ghế da cao cấp</span>
-                    </div>
+                    <!-- Features will be added dynamically -->
                 </div>
             </div>
 
-            <!-- Form đặt xe bên phải -->
-            <div class="rental-form-section">
+            <!-- Rental Form Section (Right) -->
+            <section class="rental-form-section">
                 <div class="rental-form">
-                    <div class="car-price">6,200,000đ/ngày</div>
+                    <h3>Đặt thuê xe</h3>
                     <div class="form-grid">
-                        
                         <div class="form-group">
-                           
                             <label for="startDate">Ngày bắt đầu</label>
                             <input type="date" id="startDate" class="form-control" required>
                         </div>
@@ -773,44 +944,33 @@
                             <input type="date" id="endDate" class="form-control" required>
                         </div>
                     </div>
-
-                    <div class="form-group" style="margin-bottom: 1rem;">
+                    <div class="form-group">
                         <label for="deliveryLocation">Địa điểm giao nhận xe</label>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="deliveryLocation" class="form-control" readonly 
-                                placeholder="Chọn địa điểm giao nhận xe" 
-                                onclick="openLocationPopup()"
-                                style="background-color: #fff; cursor: pointer;">
-                        </div>
+                        <input type="text" id="deliveryLocation" class="form-control" readonly placeholder="Chọn địa điểm giao nhận xe" onclick="openLocationPopup()">
                     </div>
-
-                    <div class="form-group" style="margin-bottom: 1rem;">
-                        <label for="promoCode">Mã khuyến mãi</label>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="promoCode" class="form-control" placeholder="Nhập mã khuyến mãi">
-                            <button onclick="checkPromoCode()" class="btn-check-promo" style="padding: 0.75rem 1rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer;">
-                                Áp dụng
-                            </button>
-                        </div>
-                        <span id="promoMessage" style="font-size: 0.875rem; margin-top: 0.5rem; display: none;"></span>
+                    <div class="form-group">
+                        <label for="promoCode">Mã khuyến mãi (nếu có)</label>
+                        <input type="text" id="promoCode" class="form-control" placeholder="Nhập mã khuyến mãi">
+                        <div id="promoMessage" style="margin-top: 0.5rem; font-size: 0.875rem; display: none;"></div>
                     </div>
 
                     <div class="price-calculator">
+                        <h4>Chi tiết giá</h4>
                         <div class="price-item">
-                            <span>Giá thuê (3 ngày)</span>
-                            <span>18,600,000đ</span>
+                            <span>Giá thuê</span>
+                            <span>0 VNĐ</span>
                         </div>
                         <div class="price-item">
                             <span>Phí dịch vụ</span>
-                            <span>100,000đ</span>
+                            <span>100.000 VNĐ</span>
                         </div>
                         <div class="price-item">
                             <span>Giảm giá</span>
-                            <span>-100,000đ</span>
+                            <span>0 VNĐ</span>
                         </div>
                         <div class="price-total">
                             <span>Tổng cộng</span>
-                            <span>18,600,000đ</span>
+                            <span>0 VNĐ</span>
                         </div>
                     </div>
 
@@ -819,113 +979,578 @@
                         Thuê xe ngay
                     </button>
                 </div>
-            </div>
+            </section>
         </div>
-    </div>
+    </main>
 
-    <div class="overlay" id="overlay"></div>
-    <div class="promo-popup" id="promoPopup">
-        <span class="close" onclick="closePromoPopup()">&times;</span>
-        <h3>Chọn mã khuyến mãi</h3>
-        <div class="promo-list">
-            <div class="promo-item" onclick="selectPromo('DISCOUNT10', '10%')">
-                <div class="promo-icon">
-                    <i class="fas fa-ticket-alt"></i>
-                </div>
-                <div class="promo-info">
-                    <div class="promo-code">DISCOUNT10</div>
-                    <div class="promo-description">Giảm 10% tổng giá trị đơn hàng</div>
-                </div>
-                <button class="promo-action">Áp dụng</button>
-            </div>
-            <div class="promo-item" onclick="selectPromo('DISCOUNT20', '20%')">
-                <div class="promo-icon">
-                    <i class="fas fa-ticket-alt"></i>
-                </div>
-                <div class="promo-info">
-                    <div class="promo-code">DISCOUNT20</div>
-                    <div class="promo-description">Giảm 20% tổng giá trị đơn hàng</div>
-                </div>
-                <button class="promo-action">Áp dụng</button>
-            </div>
-            <div class="promo-item" onclick="selectPromo('SUMMER2025', '15%')">
-                <div class="promo-icon">
-                    <i class="fas fa-ticket-alt"></i>
-                </div>
-                <div class="promo-info">
-                    <div class="promo-code">SUMMER2025</div>
-                    <div class="promo-description">Giảm 15% cho chương trình hè 2025</div>
-                </div>
-                <button class="promo-action">Áp dụng</button>
-            </div>
-        </div>
-    </div>
+    <!-- Overlay for Popups -->
+    <div id="overlay" class="overlay"></div>
 
-    <!-- Popup địa điểm giao nhận xe -->
-    <div class="location-popup" id="locationPopup">
-        <span class="close" onclick="closeLocationPopup()">&times;</span>
-        <h3>Địa điểm giao nhận xe</h3>
+    <!-- Location Popup -->
+    <div id="locationPopup" class="location-popup">
+        <h3>Chọn địa điểm giao nhận xe</h3>
         
-        <div class="location-map" id="locationMap">
-            <!-- Map sẽ được load vào đây -->
+        <div class="map-controls">
+            <input type="text" id="mapSearch" class="map-search" placeholder="Tìm kiếm địa điểm...">
+            <button onclick="getCurrentLocation()" class="btn-rent" style="padding: 0.5rem; width: auto; margin: 0;">
+                <i class="fas fa-location-arrow"></i>
+            </button>
         </div>
-
+        
+        <div id="locationMap" style="position: relative; height: 300px; border-radius: 12px; overflow: hidden;">
+            <div style="text-align: center; padding-top: 120px;">
+                <p>Đang tải bản đồ...</p>
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="selectedLocation" class="selected-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span id="selectedLocationText">Chưa chọn địa điểm</span>
+        </div>
+        
         <div class="delivery-options">
-            <div class="delivery-option active" onclick="selectDeliveryOption(this, 'address')">
-                <input type="radio" name="deliveryType" value="address" checked>
-                <div class="delivery-info">
-                    <div class="delivery-title">Nhận xe tại vị trí xe</div>
-                    <div class="delivery-description">
-                        Quận Bình Thạnh, TP Hồ Chí Minh
-                    </div>
-                    <div class="delivery-description">
-                        Bạn sẽ nhận và trả xe tại vị trí xe (Địa chỉ cụ thể sẽ được hiển thị sau khi thanh toán thành công)
-                    </div>
-                </div>
+            <div class="delivery-option active" onclick="selectDeliveryOption(this, 'default')">
+                <h4 class="delivery-title">Tại trụ sở công ty - HuTech</h4>
+                <input type="hidden" value="default">
+                <p>Giao nhận xe tại địa điểm mặc định</p>
             </div>
-
-            <div class="delivery-option" onclick="selectDeliveryOption(this, 'custom')">
-                <input type="radio" name="deliveryType" value="custom">
-                <div class="delivery-info">
-                    <div class="delivery-title">Chọn tự bản đồ</div>
-                    <div class="location-search">
-                        <input type="text" placeholder="Chọn địa chỉ giao nhận xe" id="customLocation">
-                    </div>
-                </div>
-            </div>
-
             <div class="delivery-option" onclick="selectDeliveryOption(this, 'airport')">
-                <input type="radio" name="deliveryType" value="airport">
-                <div class="delivery-info">
-                    <div class="delivery-title">Giao xe sân bay</div>
-                    <div class="delivery-description">Tân Sơn Nhất</div>
-                </div>
+                <h4 class="delivery-title">Sân bay Tân Sơn Nhất</h4>
+                <input type="hidden" value="airport">
+                <p>Giao nhận xe tại sân bay (Phí: 150.000đ)</p>
+            </div>
+            <div class="delivery-option" onclick="selectDeliveryOption(this, 'custom')">
+                <h4 class="delivery-title">Địa điểm tùy chọn</h4>
+                <input type="hidden" value="custom">
+                <p>Chọn vị trí trên bản đồ hoặc nhập địa chỉ</p>
+                <input type="text" id="customLocation" class="form-control" placeholder="Nhập địa chỉ...">
             </div>
         </div>
-
-        <div class="delivery-details">
-            Giao xe tận nơi trong: <span id="deliveryRadius">10</span> km<br>
-            Phí giao nhận xe (2 chiều): <span id="deliveryFee">15.000đ/km</span>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button class="btn-rent" style="background: var(--error-color)" onclick="closeLocationPopup()">Hủy</button>
+            <button class="btn-rent" onclick="confirmLocation()">Xác nhận</button>
         </div>
+    </div>
 
-        <button class="btn-confirm-location" onclick="confirmLocation()">Thay đổi</button>
+    <!-- Promo Popup -->
+    <div id="promoPopup" class="promo-popup">
+        <h3>Mã khuyến mãi có sẵn</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0;">
+            <div class="delivery-option" onclick="selectPromo('DISCOUNT10', 10)">
+                <h4>DISCOUNT10</h4>
+                <p>Giảm 10% tổng giá trị đơn hàng</p>
+            </div>
+            <div class="delivery-option" onclick="selectPromo('DISCOUNT20', 20)">
+                <h4>DISCOUNT20</h4>
+                <p>Giảm 20% tổng giá trị đơn hàng</p>
+            </div>
+            <div class="delivery-option" onclick="selectPromo('SUMMER2025', 15)">
+                <h4>SUMMER2025</h4>
+                <p>Giảm 15% cho chương trình hè 2025</p>
+            </div>
+        </div>
+        
+        <button class="btn-rent" onclick="closePromoPopup()">Đóng</button>
     </div>
 
     <script>
-        function changeImage(element) {
-            document.getElementById('mainImage').src = element.src;
-            document.querySelectorAll('.thumbnail').forEach(thumb => {
-                thumb.classList.remove('active');
+        // Các biến toàn cục
+        let currentDiscount = 0;
+        
+        // Lấy ID xe từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const carId = urlParams.get('id');
+        console.log('Car ID from URL:', carId);
+
+        // Thiết lập debug info
+        document.addEventListener('DOMContentLoaded', function() {
+            const debugCarId = document.getElementById('debug-car-id');
+            if (debugCarId) {
+                debugCarId.textContent = carId || 'Không tìm thấy';
+            }
+            
+            // Tải dữ liệu xe
+            fetchCarDetails();
+            
+            // Thiết lập ngày tối thiểu cho form
+            setupDateInputs();
+            
+            // Thiết lập sự kiện đổi ngày
+            document.getElementById('startDate').addEventListener('change', updatePrice);
+            document.getElementById('endDate').addEventListener('change', updatePrice);
+            
+            // Ẩn panel debug sau 3 giây nếu không có lỗi
+            setTimeout(() => {
+                const debugInfo = document.getElementById('debug-info');
+                const debugApiStatus = document.getElementById('debug-api-status');
+                if (debugInfo && debugApiStatus && !debugApiStatus.textContent.includes('Lỗi')) {
+                    debugInfo.style.display = 'none';
+                }
+            }, 3000);
+        });
+
+        // Hàm lấy chi tiết xe từ API
+        async function fetchCarDetails() {
+            try {
+                console.log('Đang lấy thông tin xe có ID:', carId);
+                
+                // Kiểm tra ID xe
+                if (!carId) {
+                    console.error('Không tìm thấy ID xe trong URL');
+                    document.getElementById('debug-api-status').textContent = 'Lỗi: Thiếu ID xe';
+                    alert('Không tìm thấy ID xe. Vui lòng quay lại danh sách xe và thử lại.');
+                    return;
+                }
+                
+                // Tạo URL API
+                const apiUrl = `/api/cars/${carId}`;
+                console.log('URL API:', apiUrl);
+                
+                // Gửi request đến API với timeout 5 giây
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                
+                try {
+                    const response = await fetch(apiUrl, { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    
+                    console.log('Trạng thái phản hồi API:', response.status, response.statusText);
+                    
+                    // Cập nhật debug info
+                    const debugApiStatus = document.getElementById('debug-api-status');
+                    if (debugApiStatus) {
+                        debugApiStatus.textContent = `${response.status} - ${response.statusText}`;
+                    }
+                    
+                    if (!response.ok) {
+                        throw new Error(`Lỗi HTTP! Trạng thái: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    console.log('Dữ liệu xe nhận được:', data);
+                    
+                    if (data && data.success) {
+                        // Hiển thị chi tiết xe từ API
+                        displayCarDetails(data);
+                    } else {
+                        console.error('API trả về thành công nhưng dữ liệu không hợp lệ:', data);
+                        throw new Error('Dữ liệu API không hợp lệ');
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error.message);
+                    
+                    // Cập nhật debug info
+                    const debugApiStatus = document.getElementById('debug-api-status');
+                    if (debugApiStatus) {
+                        debugApiStatus.textContent = `Lỗi: ${error.message}`;
+                    }
+                    
+                    // Hiển thị dữ liệu mẫu khi API không hoạt động
+                    displaySampleCarDetails();
+                }
+            } catch (error) {
+                console.error('Lỗi khi lấy thông tin xe:', error);
+                
+                // Hiển thị dữ liệu mẫu nếu có lỗi
+                displaySampleCarDetails();
+            }
+        }
+
+        // Hàm hiển thị dữ liệu mẫu khi API không hoạt động
+        function displaySampleCarDetails() {
+            console.log('Đang sử dụng dữ liệu mẫu cho xe ID:', carId);
+            
+            // Tạo dữ liệu mẫu dựa trên ID
+            let car = null;
+            
+            switch(carId) {
+                case '1':
+                    car = {
+                        id: 1,
+                        ten_xe: 'Mercedes C300 AMG 2024',
+                        hinh_anh: ['/public/image/MercedesC300.png'],
+                        so_cho: 4,
+                        hop_so: 'tu_dong',
+                        nhien_lieu: 'xang',
+                        gia_thue: 2000000,
+                        mo_ta: 'Mercedes C300 AMG là mẫu sedan hạng sang với thiết kế thể thao, động cơ mạnh mẽ và trang bị tiện nghi cao cấp. Xe phù hợp cho những người yêu thích trải nghiệm lái xe đẳng cấp.',
+                        hang_xe: 'Mercedes',
+                        ten_chu_xe: 'TKĐK Car Rental',
+                        lien_he_chu_xe: '0397468827',
+                        danh_gia: '4.8',
+                        tinh_trang: 'san_sang',
+                        features: ['Hệ thống âm thanh 12 loa', 'Cửa sổ trời panorama', 'Ghế da cao cấp', 'Hệ thống lái trợ lực điện', 'Camera 360 độ', 'Cảm biến đỗ xe']
+                    };
+                    break;
+                
+                case '2':
+                    car = {
+                        id: 2,
+                        ten_xe: 'VinFast VF6 2024',
+                        hinh_anh: ['/public/image/VINFASTvf62024.png'],
+                        so_cho: 5,
+                        hop_so: 'tu_dong',
+                        nhien_lieu: 'dien',
+                        gia_thue: 1500000,
+                        mo_ta: 'VinFast VF6 là mẫu SUV điện cỡ trung với thiết kế hiện đại, không gian nội thất rộng rãi và công nghệ thông minh. Xe phù hợp cho gia đình và di chuyển trong đô thị.',
+                        hang_xe: 'VinFast',
+                        ten_chu_xe: 'TKĐK Car Rental',
+                        lien_he_chu_xe: '0397468827',
+                        danh_gia: '4.9',
+                        tinh_trang: 'san_sang',
+                        features: ['Màn hình cảm ứng 15.6 inch', 'Hệ thống hỗ trợ lái nâng cao', 'Pin LFP dung lượng lớn', 'Trợ lý ảo thông minh', 'Sạc nhanh 70% trong 30 phút', 'Cảm biến va chạm 360 độ']
+                    };
+                    break;
+                    
+                case '3':
+                    car = {
+                        id: 3,
+                        ten_xe: 'Ford Transit 16 Chỗ',
+                        hinh_anh: ['/public/image/Xe16Cho.png'],
+                        so_cho: 16,
+                        hop_so: 'so_san',
+                        nhien_lieu: 'dau',
+                        gia_thue: 2500000,
+                        mo_ta: 'Ford Transit 16 chỗ là mẫu xe thương mại phù hợp cho việc đưa đón nhân viên, du lịch nhóm hoặc chở khách. Với thiết kế rộng rãi, bền bỉ và tiết kiệm nhiên liệu.',
+                        hang_xe: 'Ford',
+                        ten_chu_xe: 'TKĐK Car Rental',
+                        lien_he_chu_xe: '0397468827',
+                        danh_gia: '4.7',
+                        tinh_trang: 'dang_thue',
+                        features: ['16 ghế ngồi thoải mái', 'Máy lạnh 2 dàn', 'Hệ thống âm thanh 6 loa', 'Cửa lùa hai bên', 'Động cơ diesel tiết kiệm', 'Hệ thống phanh ABS']
+                    };
+                    break;
+                    
+                case '4':
+                    car = {
+                        id: 4,
+                        ten_xe: 'Toyota Camry 2.5Q 2024',
+                        hinh_anh: ['/public/image/ToyotaCamry.png'],
+                        so_cho: 5,
+                        hop_so: 'tu_dong',
+                        nhien_lieu: 'xang',
+                        gia_thue: 1800000,
+                        mo_ta: 'Toyota Camry là mẫu sedan hạng D nổi tiếng với độ bền bỉ, không gian rộng rãi và tiện nghi cao cấp. Phiên bản 2.5Q sở hữu động cơ mạnh mẽ và nhiều tính năng an toàn hiện đại.',
+                        hang_xe: 'Toyota',
+                        ten_chu_xe: 'TKĐK Car Rental',
+                        lien_he_chu_xe: '0397468827',
+                        danh_gia: '4.9',
+                        tinh_trang: 'san_sang',
+                        features: ['Màn hình giải trí 9 inch', 'Camera 360', 'Cửa sổ trời', 'Ghế da cao cấp', 'Hệ thống âm thanh JBL', 'Cảm biến đỗ xe']
+                    };
+                    break;
+                    
+                case '5':
+                    car = {
+                        id: 5,
+                        ten_xe: 'Toyota Fortuner 2.8AT 4x4 2023',
+                        hinh_anh: ['/public/image/ToyotaFortuner.jpeg'],
+                        so_cho: 7,
+                        hop_so: 'tu_dong',
+                        nhien_lieu: 'dau',
+                        gia_thue: 1600000,
+                        mo_ta: 'Toyota Fortuner là mẫu SUV đa dụng 7 chỗ với khả năng off-road vượt trội. Phiên bản 2.8AT 4x4 với động cơ dầu mạnh mẽ, hệ dẫn động 4 bánh và trang bị tiện nghi đầy đủ.',
+                        hang_xe: 'Toyota',
+                        ten_chu_xe: 'TKĐK Car Rental',
+                        lien_he_chu_xe: '0397468827',
+                        danh_gia: '4.8',
+                        tinh_trang: 'san_sang',
+                        features: ['Dẫn động 4 bánh', 'Màn hình giải trí 8 inch', 'Ghế bọc da', 'Camera lùi', 'Cruise Control', 'Hệ thống kiểm soát lực kéo']
+                    };
+                    break;
+                    
+                default:
+                    // Xe mặc định nếu không khớp với ID nào
+                    car = {
+                        id: carId,
+                        ten_xe: 'Xe mẫu',
+                        hinh_anh: ['/public/image/lazy.svg'],
+                        so_cho: 4,
+                        hop_so: 'tu_dong',
+                        nhien_lieu: 'xang',
+                        gia_thue: 1000000,
+                        mo_ta: 'Thông tin chi tiết về xe chưa được cập nhật.',
+                        hang_xe: 'TKĐK',
+                        ten_chu_xe: 'TKĐK Car Rental',
+                        lien_he_chu_xe: '0397468827',
+                        danh_gia: '5.0',
+                        tinh_trang: 'san_sang',
+                        features: [
+                            'Bảo hiểm 2 chiều',
+                            'Giao xe tận nơi',
+                            'Bluetooth/USB/AUX',
+                            'Bản đồ dẫn đường',
+                            'Camera lùi',
+                            'Cảm biến va chạm'
+                        ]
+                    };
+            }
+            
+            const mockData = {
+                success: true,
+                message: 'Lấy thông tin xe thành công (dữ liệu mẫu)',
+                data: car
+            };
+            
+            // Hiển thị dữ liệu mẫu
+            displayCarDetails(mockData);
+        }
+
+        // Hiển thị chi tiết xe
+        function displayCarDetails(carData) {
+            if (!carData || !carData.success || !carData.data) {
+                console.error('Nhận được dữ liệu không hợp lệ:', carData);
+                return;
+            }
+
+            // Lấy dữ liệu xe từ phản hồi API
+            const car = carData.data;
+            console.log('Đang xử lý dữ liệu xe:', car);
+
+            // Cập nhật tiêu đề trang
+            document.title = `${car.ten_xe} - TKĐK Car Rental`;
+
+            // Cập nhật hình ảnh chính và thumbnail
+            const mainImage = document.getElementById('mainImage');
+            const imageGallery = document.querySelector('.image-gallery');
+            
+            // Xử lý hình ảnh - nếu hinh_anh là mảng, sử dụng trực tiếp, nếu không tạo mảng với hình ảnh đơn lẻ
+            let carImages = [];
+            
+            if (Array.isArray(car.hinh_anh)) {
+                carImages = car.hinh_anh;
+            } else if (car.hinh_anh) {
+                carImages = [car.hinh_anh];
+            } else {
+                carImages = ['/public/image/lazy.svg'];
+            }
+            
+            // Xử lý đường dẫn hình ảnh để đảm bảo chúng đầy đủ
+            carImages = carImages.map(img => {
+                if (img.startsWith('/image/')) {
+                    return '/public' + img;
+                }
+                if (!img.startsWith('/') && !img.startsWith('http')) {
+                    return '/public/image/' + img;
+                }
+                return img;
             });
-            element.classList.add('active');
+            
+            // Thiết lập hình ảnh chính
+            mainImage.src = carImages[0] || '/public/image/lazy.svg';
+            mainImage.alt = car.ten_xe;
+            
+            // Thiết lập thumbnails
+            imageGallery.innerHTML = carImages.map((image, index) => `
+                <img src="${image}" 
+                     alt="${car.ten_xe} - ${index + 1}" 
+                     class="thumbnail ${index === 0 ? 'active' : ''}" 
+                     onclick="changeImage(this)"
+                     onerror="this.src='/public/image/lazy.svg'">
+            `).join('');
+
+            // Cập nhật thông tin xe
+            document.querySelector('.car-title').textContent = car.ten_xe;
+            document.querySelector('.car-price').textContent = `${formatCurrency(car.gia_thue)}/ngày`;
+            
+            // Cập nhật trạng thái xe
+            const statusElement = document.querySelector('.car-status');
+            if (car.tinh_trang === 'san_sang') {
+                statusElement.innerHTML = '<i class="fas fa-check-circle"></i> Có sẵn';
+                statusElement.className = 'car-status status-available';
+                
+                // Đảm bảo nút thuê xe hoạt động
+                const rentButton = document.querySelector('.btn-rent');
+                rentButton.disabled = false;
+                rentButton.innerHTML = '<i class="fas fa-car"></i> Thuê xe ngay';
+            } else {
+                statusElement.innerHTML = '<i class="fas fa-clock"></i> Đã được thuê';
+                statusElement.className = 'car-status status-unavailable';
+                
+                // Vô hiệu hóa nút thuê xe
+                const rentButton = document.querySelector('.btn-rent');
+                rentButton.disabled = true;
+                rentButton.innerHTML = 'Xe đã được thuê';
+            }
+            
+            // Cập nhật thông tin chủ xe
+            document.querySelector('.owner-details h4').textContent = `Chủ xe: ${car.ten_chu_xe || 'TKĐK Car Rental'}`;
+            document.getElementById('ownerContact').textContent = car.lien_he_chu_xe || '0397468827';
+            
+            // Xử lý loại hộp số và nhiên liệu
+            let hopSoText = 'Số sàn';
+            if (car.hop_so === 'tu_dong') {
+                hopSoText = 'Tự động';
+            }
+            
+            let nhienLieuText = 'Xăng';
+            switch(car.nhien_lieu) {
+                case 'xang': nhienLieuText = 'Xăng'; break;
+                case 'dau': nhienLieuText = 'Dầu'; break;
+                case 'dien': nhienLieuText = 'Điện'; break;
+                case 'hybrid': nhienLieuText = 'Hybrid'; break;
+            }
+            
+            // Cập nhật chi tiết xe
+            const detailsHTML = `
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="detail-info">
+                        <h4>Hãng xe</h4>
+                        <p>${car.hang_xe}</p>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fa-solid fa-chair"></i>
+                    </div>
+                    <div class="detail-info">
+                        <h4>Số ghế</h4>
+                        <p>${car.so_cho} chỗ</p>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="detail-info">
+                        <h4>Hộp số</h4>
+                        <p>${hopSoText}</p>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-gas-pump"></i>
+                    </div>
+                    <div class="detail-info">
+                        <h4>Nhiên liệu</h4>
+                        <p>${nhienLieuText}</p>
+                    </div>
+                </div>
+            `;
+            document.querySelector('.car-details').innerHTML = detailsHTML;
+
+            // Cập nhật mô tả xe
+            document.querySelector('.car-description p').textContent = car.mo_ta || 'Không có mô tả cho xe này.';
+
+            // Cập nhật danh sách tính năng với các tính năng mặc định nếu không được cung cấp
+            const defaultFeatures = [
+                'Bảo hiểm 2 chiều',
+                'Giao xe tận nơi',
+                'Bluetooth/USB/AUX',
+                'Bản đồ dẫn đường',
+                'Camera lùi',
+                'Cảm biến va chạm'
+            ];
+            
+            const featuresHTML = (car.features || defaultFeatures).map(feature => `
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>${feature}</span>
+                </div>
+            `).join('');
+            document.querySelector('.features-list').innerHTML = featuresHTML;
+
+            // Cập nhật bộ tính giá thuê
+            updatePrice();
+        }
+
+        // Thiết lập ngày tối thiểu cho form đặt xe
+        function setupDateInputs() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            
+            if (startDateInput && endDateInput) {
+                startDateInput.min = today.toISOString().split('T')[0];
+                endDateInput.min = tomorrow.toISOString().split('T')[0];
+                
+                // Thiết lập ngày mặc định
+                startDateInput.value = today.toISOString().split('T')[0];
+                endDateInput.value = tomorrow.toISOString().split('T')[0];
+            }
+        }
+
+        // Cập nhật chức năng tính giá
+        function updatePrice() {
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            
+            if (!startDateInput || !endDateInput) return;
+            
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+
+            if (startDate && endDate && startDate < endDate) {
+                const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                
+                // Lấy giá từ hiển thị hiện tại hoặc giá trị mặc định
+                let basePricePerDay = 0;
+                const priceText = document.querySelector('.car-price').textContent;
+                const match = priceText.match(/([0-9,.]+)/);
+                if (match) {
+                    basePricePerDay = parseInt(match[0].replace(/[,.]/g, ''));
+                }
+                
+                const totalRent = basePricePerDay * days;
+                const serviceFee = 100000;
+                const total = totalRent + serviceFee - currentDiscount;
+
+                // Cập nhật hiển thị giá
+                const priceItems = document.querySelectorAll('.price-item span:last-child');
+                if (priceItems.length >= 3) {
+                    priceItems[0].textContent = `${formatCurrency(totalRent)}`;
+                    priceItems[2].textContent = `${formatCurrency(-currentDiscount)}`;
+                }
+                
+                const totalElement = document.querySelector('.price-total span:last-child');
+                if (totalElement) {
+                    totalElement.textContent = `${formatCurrency(total)}`;
+                }
+            }
+        }
+
+        // Các hàm bổ trợ
+        function changeImage(element) {
+            const mainImage = document.getElementById('mainImage');
+            if (mainImage) {
+                mainImage.src = element.src;
+                
+                document.querySelectorAll('.thumbnail').forEach(thumb => {
+                    thumb.classList.remove('active');
+                });
+                element.classList.add('active');
+            }
         }
 
         function rentCar() {
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
-
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            const deliveryLocationInput = document.getElementById('deliveryLocation');
+            
+            if (!startDateInput || !endDateInput || !deliveryLocationInput) return;
+            
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+            const location = deliveryLocationInput.value;
+            
             if (!startDate || !endDate) {
-                alert('Vui lòng chọn ngày thuê xe');
+                alert('Vui lòng chọn ngày bắt đầu và kết thúc');
+                return;
+            }
+            
+            if (!location) {
+                alert('Vui lòng chọn địa điểm giao nhận xe');
                 return;
             }
 
@@ -937,58 +1562,51 @@
                 return;
             }
 
-            // TODO: Implement booking logic
-            alert('Đang xử lý yêu cầu thuê xe...');
+            // Lấy thông tin giá từ các phần tử hiện tại
+            const basePriceText = document.querySelector('.price-item:first-child span:last-child').textContent;
+            const totalText = document.querySelector('.price-total span:last-child').textContent;
+            
+            // Trích xuất giá trị số
+            const basePrice = parseInt(basePriceText.replace(/[^\d]/g, ''));
+            const total = parseInt(totalText.replace(/[^\d]/g, ''));
+            const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+            
+            // Chuyển hướng đến trang HoaDon.html với các tham số
+            const params = new URLSearchParams({
+                carId: carId,
+                startDate: startDate,
+                endDate: endDate,
+                location: location,
+                totalAmount: total,
+                basePrice: basePrice,
+                serviceFee: 100000,
+                discount: currentDiscount,
+                days: days
+            });
+            
+            window.location.href = `HoaDon.html?${params.toString()}`;
         }
 
-        // Calculate rental duration and update price
-        let currentDiscount = 0;
-        function updatePrice() {
-            const startDate = new Date(document.getElementById('startDate').value);
-            const endDate = new Date(document.getElementById('endDate').value);
-
-            if (startDate && endDate && startDate < endDate) {
-                const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-                const basePrice = 6200000; // Price per day
-                const totalRent = basePrice * days;
-                const serviceFee = 100000;
-                const total = totalRent + serviceFee - currentDiscount;
-
-                document.querySelector('.price-item:first-child span:last-child').textContent = 
-                    `${formatCurrency(totalRent)}`;
-                document.querySelector('.price-item:nth-child(3) span:last-child').textContent = 
-                    `${formatCurrency(-currentDiscount)}`;
-                document.querySelector('.price-total span:last-child').textContent = 
-                    `${formatCurrency(total)}`;
-            }
-        }
-
-        // Format currency in VND
+        // Định dạng tiền tệ VND
         function formatCurrency(amount) {
             return new Intl.NumberFormat('vi-VN', {
                 style: 'currency',
-                currency: 'VND'
+                currency: 'VND',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
             }).format(amount);
         }
 
-        // Add event listeners for date inputs
-        document.getElementById('startDate').addEventListener('change', updatePrice);
-        document.getElementById('endDate').addEventListener('change', updatePrice);
-
-        // Set minimum dates
-        const today = new Date();
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-
-        document.getElementById('startDate').min = today.toISOString().split('T')[0];
-        document.getElementById('endDate').min = tomorrow.toISOString().split('T')[0];
-
-        // Check promo code
+        // Kiểm tra mã khuyến mãi
         function checkPromoCode() {
-            const promoCode = document.getElementById('promoCode').value.trim().toUpperCase();
+            const promoCodeInput = document.getElementById('promoCode');
             const promoMessage = document.getElementById('promoMessage');
+            
+            if (!promoCodeInput || !promoMessage) return;
+            
+            const promoCode = promoCodeInput.value.trim().toUpperCase();
 
-            // Simulated promo codes - in real application, these should be verified with the server
+            // Mã khuyến mãi mô phỏng - trong ứng dụng thực, những mã này nên được xác minh với máy chủ
             const promoCodes = {
                 'DISCOUNT10': { discount: 0.1, message: 'Giảm 10% tổng giá trị đơn hàng' },
                 'DISCOUNT20': { discount: 0.2, message: 'Giảm 20% tổng giá trị đơn hàng' },
@@ -996,8 +1614,13 @@
             };
 
             if (promoCodes[promoCode]) {
-                const startDate = new Date(document.getElementById('startDate').value);
-                const endDate = new Date(document.getElementById('endDate').value);
+                const startDateInput = document.getElementById('startDate');
+                const endDateInput = document.getElementById('endDate');
+                
+                if (!startDateInput || !endDateInput) return;
+                
+                const startDate = new Date(startDateInput.value);
+                const endDate = new Date(endDateInput.value);
                 
                 if (!startDate || !endDate) {
                     promoMessage.textContent = "Vui lòng chọn ngày thuê trước khi áp dụng mã giảm giá";
@@ -1007,8 +1630,15 @@
                 }
 
                 const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-                const basePrice = 6200000 * days;
-                currentDiscount = basePrice * promoCodes[promoCode].discount;
+                // Lấy giá từ hiển thị hiện tại
+                let basePricePerDay = 0;
+                const priceText = document.querySelector('.car-price').textContent;
+                const match = priceText.match(/([0-9,.]+)/);
+                if (match) {
+                    basePricePerDay = parseInt(match[0].replace(/[,.]/g, ''));
+                }
+                const totalRent = basePricePerDay * days;
+                currentDiscount = totalRent * promoCodes[promoCode].discount;
                 
                 promoMessage.textContent = `${promoCodes[promoCode].message} (-${formatCurrency(currentDiscount)})`;
                 promoMessage.style.color = "green";
@@ -1023,46 +1653,80 @@
             }
         }
 
-        // Show promo popup when clicking on promo input
-        document.getElementById('promoCode').addEventListener('click', function() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('promoPopup').style.display = 'block';
+        // Hiển thị popup khuyến mãi khi nhấp vào input khuyến mãi
+        document.addEventListener('DOMContentLoaded', function() {
+            const promoCodeInput = document.getElementById('promoCode');
+            const overlay = document.getElementById('overlay');
+            
+            if (promoCodeInput) {
+                promoCodeInput.addEventListener('click', function() {
+                    if (overlay) {
+                        overlay.style.display = 'block';
+                    }
+                    
+                    const promoPopup = document.getElementById('promoPopup');
+                    if (promoPopup) {
+                        promoPopup.style.display = 'block';
+                    }
+                });
+            }
         });
 
-        // Close promo popup
+        // Đóng popup khuyến mãi
         function closePromoPopup() {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('promoPopup').style.display = 'none';
         }
 
-        // Select promo code
+        // Chọn mã khuyến mãi
         function selectPromo(code, discount) {
-            document.getElementById('promoCode').value = code;
-            checkPromoCode();
-            closePromoPopup();
+            const promoCodeInput = document.getElementById('promoCode');
+            if (promoCodeInput) {
+                promoCodeInput.value = code;
+                checkPromoCode();
+                closePromoPopup();
+            }
         }
 
-        // Close popup when clicking overlay
-        document.getElementById('overlay').addEventListener('click', closePromoPopup);
+        // Đóng popup khi nhấp vào overlay
+        document.addEventListener('DOMContentLoaded', function() {
+            const overlay = document.getElementById('overlay');
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    closePromoPopup();
+                    closeLocationPopup();
+                });
+            }
+        });
 
-        // Open location popup
+        // Mở popup vị trí - sửa để tải maps khi cần
         function openLocationPopup() {
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('locationPopup').style.display = 'block';
-            setTimeout(() => {
-                if (!map) {
-                    initMap();
-                }
-            }, 100);
+            
+            // Tải Google Maps khi mở popup
+            if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+                loadGoogleMaps();
+            } else {
+                // Nếu maps đã được tải nhưng có thể chưa được khởi tạo đúng
+                setTimeout(() => {
+                    if (map) {
+                        google.maps.event.trigger(map, 'resize');
+                    } else {
+                        // Thử khởi tạo lại map
+                        initMap();
+                    }
+                }, 500);
+            }
         }
 
-        // Close location popup
+        // Đóng popup vị trí
         function closeLocationPopup() {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('locationPopup').style.display = 'none';
         }
 
-        // Select delivery option
+        // Chọn tùy chọn giao hàng
         function selectDeliveryOption(element, type) {
             document.querySelectorAll('.delivery-option').forEach(option => {
                 option.classList.remove('active');
@@ -1070,11 +1734,205 @@
             element.classList.add('active');
         }
 
-        // Confirm location
+        // Xác nhận vị trí
         function confirmLocation() {
-            const selectedOption = document.querySelector('.delivery-option.active .delivery-title').textContent;
-            document.getElementById('deliveryLocation').value = selectedOption;
+            const selectedOption = document.querySelector('.delivery-option.active');
+            const deliveryLocationInput = document.getElementById('deliveryLocation');
+            
+            if (!selectedOption || !deliveryLocationInput) return;
+            
+            let locationText = '';
+            let locationType = selectedOption.querySelector('input').value;
+            
+            if (locationType === 'custom') {
+                // Nếu đã chọn vị trí trên bản đồ
+                if (selectedPosition && selectedPosition.address) {
+                    locationText = selectedPosition.address;
+                } else {
+                    // Nếu chưa chọn vị trí nhưng có nhập địa chỉ
+                    const customLocationInput = document.getElementById('customLocation');
+                    if (customLocationInput && customLocationInput.value.trim() !== '') {
+                        locationText = customLocationInput.value;
+                    } else {
+                        locationText = 'Địa điểm tùy chọn';
+                    }
+                }
+            } else {
+                const deliveryTitle = selectedOption.querySelector('.delivery-title');
+                if (deliveryTitle) {
+                    locationText = deliveryTitle.textContent;
+                } else {
+                    locationText = 'Địa điểm mặc định';
+                }
+            }
+            
+            deliveryLocationInput.value = locationText;
+            
+            // Đóng popup
             closeLocationPopup();
+        }
+
+        // Biến toàn cục cho map
+        let marker;
+        // Removed duplicate declaration of geocoder
+        // Removed duplicate declaration of infowindow
+        // Removed duplicate declaration of selectedPosition
+        // Removed duplicate declaration of autocomplete
+        // Hàm khởi tạo map
+        function initMap() {
+            // Vị trí mặc định (Tp. Hồ Chí Minh)
+            const defaultLocation = { lat: 10.762622, lng: 106.660172 };
+            
+            // Tạo map
+            map = new google.maps.Map(document.getElementById("locationMap"), {
+                center: defaultLocation,
+                zoom: 13,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false,
+            });
+            
+            // Tạo geocoder để chuyển đổi tọa độ thành địa chỉ và ngược lại
+            geocoder = new google.maps.Geocoder();
+            infowindow = new google.maps.InfoWindow();
+            
+            // Tạo autocomplete cho ô tìm kiếm
+            const input = document.getElementById("mapSearch");
+            autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo("bounds", map);
+            
+            // Sự kiện khi chọn một địa điểm từ autocomplete
+            autocomplete.addListener("place_changed", () => {
+                const place = autocomplete.getPlace();
+                
+                if (!place.geometry || !place.geometry.location) {
+                    return;
+                }
+                
+                // Nếu nơi này có viewport thì hiển thị nó, không thì zoom đến vị trí
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+                
+                // Cập nhật vị trí đã chọn
+                selectedPosition = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                    address: place.formatted_address
+                };
+                
+                // Hiển thị địa chỉ đã chọn
+                showSelectedLocation();
+                
+                // Cập nhật input location
+                document.getElementById("customLocation").value = place.formatted_address;
+                
+                // Đảm bảo tab custom location được chọn
+                document.querySelectorAll('.delivery-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                document.querySelector('.delivery-option:nth-child(3)').classList.add('active');
+            });
+            
+            // Sự kiện khi click vào map
+            map.addListener("click", (e) => {
+                // Lấy tọa độ của điểm click
+                const clickedPosition = {
+                    lat: e.latLng.lat(),
+                    lng: e.latLng.lng()
+                };
+                
+                // Chuyển tọa độ thành địa chỉ
+                geocodePosition(clickedPosition);
+                
+                // Đảm bảo tab custom location được chọn
+                document.querySelectorAll('.delivery-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                document.querySelector('.delivery-option:nth-child(3)').classList.add('active');
+            });
+            
+            // Sự kiện khi di chuyển map
+            map.addListener("center_changed", () => {
+                const center = map.getCenter();
+                selectedPosition = {
+                    lat: center.lat(),
+                    lng: center.lng()
+                };
+                
+                // Chuyển tọa độ mới thành địa chỉ
+                geocodePosition(selectedPosition);
+            });
+        }
+        
+        // Hàm chuyển đổi tọa độ thành địa chỉ
+        function geocodePosition(pos) {
+            geocoder.geocode({ location: pos }, (results, status) => {
+                if (status === "OK" && results[0]) {
+                    // Cập nhật vị trí đã chọn
+                    selectedPosition = {
+                        lat: pos.lat,
+                        lng: pos.lng,
+                        address: results[0].formatted_address
+                    };
+                    
+                    // Hiển thị địa chỉ đã chọn
+                    showSelectedLocation();
+                    
+                    // Cập nhật input location
+                    document.getElementById("customLocation").value = results[0].formatted_address;
+                }
+            });
+        }
+        
+        // Hiển thị vị trí đã chọn
+        function showSelectedLocation() {
+            if (selectedPosition && selectedPosition.address) {
+                const selectedLocationDiv = document.getElementById("selectedLocation");
+                const selectedLocationText = document.getElementById("selectedLocationText");
+                
+                selectedLocationText.textContent = selectedPosition.address;
+                selectedLocationDiv.style.display = "block";
+            }
+        }
+        
+        // Lấy vị trí hiện tại của người dùng
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+                        
+                        // Di chuyển map đến vị trí hiện tại
+                        map.setCenter(pos);
+                        map.setZoom(17);
+                        
+                        // Cập nhật vị trí đã chọn
+                        selectedPosition = pos;
+                        
+                        // Chuyển tọa độ thành địa chỉ
+                        geocodePosition(pos);
+                        
+                        // Đảm bảo tab custom location được chọn
+                        document.querySelectorAll('.delivery-option').forEach(option => {
+                            option.classList.remove('active');
+                        });
+                        document.querySelector('.delivery-option:nth-child(3)').classList.add('active');
+                    },
+                    () => {
+                        // Xử lý khi người dùng từ chối chia sẻ vị trí
+                        alert("Không thể xác định vị trí của bạn. Vui lòng cho phép truy cập vị trí hoặc chọn địa điểm thủ công.");
+                    }
+                );
+            } else {
+                alert("Trình duyệt của bạn không hỗ trợ định vị. Vui lòng chọn địa điểm thủ công.");
+            }
         }
     </script>
 
@@ -1108,6 +1966,6 @@
             </div>
         </div>
     </footer>
-
+    
 </body>
 </html>

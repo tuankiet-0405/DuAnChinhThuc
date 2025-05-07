@@ -11,10 +11,8 @@
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <a href="/public/index.html" class="logo-header">
-                <img src="/public/image/AutomotiveCar.png" alt="Logo" class="login-logo">
+                <img src="/public/image/TK-DK.PNG" alt="Logo" class="login-logo">
                 <h1>Admin Dashboard</h1>
-                </a>
             </div>
 
             <form class="login-form" id="adminLoginForm">
@@ -53,7 +51,10 @@
                 </button>
             </form>
 
-           
+            <footer>
+                <!-- Include the footer dynamically -->
+                <div id="footer-placeholder"></div>
+            </footer>
         </div>
     </div>
 
@@ -80,62 +81,35 @@
                 const password = document.getElementById('password').value;
                 const remember = document.getElementById('remember').checked;
 
-                // Hiển thị loading state
-                const submitBtn = this.querySelector('.btn-login');
-                const originalBtnText = submitBtn.innerHTML;
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang đăng nhập...';
-                errorMessage.style.display = 'none';
-
                 try {
-                    const response = await fetch('/auth/admin/login', {
+                    const response = await fetch('/admin/login', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            email: username,
-                            password: password
-                        })
+                        body: JSON.stringify({ username, password, remember })
                     });
 
                     const data = await response.json();
 
-                    if (data.success) {
-                        // Store admin session if remember is checked
-                        if (remember) {
-                            localStorage.setItem('adminLoggedIn', 'true');
-                            localStorage.setItem('adminUsername', username);
-                        } else {
-                            sessionStorage.setItem('adminLoggedIn', 'true');
-                            sessionStorage.setItem('adminUsername', username);
-                        }
-
-                        // Hiển thị thông báo thành công
-                        errorMessage.style.display = 'block';
-                        errorMessage.style.color = '#22c55e';
-                        errorMessage.innerHTML = '<i class="fas fa-check-circle"></i> Đăng nhập thành công!';
-
-                        // Redirect to admin dashboard sau 1 giây
-                        setTimeout(() => {
-                            window.location.href = 'AdminTrangChu.html';
-                        }, 1000);
+                    if (response.ok) {
+                        window.location.href = '/admin/dashboard';
                     } else {
                         errorMessage.style.display = 'block';
-                        errorMessage.style.color = '#ef4444';
-                        errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + (data.message || 'Tên đăng nhập hoặc mật khẩu không đúng');
+                        errorMessage.textContent = data.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
                     }
                 } catch (error) {
-                    console.error('Login error:', error);
                     errorMessage.style.display = 'block';
-                    errorMessage.style.color = '#ef4444';
-                    errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Có lỗi xảy ra. Vui lòng thử lại sau.';
-                } finally {
-                    // Restore button state
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalBtnText;
+                    errorMessage.textContent = 'Có lỗi xảy ra. Vui lòng thử lại sau.';
                 }
             });
+
+            // Dynamically load the footer
+            fetch('/views/partials/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-placeholder').innerHTML = data;
+                });
         });
     </script>
 </body>
