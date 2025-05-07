@@ -197,11 +197,15 @@ const authController = {
             // req.user được set từ middleware xác thực
             const userId = req.user.id;
             
+            console.log('Đang lấy thông tin người dùng với ID:', userId);
+            
             // Thực hiện truy vấn để lấy thông tin người dùng
             const [rows] = await db.execute(
                 'SELECT id, ho_ten, email, so_dien_thoai, gioi_tinh, anh_dai_dien, dia_chi, loai_tai_khoan, trang_thai, ngay_tao FROM nguoi_dung WHERE id = ?',
                 [userId]
             );
+
+            console.log('Kết quả truy vấn người dùng:', rows.length > 0 ? 'Tìm thấy' : 'Không tìm thấy');
 
             if (!rows.length) {
                 return res.status(404).json({
@@ -215,11 +219,12 @@ const authController = {
                 user: rows[0]
             });
         } catch (error) {
-            console.error('Lỗi khi lấy thông tin người dùng:', error.message);
+            console.error('Chi tiết lỗi khi lấy thông tin người dùng:', error);
             res.status(500).json({
                 success: false,
                 message: 'Đã xảy ra lỗi khi lấy thông tin người dùng',
-                error: error.message
+                error: error.message,
+                stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
             });
         }
     },
