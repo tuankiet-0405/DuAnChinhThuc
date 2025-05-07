@@ -212,6 +212,80 @@ main {
     text-align: center;
 }
 
+/* User profile styles */
+.user-header {
+    position: relative;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 24px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.user-info:hover {
+    background: #e9ecef;
+}
+
+.user-info img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info .user-name {
+    margin: 0 8px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.user-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 200px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 8px 0;
+    margin-top: 8px;
+    display: none;
+    z-index: 1000;
+}
+
+.user-info:hover .user-menu {
+    display: block;
+}
+
+.user-menu li {
+    list-style: none;
+}
+
+.user-menu li a {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.user-menu li a:hover {
+    background: var(--light-bg);
+    color: var(--primary-color);
+}
+
+.user-menu li a i {
+    width: 20px;
+    margin-right: 8px;
+    text-align: center;
+}
+
 /* Hero section */
 .hero {
   margin-top: 80px;

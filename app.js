@@ -13,7 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Serve static files - ensure public directory is served first
+// Static files middleware
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Authentication routes
@@ -24,42 +25,17 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Login routes
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
-// Authentication middleware
-const checkAuth = (req, res, next) => {
-    const token = req.cookies.jwt;
-    if (!token && !req.path.startsWith('/login')) {
-        return res.redirect('/login');
-    }
-    next();
-};
-
-// Apply authentication check to protected routes
-app.use('/views', checkAuth);
-
-// Serve files from views directory
-app.use('/views', express.static(path.join(__dirname, 'views')));
-
-// Fallback route handler
-app.use((req, res, next) => {
-    // Try to serve from views directory
-    const viewPath = path.join(__dirname, 'views', req.path);
-    res.sendFile(viewPath, (err) => {
-        if (err) {
-            // If not found in views, try public directory
-            const publicPath = path.join(__dirname, 'public', req.path);
-            res.sendFile(publicPath, (err) => {
-                if (err) {
-                    // If not found in either directory, return 404
-                    res.status(404).json({ message: 'Không tìm thấy trang' });
-                }
-            });
-        }
-    });
+app.get('/admin/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'AdminLogin.html'));
 });
+
+// Views routing
+app.use('/views', express.static(path.join(__dirname, 'views')));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

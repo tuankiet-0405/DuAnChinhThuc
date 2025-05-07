@@ -1,7 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Check for logged in user and update UI
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    if (userData) {
+        document.querySelector('.guest-only').style.display = 'none';
+        const userHeader = document.querySelector('.auth-required');
+        userHeader.style.display = 'block';
+        
+        // Update user profile
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = userHeader.querySelector('.user-name');
+        
+        userAvatar.src = userData.anh_dai_dien;
+        userName.textContent = userData.ho_ten;
+    }
 
-    // Header scroll handling
-    
+    // Handle logout
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            // Show confirmation modal
+            const confirmed = confirm('Bạn có chắc chắn muốn đăng xuất?');
+            if (confirmed) {
+                try {
+                    const response = await fetch('/auth/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        localStorage.removeItem('userData');
+                        localStorage.removeItem('rememberedEmail');
+                        localStorage.removeItem('rememberMe');
+                        window.location.href = '/views/login.html';
+                    }
+                } catch (error) {
+                    console.error('Logout error:', error);
+                }
+            }
+        });
+    }
+
+    // Existing code below...
     const header = document.querySelector('.header');
     
     if (header) {
@@ -707,3 +750,71 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.page-transition')?.classList.remove('active');
     
     });
+
+// Form validation and submission
+const loginForm = document.getElementById('loginForm');
+
+if (loginForm) {
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        
+        // Lấy giá trị từ form
+        const email = document.querySelector('#loginEmail')?.value;
+        const password = document.querySelector('#loginPassword')?.value;
+        const rememberMe = document.querySelector('#rememberMe')?.checked;
+
+        // Validate dữ liệu
+        if (!email || !password) {
+            showError(document.querySelector('#loginEmailError'), 'Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
+
+        try {
+            console.log('Sending login request:', { email, passwordProvided: !!password });
+            
+            const response = await fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    username: email,  // Server đang mong đợi trường username chứa email
+                    password,
+                    rememberMe 
+                })
+            });
+
+            const data = await response.json();
+            console.log('Login response:', data);
+
+            if (data.success) {
+                // Lưu remember me nếu được check
+                if (rememberMe) {
+                    localStorage.setItem('rememberedEmail', email);
+                    localStorage.setItem('rememberMe', 'true');
+                } else {
+                    localStorage.removeItem('rememberedEmail');
+                    localStorage.removeItem('rememberMe'); 
+                }
+
+                // Redirect sau khi đăng nhập thành công
+                window.location.href = data.redirectUrl || '/';
+            } else {
+                showError(document.querySelector('#loginEmailError'), data.message || 'Đăng nhập thất bại');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            showError(document.querySelector('#loginEmailError'), 'Lỗi kết nối, vui lòng thử lại sau');
+        }
+    };
+
+    // Helper function hiển thị lỗi
+    const showError = (element, message) => {
+        if (element) {
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+    };
+
+    loginForm.addEventListener('submit', handleLogin);
+}

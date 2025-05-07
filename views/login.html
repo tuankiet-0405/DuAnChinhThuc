@@ -522,9 +522,9 @@
                     <div class="error-message" id="loginEmailError"></div>
                 </div>
                 <div class="form-group password-group">
-                    <input type="password" id="loginPassword" name="mat_khau" placeholder="Mật khẩu" required />
+                    <input type="password" id="loginPassword" name="password" placeholder="Mật khẩu" required />
                     <button type="button" class="toggle-password" onclick="togglePassword('loginPassword', this)">
-                       
+                        <i class="fas fa-eye"></i>
                     </button>
                     <div class="error-message" id="loginPasswordError"></div>
                 </div>
@@ -532,7 +532,7 @@
                     <input type="checkbox" id="rememberMe" name="remember">
                     <label for="rememberMe">Ghi nhớ đăng nhập</label>
                 </div>
-                <a href="/views/QuenMatKhau.html">Quên mật khẩu?</a>
+                <a href="/views/forgot-password.html">Quên mật khẩu?</a>
                 <button type="submit">Đăng nhập</button>
             </form>
         </div>
@@ -589,6 +589,52 @@
             if (rememberedEmail && rememberMe === 'true') {
                 document.getElementById('loginEmail').value = rememberedEmail;
                 document.getElementById('rememberMe').checked = true;
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Store user data in localStorage
+                    if (rememberMe) {
+                        localStorage.setItem('rememberedEmail', email);
+                        localStorage.setItem('rememberMe', 'true');
+                    } else {
+                        localStorage.removeItem('rememberedEmail');
+                        localStorage.removeItem('rememberMe');
+                    }
+                    
+                    // Store user profile data
+                    localStorage.setItem('userData', JSON.stringify(data.user));
+                    
+                    // Redirect to home page
+                    window.location.href = '/public/index.html';
+                } else {
+                    const errorMessage = document.getElementById('loginEmailError');
+                    errorMessage.textContent = data.message;
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                const errorMessage = document.getElementById('loginEmailError');
+                errorMessage.textContent = 'Có lỗi xảy ra. Vui lòng thử lại.';
+                errorMessage.style.display = 'block';
             }
         });
     </script>

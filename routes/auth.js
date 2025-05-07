@@ -113,8 +113,8 @@ router.post('/register', async (req, res) => {
 // Đăng nhập
 router.post('/login', async (req, res) => {
     try {
-        const { email, mat_khau } = req.body;
-
+        const { username: email, password } = req.body;
+        
         // Tìm user theo email
         const [users] = await db.query(
             'SELECT * FROM nguoi_dung WHERE email = ?',
@@ -122,37 +122,110 @@ router.post('/login', async (req, res) => {
         );
 
         if (users.length === 0) {
-            return res.status(401).json({ 
+            return res.status(401).json({
                 success: false,
-                message: 'Email hoặc mật khẩu không đúng' 
+                message: 'Email hoặc mật khẩu không đúng'
             });
         }
 
         const user = users[0];
 
         // Kiểm tra mật khẩu
-        const validPassword = await bcrypt.compare(mat_khau, user.mat_khau);
+        const validPassword = await bcrypt.compare(password, user.mat_khau);
+
         if (!validPassword) {
-            return res.status(401).json({ 
+            return res.status(401).json({
                 success: false,
-                message: 'Email hoặc mật khẩu không đúng' 
+                message: 'Email hoặc mật khẩu không đúng'
             });
         }
 
         // Tạo JWT token
         const token = jwt.sign(
             { id: user.id, email: user.email },
-            process.env.JWT_SECRET || 'your-secret-key',
+            process.env.JWT_SECRET || 'DACS2_secure_jwt_secret_key_2024',
             { expiresIn: '24h' }
         );
 
-        // Set cookie
+        // Set cookie với các options phù hợp
         res.cookie('jwt', token, {
             httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Lax',
             maxAge: 24 * 60 * 60 * 1000 // 24 hours
         });
 
-        // Trả về thông tin user và đánh dấu thành công
+        res.json({
+            success: true,
+            message: 'Đăng nhập thành công',
+            user: {
+                id: user.id,
+                email: user.email,
+                ho_ten: user.ho_ten,
+                anh_dai_dien: user.anh_dai_dien || '/public/image/default-avatar.png'
+            }
+        });
+
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server: ' + error.message
+        });
+    }
+});
+
+// Admin login route
+router.post('/admin/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        
+        // Tìm user theo email và phải có quyền admin
+        const [users] = await db.query(
+            'SELECT * FROM nguoi_dung WHERE email = ?',
+            [email]
+        );
+
+        if (users.length === 0) {
+            return res.status(401).json({
+                success: false,
+                message: 'Tài khoản không tồn tại'
+            });
+        }
+
+        const user = users[0];
+
+        // Kiểm tra có phải admin không
+        if (user.loai_tai_khoan !== 'admin') {
+            return res.status(401).json({
+                success: false,
+                message: 'Tài khoản không có quyền admin'
+            });
+        }
+
+        // So sánh mật khẩu trực tiếp vì mật khẩu chưa được mã hóa
+        if (password !== user.mat_khau) {
+            return res.status(401).json({
+                success: false, 
+                message: 'Mật khẩu không đúng'
+            });
+        }
+
+        // Tạo JWT token cho admin
+        const token = jwt.sign(
+            { id: user.id, email: user.email, role: 'admin' },
+            process.env.JWT_SECRET || 'DACS2_secure_jwt_secret_key_2024',
+            { expiresIn: '24h' }
+        );
+
+        // Set cookie với token
+        res.cookie('admin_jwt', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Lax',
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        });
+
         res.json({
             success: true,
             message: 'Đăng nhập thành công',
@@ -164,18 +237,29 @@ router.post('/login', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Lỗi đăng nhập:', error);
-        res.status(500).json({ 
+        console.error('Admin login error:', error);
+        res.status(500).json({
             success: false,
-            message: 'Lỗi server' 
+            message: 'Lỗi server: ' + error.message
         });
     }
 });
 
 // Đăng xuất
 router.post('/logout', (req, res) => {
+    // Clear JWT cookie
     res.clearCookie('jwt');
-    res.json({ message: 'Đăng xuất thành công' });
+    
+    // Destroy session if exists
+    if (req.session) {
+        req.session.destroy();
+    }
+    
+    res.json({ 
+        success: true,
+        message: 'Đăng xuất thành công',
+        redirectUrl: '/views/AdminLogin.html'
+    });
 });
 
 // Lấy thông tin user hiện tại
