@@ -3,6 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
 // Import routes
@@ -11,6 +12,7 @@ const carRoutes = require('./routes/car');
 const bookingRoutes = require('./routes/booking');
 const paymentRoutes = require('./routes/payment');
 const reviewRoutes = require('./routes/review');
+const notificationRoutes = require('./routes/notification');
 
 const app = express();
 
@@ -22,6 +24,16 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Configure file upload middleware
+app.use(fileUpload({
+    createParentPath: true,
+    limits: { 
+        fileSize: 5 * 1024 * 1024 // 5MB max file size
+    },
+    abortOnLimit: true,
+    responseOnLimit: 'File size limit has been reached (max 5MB)'
+}));
 
 // Static files configuration
 app.use('/public', express.static(path.join(__dirname, 'public')));
@@ -54,6 +66,7 @@ app.use('/api/cars', carRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Frontend routes
 app.get('/', (req, res) => {
@@ -94,7 +107,20 @@ app.use((err, req, res, next) => {
 
 
 // Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server đang chạy trên http://localhost:3000`);
-});
+const PORT = process.env.PORT || 3001;
+
+// Function to try different ports if the preferred one is in use
+const startServer = (port) => {
+    const server = app.listen(port, () => {
+        console.log(`Server đang chạy trên http://localhost:${port}/public/index.html`);
+    }).on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.log(`Port ${port} đã được sử dụng, thử port khác...`);
+            startServer(port + 1);
+        } else {
+            console.error('Server error:', err);
+        }
+    });
+};
+
+startServer(PORT);

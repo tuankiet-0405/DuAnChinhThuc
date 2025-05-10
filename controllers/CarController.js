@@ -212,59 +212,264 @@ const carController = {
                 error: error.message
             });
         }
-    },
-
-    // Tạo xe mới
+    },    // Tạo xe mới
     createCar: async (req, res) => {
         try {
-            // Các field từ form tạo xe
+            // Lấy dữ liệu từ form
             const { 
-                ten_xe, hang_xe, loai_xe, bien_so, nam_san_xuat, 
-                mau_xe, so_cho, hop_so, nhien_lieu, gia_thue, 
-                mo_ta, loai_dich_vu, dia_chi_xe
+                brand, model, year, seats, transmission, fuel,
+                license_plate, price_per_day, deposit, km_limit,
+                location, description, type, features, loai_xe
             } = req.body;
+            
+            // Validate loai_xe
+            if (!loai_xe || !['4_cho', '7_cho', '16_cho', '29_cho'].includes(loai_xe)) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Loại xe không hợp lệ. Chỉ chấp nhận: 4_cho, 7_cho, 16_cho, 29_cho'
+                });
+            }
+            
+            // Chuyển đổi features từ chuỗi JSON thành object nếu cần
+            let featuresArray = [];
+            try {
+                if (features && typeof features === 'string') {
+                    featuresArray = JSON.parse(features);
+                } else if (Array.isArray(features)) {
+                    featuresArray = features;
+                }
+            } catch (error) {
+                console.error('Lỗi khi parse tính năng xe:', error);
+            }
             
             // ID của người dùng đăng nhập (từ token)
             const chu_xe_id = req.user.id;
             
             // Kiểm tra các trường bắt buộc
-            if (!ten_xe || !hang_xe || !loai_xe || !bien_so || !nam_san_xuat || !so_cho || !hop_so || !nhien_lieu || !gia_thue || !loai_dich_vu || !dia_chi_xe) {
+            if (!brand || !model || !year || !seats || !transmission || !fuel || 
+                !license_plate || !price_per_day || !location) {
                 return res.status(400).json({
                     success: false,
                     message: 'Vui lòng điền đầy đủ thông tin bắt buộc'
                 });
             }
             
-            // Thêm xe vào database
+            // Tạo tên xe từ brand và model
+            const ten_xe = `${brand} ${model}`;
+            
+            // Đặt các giá trị mặc định nếu cần
+            const realDeposit = deposit || 0;
+            const realKmLimit = km_limit || 0;
+            
+            // Tạo mô tả chi tiết kết hợp features
+            let detailedDescription = description || '';
+            if (featuresArray.length > 0) {
+                detailedDescription += "\n\nTính năng:\n" + featuresArray.join(", ");
+            }
+              // Thêm xe vào database
             const [result] = await db.execute(`
                 INSERT INTO xe (
                     chu_xe_id, ten_xe, hang_xe, loai_xe, bien_so, 
-                    nam_san_xuat, mau_xe, so_cho, hop_so, 
-                    nhien_lieu, gia_thue, mo_ta, tinh_trang, 
-                    loai_dich_vu, dia_chi_xe
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    nam_san_xuat, so_cho, hop_so, 
+                    nhien_lieu, gia_thue, dat_coc, gioi_han_km,
+                    mo_ta, tinh_trang, loai_dich_vu, 
+                    dia_chi_xe, ngay_tao
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
             `, [
-                chu_xe_id, ten_xe, hang_xe, loai_xe, bien_so, 
-                nam_san_xuat, mau_xe, so_cho, hop_so, 
-                nhien_lieu, gia_thue, mo_ta, 'san_sang', 
-                loai_dich_vu, dia_chi_xe
+                chu_xe_id, ten_xe, brand, loai_xe, license_plate, 
+                year, seats, transmission, 
+                fuel, price_per_day, realDeposit, realKmLimit,
+                detailedDescription, 'cho_duyet', type, 
+                location
             ]);
             
+            const xe_id = result.insertId;
+            
+            // Xử lý tải lên hình ảnh xe
+            const uploadDirectory = './public/uploads/cars/';
+            const uploadPromises = [];
+            
+            // Đảm bảo thư mục upload tồn tại
+            const fs = require('fs');
+            const path = require('path');
+            
+            if (!fs.existsSync(uploadDirectory)) {
+                fs.mkdirSync(uploadDirectory, { recursive: true });
+            }
+            
+            // Xử lý các file ảnh được tải lên
+            if (req.files && req.files.car_images) {
+                const carImages = Array.isArray(req.files.car_images) 
+                    ? req.files.car_images 
+                    : [req.files.car_images];
+                
+                // Lưu các hình ảnh của xe
+                for (let i = 0; i < carImages.length; i++) {
+                    const file = carImages[i];
+                    const fileName = `car-${xe_id}-${Date.now()}-${i}-${file.name}`;
+                    const filePath = path.join(uploadDirectory, fileName);
+                    
+                    // Đợi ghi file xong
+                    await new Promise((resolve, reject) => {
+                        file.mv(filePath, err => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
+                    });
+                    
+                    // Lưu thông tin ảnh vào database
+                    const isMainImage = i === 0; // Ảnh đầu tiên là ảnh chính
+                    const imageUrl = `/public/uploads/cars/${fileName}`;
+                    
+                    await db.execute(`
+                        INSERT INTO hinh_anh_xe (xe_id, url_hinh_anh, la_hinh_chinh, ngay_tao)
+                        VALUES (?, ?, ?, NOW())
+                    `, [xe_id, imageUrl, isMainImage ? 1 : 0]);
+                }
+            }
+            
+            // Xử lý giấy tờ xe
+            if (req.files) {
+                // Xử lý đăng ký xe
+                if (req.files.registration_image) {
+                    const file = req.files.registration_image;
+                    const fileName = `registration-${xe_id}-${Date.now()}-${file.name}`;
+                    const filePath = path.join(uploadDirectory, fileName);
+                    
+                    await new Promise((resolve, reject) => {
+                        file.mv(filePath, err => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
+                    });
+                    
+                    // Lưu thông tin giấy tờ vào database
+                    const imageUrl = `/public/uploads/cars/${fileName}`;
+                    
+                    await db.execute(`
+                        INSERT INTO giay_to_xe (xe_id, loai_giay_to, url_hinh_anh, ngay_tao)
+                        VALUES (?, ?, ?, NOW())
+                    `, [xe_id, 'dang_ky', imageUrl]);
+                }
+                
+                // Xử lý bảo hiểm xe
+                if (req.files.insurance_image) {
+                    const file = req.files.insurance_image;
+                    const fileName = `insurance-${xe_id}-${Date.now()}-${file.name}`;
+                    const filePath = path.join(uploadDirectory, fileName);
+                    
+                    await new Promise((resolve, reject) => {
+                        file.mv(filePath, err => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
+                    });
+                    
+                    // Lưu thông tin giấy tờ vào database
+                    const imageUrl = `/public/uploads/cars/${fileName}`;
+                    
+                    await db.execute(`
+                        INSERT INTO giay_to_xe (xe_id, loai_giay_to, url_hinh_anh, ngay_tao)
+                        VALUES (?, ?, ?, NOW())
+                    `, [xe_id, 'bao_hiem', imageUrl]);
+                }
+            }
+              // Tạo thông báo cho admin
+            try {
+                // Lấy ID của các tài khoản admin
+                const [admins] = await db.execute('SELECT id FROM nguoi_dung WHERE loai_tai_khoan = ?', ['admin']);
+                
+                // Lấy thông tin người dùng đăng ký xe
+                const [ownerInfo] = await db.execute('SELECT ho_ten FROM nguoi_dung WHERE id = ?', [chu_xe_id]);
+                const ownerName = ownerInfo.length > 0 ? ownerInfo[0].ho_ten : 'Người dùng';
+                
+                console.log('Tìm thấy', admins.length, 'admin để gửi thông báo');
+                if (admins.length === 0) {
+                    console.log('CẢNH BÁO: Không tìm thấy admin nào để gửi thông báo!');
+                }
+                
+                // Nội dung thông báo
+                const notificationTitle = 'Yêu cầu đăng ký xe mới';
+                const notificationContent = `${ownerName} đã đăng ký xe ${ten_xe} (${license_plate}) và đang chờ xét duyệt.`;
+                
+                // Thêm thông báo cho mỗi admin
+                for (const admin of admins) {
+                    console.log(`Đang gửi thông báo đến admin ID: ${admin.id}`);
+                    const [result] = await db.execute(`
+                        INSERT INTO thong_bao (
+                            nguoi_gui_id, nguoi_nhan_id, tieu_de, noi_dung, loai_thong_bao, 
+                            lien_ket, da_doc, ngay_tao
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
+                    `, [
+                        chu_xe_id,
+                        admin.id,
+                        notificationTitle,
+                        notificationContent,
+                        'car_registration',
+                        `/admin/cars/view/${xe_id}`,
+                        0
+                    ]);
+                    
+                    console.log(`Kết quả thông báo: ${result.affectedRows > 0 ? 'Thành công' : 'Thất bại'}`);
+                }
+            } catch (notifyError) {
+                console.error('Lỗi khi tạo thông báo cho admin:', notifyError);
+                // Không để lỗi thông báo ảnh hưởng đến quá trình đăng ký
+            }
+              // Gửi email thông báo cho admin
+            try {
+                const { sendCarRegistrationNotification } = require('../utils/mailer');
+                
+                // Lấy thông tin owner
+                const [ownerInfo] = await db.execute(
+                    'SELECT id, ho_ten, email, so_dien_thoai FROM nguoi_dung WHERE id = ?', 
+                    [chu_xe_id]
+                );
+                
+                // Tạo object thông tin xe
+                const carInfo = {
+                    id: xe_id,
+                    ten_xe,
+                    hang_xe: brand,
+                    bien_so: license_plate,
+                    so_cho: seats,
+                    gia_thue: price_per_day
+                };
+                
+                // Gửi email thông báo
+                await sendCarRegistrationNotification(carInfo, ownerInfo[0] || {});
+                console.log('Đã gửi email thông báo đăng ký xe mới đến admin');
+            } catch (emailError) {
+                console.error('Lỗi khi gửi email thông báo:', emailError);
+                // Không để lỗi gửi email ảnh hưởng đến quá trình đăng ký
+            }
+            
+            // Kết quả trả về
             res.status(201).json({
                 success: true,
-                message: 'Tạo xe mới thành công',
+                message: 'Đăng ký xe mới thành công. Xe của bạn đang chờ xét duyệt.',
                 data: {
-                    id: result.insertId,
+                    id: xe_id,
                     ten_xe,
-                    hang_xe,
-                    loai_xe
+                    hang_xe: brand,
+                    bien_so: license_plate,
+                    tinh_trang: 'cho_duyet'
                 }
             });
         } catch (error) {
             console.error('Lỗi khi tạo xe mới:', error);
             res.status(500).json({
                 success: false,
-                message: 'Đã xảy ra lỗi khi tạo xe mới',
+                message: 'Đã xảy ra lỗi khi đăng ký xe mới',
                 error: error.message
             });
         }
@@ -377,6 +582,210 @@ const carController = {
             res.status(500).json({
                 success: false,
                 message: 'Đã xảy ra lỗi khi xóa xe',
+                error: error.message
+            });
+        }
+    },
+
+    // Duyệt xe
+    approveCar: async (req, res) => {
+        try {
+            const { id } = req.params;
+            
+            // Kiểm tra xe tồn tại
+            const [existingCar] = await db.execute('SELECT * FROM xe WHERE id = ?', [id]);
+            
+            if (!existingCar.length) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy xe'
+                });
+            }
+            
+            // Kiểm tra quyền (chỉ admin mới được duyệt xe)
+            if (req.user.loai_tai_khoan !== 'admin') {
+                return res.status(403).json({
+                    success: false,
+                    message: 'Bạn không có quyền duyệt xe'
+                });
+            }
+            
+            // Kiểm tra xem xe đã được duyệt hay chưa
+            if (existingCar[0].tinh_trang !== 'cho_duyet') {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Xe này không ở trạng thái chờ duyệt'
+                });
+            }
+            
+            // Cập nhật trạng thái xe thành "sẵn sàng"
+            await db.execute(
+                'UPDATE xe SET tinh_trang = ?, ngay_duyet = NOW() WHERE id = ?', 
+                ['san_sang', id]
+            );
+            
+            // Lấy thông tin chủ xe
+            const [owner] = await db.execute(
+                'SELECT id, ho_ten, email FROM nguoi_dung WHERE id = ?',
+                [existingCar[0].chu_xe_id]
+            );
+            
+            // Tạo thông báo cho chủ xe
+            if (owner.length > 0) {
+                await db.execute(`
+                    INSERT INTO thong_bao (
+                        nguoi_dung_id, tieu_de, noi_dung, loai_thong_bao, 
+                        tham_chieu_id, ngay_tao, da_doc
+                    ) VALUES (?, ?, ?, ?, ?, NOW(), 0)
+                `, [
+                    owner[0].id,
+                    'Xe của bạn đã được duyệt',
+                    `Xe ${existingCar[0].ten_xe} (${existingCar[0].bien_so}) đã được chấp nhận và sẵn sàng cho thuê.`,
+                    'car_approval',
+                    id
+                ]);
+                
+                // Gửi email thông báo cho chủ xe (nếu có module gửi email)
+                try {
+                    const { sendEmail } = require('../utils/mailer');
+                    await sendEmail(
+                        owner[0].email,
+                        'Xe của bạn đã được duyệt',
+                        `Xe ${existingCar[0].ten_xe} (${existingCar[0].bien_so}) đã được chấp nhận và sẵn sàng cho thuê. 
+                        Xe của bạn bây giờ đã có trong danh sách xe cho thuê và khách hàng có thể đặt xe của bạn.
+                        <br><br>
+                        Trân trọng,<br>
+                        TKĐK Carental`
+                    );
+                } catch (emailError) {
+                    console.error('Lỗi khi gửi email thông báo:', emailError);
+                    // Không để lỗi gửi email ảnh hưởng đến quá trình duyệt xe
+                }
+            }
+            
+            res.status(200).json({
+                success: true,
+                message: 'Duyệt xe thành công',
+                data: {
+                    id: parseInt(id),
+                    tinh_trang: 'san_sang',
+                    ngay_duyet: new Date()
+                }
+            });
+        } catch (error) {
+            console.error('Lỗi khi duyệt xe:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Đã xảy ra lỗi khi duyệt xe',
+                error: error.message
+            });
+        }
+    },
+
+    // Từ chối xe
+    rejectCar: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { reason } = req.body;
+            
+            // Kiểm tra xe tồn tại
+            const [existingCar] = await db.execute('SELECT * FROM xe WHERE id = ?', [id]);
+            
+            if (!existingCar.length) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy xe'
+                });
+            }
+            
+            // Kiểm tra quyền (chỉ admin mới được từ chối xe)
+            if (req.user.loai_tai_khoan !== 'admin') {
+                return res.status(403).json({
+                    success: false,
+                    message: 'Bạn không có quyền từ chối xe'
+                });
+            }
+            
+            // Kiểm tra xem xe đã được duyệt hay chưa
+            if (existingCar[0].tinh_trang !== 'cho_duyet') {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Xe này không ở trạng thái chờ duyệt'
+                });
+            }
+            
+            // Yêu cầu lý do từ chối
+            if (!reason) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Vui lòng cung cấp lý do từ chối'
+                });
+            }
+            
+            // Cập nhật trạng thái xe thành "bị từ chối"
+            await db.execute(
+                'UPDATE xe SET tinh_trang = ?, ly_do_tu_choi = ?, ngay_duyet = NOW() WHERE id = ?', 
+                ['bi_tu_choi', reason, id]
+            );
+            
+            // Lấy thông tin chủ xe
+            const [owner] = await db.execute(
+                'SELECT id, ho_ten, email FROM nguoi_dung WHERE id = ?',
+                [existingCar[0].chu_xe_id]
+            );
+            
+            // Tạo thông báo cho chủ xe
+            if (owner.length > 0) {
+                await db.execute(`
+                    INSERT INTO thong_bao (
+                        nguoi_dung_id, tieu_de, noi_dung, loai_thong_bao, 
+                        tham_chieu_id, ngay_tao, da_doc
+                    ) VALUES (?, ?, ?, ?, ?, NOW(), 0)
+                `, [
+                    owner[0].id,
+                    'Xe của bạn không được duyệt',
+                    `Xe ${existingCar[0].ten_xe} (${existingCar[0].bien_so}) đã bị từ chối. Lý do: ${reason}`,
+                    'car_rejection',
+                    id
+                ]);
+                
+                // Gửi email thông báo cho chủ xe (nếu có module gửi email)
+                try {
+                    const { sendEmail } = require('../utils/mailer');
+                    await sendEmail(
+                        owner[0].email,
+                        'Xe của bạn không được duyệt',
+                        `Xe ${existingCar[0].ten_xe} (${existingCar[0].bien_so}) đã bị từ chối.
+                        <br><br>
+                        <b>Lý do từ chối:</b><br>
+                        ${reason}
+                        <br><br>
+                        Bạn có thể chỉnh sửa thông tin xe và gửi lại yêu cầu.
+                        <br><br>
+                        Trân trọng,<br>
+                        TKĐK Carental`
+                    );
+                } catch (emailError) {
+                    console.error('Lỗi khi gửi email thông báo:', emailError);
+                    // Không để lỗi gửi email ảnh hưởng đến quá trình từ chối xe
+                }
+            }
+            
+            res.status(200).json({
+                success: true,
+                message: 'Từ chối xe thành công',
+                data: {
+                    id: parseInt(id),
+                    tinh_trang: 'bi_tu_choi',
+                    ly_do_tu_choi: reason,
+                    ngay_duyet: new Date()
+                }
+            });
+        } catch (error) {
+            console.error('Lỗi khi từ chối xe:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Đã xảy ra lỗi khi từ chối xe',
                 error: error.message
             });
         }
