@@ -2700,21 +2700,19 @@ document.getElementById('model').addEventListener('change', updateHiddenFields);
             
             // Update hidden fields
             updateHiddenFields();            // Add all form fields to FormData            // Basic info - Convert field names to match API expectations
-            formData.append('ten_xe', document.getElementById('ten_xe').value);
-            formData.append('brand', document.getElementById('brand').value);  // matches API expectation
-            formData.append('model', document.getElementById('model').value || '');  // matches API expectation
+            formData.append('ten_xe', document.getElementById('model').value || document.getElementById('ten_xe').value || '');  // ten_xe là tên model xe
+            formData.append('hang_xe', document.getElementById('brand').value);  // hang_xe là brand
             formData.append('loai_xe', document.getElementById('loai_xe').value);  // IMPORTANT: This must be one of: '4_cho', '7_cho', '16_cho', '29_cho'
-            formData.append('license_plate', document.getElementById('license_plate').value.toUpperCase());  // matches API expectation
-            formData.append('year', document.getElementById('year').value);  // matches API expectation
+            formData.append('bien_so', document.getElementById('license_plate').value.toUpperCase());  // bien_so là license_plate
+            formData.append('nam_san_xuat', document.getElementById('year').value);  // nam_san_xuat là year
             formData.append('mau_xe', document.getElementById('car_color').value);
-            formData.append('seats', document.getElementById('so_cho').value);  // matches API expectation
-            formData.append('transmission', document.getElementById('hop_so').value);  // matches API expectation
-            formData.append('fuel', document.getElementById('nhien_lieu').value);  // matches API expectation
-            formData.append('price_per_day', document.getElementById('price_per_day').value);  // matches API expectation
-            formData.append('description', document.getElementById('description').value || '');  // matches API expectation for 'description'
+            formData.append('so_cho', document.getElementById('so_cho').value);  // so_cho là seats
+            formData.append('hop_so', document.getElementById('hop_so').value);  // hop_so là transmission            formData.append('nhien_lieu', document.getElementById('nhien_lieu').value);  // nhien_lieu là fuel
+            formData.append('gia_thue', document.getElementById('price_per_day').value);  // gia_thue là price_per_day
+            formData.append('mo_ta', document.getElementById('description').value || '');  // mo_ta là description
             formData.append('tinh_trang', 'cho_duyet');
-            formData.append('type', 'tu_lai');  // API uses 'type' instead of 'loai_dich_vu'
-            formData.append('location', document.getElementById('location').value);  // matches API expectation
+            formData.append('loai_dich_vu', 'tu_lai');  // API uses 'loai_dich_vu' not 'type'
+            formData.append('dia_chi_xe', document.getElementById('location').value);  // dia_chi_xe là location
             formData.append('deposit', document.getElementById('deposit').value || 0);
             formData.append('km_limit', document.getElementById('km_limit').value || 0);
 

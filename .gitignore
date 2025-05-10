@@ -55,14 +55,24 @@ out/
 *.sqlite3
 *.db
 
-# Uploads (except for samples/examples)
+# Uploads directory - keep structure but ignore content
 public/uploads/*
 !public/uploads/avatars/
 !public/uploads/cars/
+!public/uploads/documents/
+!public/uploads/insurance/
+!public/uploads/registration/
+
+# Keep folders but ignore files
 public/uploads/avatars/*
 public/uploads/cars/*
+public/uploads/documents/*
+public/uploads/insurance/*
+public/uploads/registration/*
+
+# Keep sample files
 !public/uploads/avatars/*.png
-!public/uploads/cars/*.jpg
+!public/uploads/cars/sample*.jpg
 
 # Temporary files
 .tmp/

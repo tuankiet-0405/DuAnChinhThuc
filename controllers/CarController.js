@@ -693,6 +693,144 @@ const carController = {
                 message: 'Đã xảy ra lỗi khi xóa xe',
                 error: error.message
             });
+        }    },
+    
+    // Duyệt xe (thay đổi trạng thái thành 'san_sang')
+    approveCar: async (req, res) => {
+        try {
+            const carId = req.params.id;
+            
+            // Kiểm tra xem người dùng có quyền admin không
+            if (req.user.loai_tai_khoan !== 'admin') {
+                return res.status(403).json({
+                    success: false,
+                    message: 'Bạn không có quyền thực hiện thao tác này'
+                });
+            }
+            
+            // Kiểm tra xem xe có tồn tại không
+            const [carRows] = await db.execute('SELECT * FROM xe WHERE id = ?', [carId]);
+            if (carRows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy thông tin xe'
+                });
+            }
+            
+            // Cập nhật trạng thái xe thành 'san_sang'
+            await db.execute(
+                'UPDATE xe SET tinh_trang = ?, ngay_cap_nhat = NOW() WHERE id = ?',
+                ['san_sang', carId]
+            );
+            
+            // Gửi thông báo cho chủ xe
+            try {
+                const car = carRows[0];
+                
+                // Tạo thông báo
+                const notificationData = {
+                    tieu_de: 'Xe của bạn đã được duyệt',
+                    noi_dung: `Xe ${car.ten_xe} của bạn đã được duyệt và sẵn sàng cho thuê.`,
+                    loai_thong_bao: 'car_approval',
+                    nguoi_nhan_id: car.chu_xe_id,
+                    lien_ket: `/mycars` // Liên kết đến trang quản lý xe của người dùng
+                };
+                
+                // Gọi API tạo thông báo
+                await fetch('/api/notifications', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${req.headers.authorization.split(' ')[1]}`
+                    },
+                    body: JSON.stringify(notificationData)
+                });
+            } catch (notificationError) {
+                console.error('Lỗi khi gửi thông báo:', notificationError);
+                // Không để lỗi thông báo ảnh hưởng đến quá trình duyệt xe
+            }
+            
+            return res.status(200).json({
+                success: true,
+                message: 'Đã duyệt xe thành công'
+            });
+        } catch (error) {
+            console.error('Lỗi khi duyệt xe:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Đã xảy ra lỗi khi duyệt xe',
+                error: error.message
+            });
+        }
+    },
+    
+    // Từ chối xe (thay đổi trạng thái thành 'tu_choi')
+    rejectCar: async (req, res) => {
+        try {
+            const carId = req.params.id;
+            const { ly_do } = req.body; // Lý do từ chối
+            
+            // Kiểm tra xem người dùng có quyền admin không
+            if (req.user.loai_tai_khoan !== 'admin') {
+                return res.status(403).json({
+                    success: false,
+                    message: 'Bạn không có quyền thực hiện thao tác này'
+                });
+            }
+            
+            // Kiểm tra xem xe có tồn tại không
+            const [carRows] = await db.execute('SELECT * FROM xe WHERE id = ?', [carId]);
+            if (carRows.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy thông tin xe'
+                });
+            }
+            
+            // Cập nhật trạng thái xe thành 'tu_choi'
+            await db.execute(
+                'UPDATE xe SET tinh_trang = ?, ngay_cap_nhat = NOW(), ghi_chu = ? WHERE id = ?',
+                ['tu_choi', ly_do || 'Không đáp ứng yêu cầu', carId]
+            );
+            
+            // Gửi thông báo cho chủ xe
+            try {
+                const car = carRows[0];
+                
+                // Tạo thông báo
+                const notificationData = {
+                    tieu_de: 'Xe của bạn bị từ chối',
+                    noi_dung: `Xe ${car.ten_xe} của bạn đã bị từ chối vì: ${ly_do || 'Không đáp ứng yêu cầu'}`,
+                    loai_thong_bao: 'car_rejection',
+                    nguoi_nhan_id: car.chu_xe_id,
+                    lien_ket: `/mycars` // Liên kết đến trang quản lý xe của người dùng
+                };
+                
+                // Gọi API tạo thông báo
+                await fetch('/api/notifications', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${req.headers.authorization.split(' ')[1]}`
+                    },
+                    body: JSON.stringify(notificationData)
+                });
+            } catch (notificationError) {
+                console.error('Lỗi khi gửi thông báo:', notificationError);
+                // Không để lỗi thông báo ảnh hưởng đến quá trình từ chối xe
+            }
+            
+            return res.status(200).json({
+                success: true,
+                message: 'Đã từ chối xe thành công'
+            });
+        } catch (error) {
+            console.error('Lỗi khi từ chối xe:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Đã xảy ra lỗi khi từ chối xe',
+                error: error.message
+            });
         }
     }
 };
