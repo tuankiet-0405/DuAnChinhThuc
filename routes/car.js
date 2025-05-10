@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const carController = require('../controllers/CarController');
+// Sửa đường dẫn import cho đúng
+const carController = require('../controllers/CarController.js');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 // Get all cars
