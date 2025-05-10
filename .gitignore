@@ -1,0 +1,86 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+package-lock.json
+.pnpm-debug.log
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+.pnp/
+.pnp.js
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE and editors
+.idea/
+.vscode/
+.history/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# Build outputs
+dist/
+build/
+out/
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Uploads (except for samples/examples)
+public/uploads/*
+!public/uploads/avatars/
+!public/uploads/cars/
+public/uploads/avatars/*
+public/uploads/cars/*
+!public/uploads/avatars/*.png
+!public/uploads/cars/*.jpg
+
+# Temporary files
+.tmp/
+temp/
+tmp/
+*.tmp
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# nyc test coverage
+.nyc_output/
+
+# Debug files
+debug/
+
+# Local configuration
+config.local.js
+
+# Cache files
+.cache/
