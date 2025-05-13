@@ -656,8 +656,256 @@ document.addEventListener('DOMContentLoaded', function() {
                     carFields.imagePreview.dataset.imageUrl = processedUrl;
                 };
                 img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+            };            reader.readAsDataURL(file);
         }
     });
+    
+    // Xem chi tiết xe chờ duyệt
+    function viewCarDetails(carId) {
+        // Hiển thị thông tin chi tiết của xe cần duyệt
+        fetch(`/api/cars/${carId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const car = data.data;
+                
+                // Điền thông tin xe vào modal
+                document.getElementById('viewCarName').textContent = car.ten_xe || 'Không có tên';
+                document.getElementById('viewCarPlate').textContent = car.bien_so || 'Không có biển số';
+                document.getElementById('viewCarYear').textContent = car.nam_san_xuat || 'N/A';
+                document.getElementById('viewCarSeats').textContent = `${car.so_cho || 'N/A'} chỗ`;
+                document.getElementById('viewCarFuel').textContent = car.nhien_lieu || 'N/A';
+                document.getElementById('viewCarTransmission').textContent = car.hop_so || 'N/A';
+                document.getElementById('viewCarPrice').textContent = formatCurrency(car.gia_thue) || 'N/A';
+                document.getElementById('viewCarDescription').textContent = car.mo_ta || 'Không có mô tả';
+                
+                // Hiển thị thông tin chủ xe nếu có
+                document.getElementById('viewCarOwner').textContent = car.ten_chu_xe || 'N/A';
+                document.getElementById('viewCarOwnerPhone').textContent = car.lien_he_chu_xe || 'N/A';
+                document.getElementById('viewCarOwnerEmail').textContent = car.email_chu_xe || 'N/A';
+                
+                // Hiển thị hình ảnh xe
+                const imagesContainer = document.getElementById('viewCarImages');
+                imagesContainer.innerHTML = '';
+                
+                if (car.hinh_anh && car.hinh_anh.length > 0) {
+                    if (typeof car.hinh_anh === 'string') {
+                        // Trường hợp chỉ có 1 hình ảnh dạng string
+                        imagesContainer.innerHTML = `<img src="${car.hinh_anh}" alt="${car.ten_xe}">`;
+                    } else {
+                        // Trường hợp có nhiều hình ảnh dạng mảng
+                        car.hinh_anh.forEach(img => {
+                            if (img) {
+                                imagesContainer.innerHTML += `<img src="${img}" alt="${car.ten_xe}">`;
+                            }
+                        });
+                    }
+                } else {
+                    imagesContainer.innerHTML = '<p>Không có hình ảnh</p>';
+                }
+                
+                // Lưu ID xe hiện tại
+                document.getElementById('approveCarBtn').setAttribute('data-id', car.id);
+                document.getElementById('showRejectCarModalBtn').setAttribute('data-id', car.id);
+                
+                // Hiển thị modal
+                document.getElementById('viewCarModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                showNotification('error', 'Không thể tải thông tin xe');
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi khi tải thông tin xe:', error);
+            showNotification('error', 'Đã xảy ra lỗi khi tải thông tin xe');
+        });
+    }
+    
+    // Duyệt xe
+    async function approveCar(carId) {
+        try {
+            // Hiển thị xác nhận
+            if (!confirm('Bạn có chắc chắn muốn duyệt xe này?')) {
+                return;
+            }
+            
+            const response = await fetch(`/api/cars/${carId}/approve`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showNotification('success', 'Xe đã được duyệt thành công');
+                
+                // Đóng modal nếu đang mở
+                const viewCarModal = document.getElementById('viewCarModal');
+                if (viewCarModal.classList.contains('active')) {
+                    viewCarModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+                
+                // Làm mới danh sách xe
+                fetchCars(currentFilter);
+            } else {
+                showNotification('error', data.message || 'Không thể duyệt xe');
+            }
+        } catch (error) {
+            console.error('Lỗi khi duyệt xe:', error);
+            showNotification('error', 'Đã xảy ra lỗi khi duyệt xe');
+        }
+    }
+    
+    // Từ chối xe
+    async function rejectCar(carId, reason) {
+        try {
+            if (!reason) {
+                showNotification('error', 'Vui lòng nhập lý do từ chối');
+                return;
+            }
+            
+            const response = await fetch(`/api/cars/${carId}/reject`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ly_do_tu_choi: reason })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showNotification('success', 'Xe đã bị từ chối');
+                
+                // Đóng modal từ chối
+                document.getElementById('rejectCarModal').classList.remove('active');
+                
+                // Đóng modal xem chi tiết nếu đang mở
+                const viewCarModal = document.getElementById('viewCarModal');
+                if (viewCarModal.classList.contains('active')) {
+                    viewCarModal.classList.remove('active');
+                }
+                
+                document.body.style.overflow = '';
+                
+                // Làm mới danh sách xe
+                fetchCars(currentFilter);
+            } else {
+                showNotification('error', data.message || 'Không thể từ chối xe');
+            }
+        } catch (error) {
+            console.error('Lỗi khi từ chối xe:', error);
+            showNotification('error', 'Đã xảy ra lỗi khi từ chối xe');
+        }
+    }
+    
+    // Hiển thị modal từ chối xe
+    function showRejectCarModal(carId) {
+        document.getElementById('rejectCarId').value = carId;
+        document.getElementById('rejectCarModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // Xử lý các sự kiện cho modal xem chi tiết và từ chối xe
+    document.addEventListener('DOMContentLoaded', function() {
+        // Xử lý nút duyệt xe
+        document.getElementById('approveCarBtn').addEventListener('click', function() {
+            const carId = this.getAttribute('data-id');
+            approveCar(carId);
+        });
+        
+        // Xử lý nút hiển thị modal từ chối
+        document.getElementById('showRejectCarModalBtn').addEventListener('click', function() {
+            const carId = this.getAttribute('data-id');
+            showRejectCarModal(carId);
+        });
+        
+        // Xử lý nút đóng modal từ chối xe
+        const rejectCarModal = document.getElementById('rejectCarModal');
+        const rejectCarCloseBtn = rejectCarModal.querySelector('.btn-close');
+        const rejectCarCancelBtn = rejectCarModal.querySelector('.btn-secondary');
+        
+        rejectCarCloseBtn.addEventListener('click', () => {
+            rejectCarModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        rejectCarCancelBtn.addEventListener('click', () => {
+            rejectCarModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        // Xử lý nút đóng modal xem chi tiết
+        const viewCarModal = document.getElementById('viewCarModal');
+        const viewCarCloseBtn = viewCarModal.querySelector('.btn-close');
+        
+        viewCarCloseBtn.addEventListener('click', () => {
+            viewCarModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        // Xử lý form từ chối xe
+        document.getElementById('rejectCarForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const carId = document.getElementById('rejectCarId').value;
+            const reason = e.target.querySelector('textarea').value;
+            
+            rejectCar(carId, reason);
+        });
+    });
+    
+    // Hiển thị thông báo
+    function showNotification(type, message) {
+        const notificationContainer = document.querySelector('.notification-container') || document.createElement('div');
+        
+        if (!document.querySelector('.notification-container')) {
+            notificationContainer.className = 'notification-container';
+            document.body.appendChild(notificationContainer);
+        }
+        
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        
+        const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle';
+        
+        notification.innerHTML = `
+            <div class="notification-icon">
+                <i class="fas fa-${icon}"></i>
+            </div>
+            <div class="notification-content">
+                <div class="notification-message">${message}</div>
+            </div>
+            <button class="notification-close">&times;</button>
+        `;
+        
+        notificationContainer.appendChild(notification);
+        
+        // Xử lý nút đóng
+        notification.querySelector('.notification-close').addEventListener('click', () => {
+            notification.classList.add('hide');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        });
+        
+        // Tự động đóng sau 5 giây
+        setTimeout(() => {
+            notification.classList.add('hide');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 5000);
+    }
 });

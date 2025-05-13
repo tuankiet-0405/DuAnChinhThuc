@@ -251,23 +251,44 @@
 <body>
     <header class="header">
         <div class="header-inner">
+           <div class="header-inner">
             <div class="logo-header">
-                <img src="/public/image/AutomotiveCar.png" alt="TKĐK" class="logo">
+                <a href="/public/index.html">
+                    <img src="/public/image/AutomotiveCar.png" alt="TKĐK Logo" class="logo">
+                </a>
             </div>
-            <div class="menu-header">
+            <nav class="menu-header">
                 <ul class="menu">
-                    <li class="menu-item"><a href="/public/index.html">Trang chủ</a></li>
-                    <li class="menu-item"><a href="/public/index.html#gioithieu">Giới thiệu</a></li>
-                    <li class="menu-item"><a href="">Dịch vụ</a>
+                    <li class="menu-item"><a href="/public/index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
+                    <li class="menu-item"><a href="/public/index.html#gioithieu"><i class="fas fa-info-circle"></i> Giới thiệu</a></li>
+                    <li class="menu-item">
+                        <a href="#"><i class="fas fa-car"></i> Dịch vụ <i class="fas fa-chevron-down"></i></a>
                         <ul class="sub-menu">
-                            <li><a href="Xe4cho.html">Thuê xe 4 chỗ</a></li>
-                            <li><a href="Xe7cho.html">Thuê xe 7 chỗ</a></li>
-                            <li><a href="Xe16cho.html">Thuê xe 16 chỗ</a></li>
-                            <li><a href="#">Thuê xe 29 chỗ</a></li>
+                            <li><a href="/views/Xe4cho.html">Thuê xe 4 chỗ</a></li>
+                            <li><a href="/views/Xe7cho.html">Thuê xe 7 chỗ</a></li>
+                            <li><a href="/views/Xe16cho.html">Thuê xe 16 chỗ</a></li>
                         </ul>
                     </li>
-                    <li class="menu-item"><a href="LienHe.html">Liên hệ</a></li>
+                    <li class="menu-item"><a href="/views/DanhSachXeChoThue.html"><i class="fas fa-list"></i> Danh sách xe</a></li>
+                    <li class="menu-item"><a href="/views/LienHe.html"><i class="fas fa-phone"></i> Liên hệ</a></li>
                 </ul>
+            </nav>
+            <div class="login-header guest-only">
+                <a href="/views/login.html" class="btn btn-login">
+                    <i class="fas fa-user"></i> Đăng nhập
+                </a>
+            </div>
+            <div class="user-header auth-required" style="display: none;">
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span class="user-name"></span>
+                    <ul class="user-menu">
+                        <li><a href="/views/account.html"><i class="fas fa-user-circle"></i> Tài khoản</a></li>
+                        <li><a href="/views/mycars.html"><i class="fas fa-car"></i> Xe của tôi</a></li>
+                        <li><a href="/views/mywallet.html"><i class="fas fa-wallet"></i> Ví của tôi</a></li>
+                        <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>

@@ -44,9 +44,8 @@ function renderFeaturedCars(cars) {
     
     // Debug: In ra dữ liệu xe nhận được từ API
     console.log('Dữ liệu xe nổi bật:', cars);
-    
-    // Hiển thị tối đa 4 xe nổi bật
-    const carsToShow = cars.slice(0, 4);
+      // Hiển thị tối đa 8 xe nổi bật
+    const carsToShow = cars.slice(0, 8);
     
     carsToShow.forEach(car => {
         const discountBadge = car.giam_gia ? 

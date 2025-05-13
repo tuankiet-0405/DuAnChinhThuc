@@ -24,4 +24,9 @@ promisePool.getConnection()
         console.error('❌ Lỗi kết nối database:', err.message);
     });
 
+// Đảm bảo rằng hàm getConnection vẫn có sẵn
+promisePool.getConnection = async function() {
+    return await pool.promise().getConnection();
+};
+
 module.exports = promisePool;

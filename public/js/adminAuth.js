@@ -15,11 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Kiểm tra xem người dùng đã đăng nhập với quyền admin chưa
 function checkAdminAuth() {
+    console.log('Checking admin authentication...');
     const adminToken = localStorage.getItem('adminToken');
     const adminUser = localStorage.getItem('adminUser');
     
     // Nếu không có token hoặc thông tin người dùng, chuyển hướng về trang đăng nhập
     if (!adminToken || !adminUser) {
+        console.log('No admin token or user found, redirecting to login');
         redirectToAdminLogin();
         return;
     }
@@ -27,14 +29,25 @@ function checkAdminAuth() {
     try {
         // Kiểm tra thông tin người dùng
         const user = JSON.parse(adminUser);
+        
+        // Log để debug
+        console.log('Admin user from localStorage:', user);
+        console.log('User role:', user.loai_tai_khoan);
+        
         if (!user || user.loai_tai_khoan !== 'admin') {
-            console.log('Không có quyền admin');
+            console.log('User is not admin, redirecting to login');
             redirectToAdminLogin();
             return;
         }
         
         // Cập nhật UI với thông tin admin nếu cần
         updateAdminUI(user);
+        
+        // Set global axios Authorization header
+        if (window.axios) {
+            window.axios.defaults.headers.common['Authorization'] = `Bearer ${adminToken}`;
+            console.log('Set global axios authorization header');
+        }
         
     } catch (error) {
         console.error('Lỗi khi kiểm tra xác thực admin:', error);

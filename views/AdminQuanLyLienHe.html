@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý liên hệ - TKĐK Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+    <style>
+        :root {
+            --primary-color: #4F46E5;
+            --primary-dark: #4338CA;
+            --primary-light: #EEF2FF; /* A slightly lighter shade for backgrounds/hovers */
+            --success-color: #10B981;
+            --success-dark: #059669;
+            --success-light: #D1FAE5;
+            --warning-color: #F59E0B;
+            --warning-dark: #D97706;
+            --warning-light: #FEF3C7;
+            --danger-color: #EF4444;
+            --danger-light: #FEE2E2;
+            --text-dark: #1F2937;
+            --text-gray: #4B5563; /* Slightly darker gray for better readability */
+            --text-light: #9CA3AF;
+            --bg-light: #F9FAFB;
+            --bg-body: #F3F4F6; /* Explicit body background */
+            --border-color: #D1D5DB; /* Softer border color */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* Adjusted shadow */
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); /* Adjusted shadow */
+            --radius-sm: 0.25rem; /* Slightly smaller radius for a sharper look */
+            --radius-md: 0.375rem;
+            --radius-lg: 0.5rem;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body); 
+            color: var(--text-dark);
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .main-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: #fff; 
+            border-right: 1px solid var(--border-color);
+            padding-top: 0; 
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s ease-in-out;
+            position: fixed; 
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000; 
+        }
+
+        .sidebar .sidebar-brand {
+            padding: 1.25rem 1.5rem; /* Increased padding slightly */
+            margin-bottom: 0.5rem; 
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem; /* Slightly larger brand text */
+            font-weight: 600;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+        .sidebar .sidebar-brand img {
+            height: 32px; /* Logo size */
+        }
+        .sidebar .sidebar-brand span {
+            font-weight: 700;
+        }
+
+        .sidebar .nav {
+            padding-left: 0;
+            margin-bottom: 0;
+            list-style: none;
+            flex-grow: 1; 
+            overflow-y: auto; 
+        }
+
+        .sidebar .nav-item {
+        }
+
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            padding: 0.85rem 1.5rem; /* Adjusted padding */
+            color: var(--text-gray);
+            font-weight: 500;
+            border-left: 3px solid transparent; /* Thinner border */
+            transition: all 0.2s ease-in-out;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0; /* Add slight rounding to the right */
+            margin-right: 0.5rem; /* Space for the rounding */
+        }
+        .sidebar .nav-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem; /* Slightly smaller icons */
+            color: var(--text-light); 
+        }
+        .sidebar .nav-link:hover {
+            color: var(--primary-color);
+            background-color: var(--primary-light);
+            border-left-color: var(--primary-color);
+        }
+        .sidebar .nav-link:hover i {
+            color: var(--primary-color); 
+        }
+        .sidebar .nav-link.active {
+            color: var(--primary-color);
+            background-color: var(--primary-light);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .sidebar .nav-link.active i {
+            color: var(--primary-color);
+        }
+
+        .sidebar-footer {
+            padding: 0.75rem 0; 
+            border-top: 1px solid var(--border-color);
+            background-color: #fff; 
+        }
+        .sidebar-footer .nav-link {
+            border-left-color: transparent !important; 
+        }
+         .sidebar-footer .nav-link:hover {
+            color: var(--danger-color);
+            background-color: var(--danger-light);
+        }
+        .sidebar-footer .nav-link:hover i {
+            color: var(--danger-color);
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 2rem; /* Increased padding */
+            overflow-y: auto;
+            margin-left: 260px; 
+            background-color: var(--bg-body); 
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem; /* Increased margin */
+            padding-bottom: 1.5rem; 
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .page-header h1 {
+            font-size: 1.875rem; /* Larger page title */
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-dark);
+        }
+        .page-header h1 i {
+            color: var(--primary-color); /* Color the icon in the header */
+        }
+        
+        .btn-export-excel { 
+            background-color: var(--success-color); color: white; border: none;
+            padding: 0.55rem 1rem; /* Adjusted padding */
+            border-radius: var(--radius-md); font-weight: 500;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            transition: background-color 0.2s, box-shadow 0.2s; font-size: 0.875rem;
+        }
+        .btn-export-excel:hover { background-color: var(--success-dark); box-shadow: var(--shadow-sm); }
+        
+        .contact-stats {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Slightly larger minmax */
+            gap: 1.75rem; margin-bottom: 2rem; /* Increased gap and margin */
+        }
+        
+        .stat-card {
+            background: white; 
+            border-radius: var(--radius-lg); 
+            padding: 1.75rem; /* Increased padding */
+            display: flex; align-items: center; 
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            border: 1px solid var(--border-color); /* Default border */
+            box-shadow: none; /* Remove default shadow for a flatter look */
+        }
+        .stat-card:hover { 
+            transform: translateY(-3px); 
+            box-shadow: var(--shadow-md); 
+            border-color: var(--primary-color); /* Highlight border on hover */
+        }
+        
+        .stat-card-icon {
+            width: 48px; height: 48px; /* Slightly larger icon container */
+            border-radius: var(--radius-md); /* Consistent radius */
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 1.25rem; font-size: 1.5rem; /* Slightly larger icon */
+        }
+        .stat-card-icon.total { background-color: var(--primary-light); color: var(--primary-color); }
+        .stat-card-icon.pending { background-color: var(--warning-light); color: var(--warning-color); }
+        .stat-card-icon.completed { background-color: var(--success-light); color: var(--success-color); }
+        
+        .stat-info h4 {
+            margin: 0 0 0.25rem 0; font-size: 0.8rem; 
+            color: var(--text-gray); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; /* Adjusted letter spacing */
+        }
+        .stat-info p {
+            margin: 0; font-size: 1.875rem; 
+            font-weight: 700; color: var(--text-dark);
+        }
+
+        /* Filter and Table Card Styles */
+        .card { /* General card style adjustments */
+            border: 1px solid var(--border-color);
+            box-shadow: none; /* Flatter cards by default */
+            border-radius: var(--radius-lg); /* Consistent rounding */
+        }
+        .card.shadow-sm { box-shadow: var(--shadow-sm) !important; } /* Keep utility if needed */
+        
+        .card-header { /* Unified card header */
+            background-color: var(--bg-light) !important; 
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.25rem; /* Adjusted padding */
+        }
+        .card-header h6 { 
+            font-weight: 600 !important; 
+            color: var(--text-dark) !important; /* Darker text for header */
+            font-size: 1rem; /* Slightly larger card titles */
+        }
+        .card-header h6 i {
+            color: var(--primary-color); /* Color icons in card headers */
+        }
+
+        /* Filter buttons specific styling */
+        .btn-group .btn {
+            transition: all 0.2s ease-in-out;
+            font-weight: 500;
+            padding: 0.4rem 0.9rem; /* Adjusted padding */
+            font-size: 0.85rem;
+        }
+        .btn-group .btn.filter-btn.active {
+            color: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-group .btn.filter-btn[data-status="all"].active { background-color: var(--primary-color); border-color: var(--primary-color); }
+        .btn-group .btn.filter-btn[data-status="pending"].active { background-color: var(--warning-color); border-color: var(--warning-color); }
+        .btn-group .btn.filter-btn[data-status="completed"].active { background-color: var(--success-color); border-color: var(--success-color); }
+
+        .input-group-text {
+            background-color: #fff;
+            border-right: none;
+            color: var(--text-light);
+        }
+        #searchInput {
+            border-left: none;
+        }
+        #searchInput:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem var(--primary-light);
+        }
+
+
+        .table thead.table-light th { 
+            background-color: var(--bg-light); 
+            color: var(--text-gray); 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; /* Slightly smaller table header text */
+            letter-spacing: 0.05em; 
+            border-bottom: 2px solid var(--border-color); /* Stronger bottom border for header */
+        }
+        .table td, .table th { 
+            vertical-align: middle; 
+            padding: 0.85rem; /* Adjusted cell padding */
+            border-bottom: 1px solid var(--border-color); /* Row separator */
+        }
+        .table th:first-child, .table td:first-child { padding-left: 1.25rem; } /* More padding for first cell */
+        .table th:last-child, .table td:last-child { padding-right: 1.25rem; } /* More padding for last cell */
+
+        .table-hover tbody tr:hover { 
+            background-color: var(--primary-light); /* Branded hover color */
+            color: var(--primary-dark);
+        }
+        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+            /* color: var(--primary-dark); If you want text color to change too */
+        }
+        
+        /* Badge styles */
+        .badge { 
+            font-size: 0.75rem; /* Slightly smaller badges */
+            padding: 0.35em 0.6em; 
+            font-weight: 600; 
+            border-radius: var(--radius-sm);
+        }
+        .badge.bg-warning { background-color: var(--warning-color) !important; color: white !important; }
+        .badge.bg-success { background-color: var(--success-color) !important; color: white !important; }
+        .badge.bg-secondary { background-color: var(--text-light) !important; color: var(--text-dark) !important; }
+
+        /* Modal Styles */
+        .modal-header { 
+            background-color: var(--primary-color) !important; 
+            color: white !important; 
+            padding: 1rem 1.5rem; /* Adjusted padding */
+            border-bottom: none; /* Remove border if bg is colored */
+        }
+        .modal-header .modal-title {
+            font-weight: 600;
+            font-size: 1.15rem;
+        }
+        .modal-header .btn-close-white { filter: invert(1) grayscale(100%) brightness(200%); }
+        .modal-body strong { color: var(--text-dark); font-weight: 600; }
+        .modal-body .bg-light {
+            background-color: var(--bg-body) !important; /* Use body bg for contrast */
+            border-radius: var(--radius-md);
+        }
+
+        .modal-footer {
+            background-color: var(--bg-light);
+            border-top: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+        }
+        .modal-footer .btn {
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+        }
+        .modal-footer .btn-success { background-color: var(--success-color); border-color: var(--success-color); }
+        .modal-footer .btn-success:hover { background-color: #059669; border-color: #059669; }
+        .modal-footer .btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); }
+        .modal-footer .btn-primary:hover { background-color: var(--primary-dark); border-color: var(--primary-dark); }
+
+        /* Empty/Loading States */
+        #emptyState, #loadingState {
+            padding: 3rem 1rem;
+            border: 1px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            margin-top: 1rem;
+            background-color: #fff;
+        }
+        #emptyState i, #loadingState .spinner-border {
+            color: var(--text-light) !important;
+        }
+        #emptyState p.lead, #loadingState p {
+            color: var(--text-gray) !important; /* Ensure this uses the CSS variable */
+        }
+
+        /* Pagination */
+        .pagination .page-item .page-link { 
+            color: var(--primary-color); 
+            border-radius: var(--radius-sm);
+            margin: 0 3px; /* Slightly more margin */
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.75rem; /* Adjust padding */
+            font-size: 0.875rem;
+            transition: all 0.2s ease-in-out;
+        }
+        .pagination .page-item.active .page-link { 
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color); 
+            color: white;
+        }
+        .pagination .page-item.disabled .page-link {
+            color: var(--text-light);
+            border-color: var(--border-color);
+        }
+        .pagination .page-item .page-link:hover {
+            background-color: var(--primary-light);
+            border-color: var(--primary-dark);
+        }
+        .pagination .page-item.active .page-link:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        /* Ensure SweetAlert2 modals are above Bootstrap modals if necessary */
+        .swal2-container {
+            z-index: 1060 !important; /* Bootstrap modal z-index is 1050-1055 */
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <nav class="sidebar">
+            <a class="sidebar-brand" href="/public/index.html">
+                <img src="/public/image/AutomotiveCar.png" alt="TKĐK Logo">
+                <span>TKĐK Admin</span>
+            </a>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="AdminTrangChu.html"><i class="fas fa-chart-line"></i> Thống Kê</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="AdminQuanLyKH.html"><i class="fas fa-users"></i> Quản Lý Khách Hàng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="AdminQLXe.html"><i class="fas fa-car"></i> Quản Lý Xe</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="AdminQuanLyNguoiDung.html"><i class="fas fa-user-cog"></i> Quản Lý Người Dùng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="AdminGiaoDich.html"><i class="fas fa-exchange-alt"></i> Quản Lý Giao Dịch</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="AdminVoucher.html"><i class="fas fa-ticket-alt"></i> Quản Lý Voucher</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="AdminQuanLyLienHe.html"><i class="fas fa-envelope"></i> Quản Lý Liên hệ</a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Đăng Xuất
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            <div class="page-header">
+                <h1><i class="fas fa-headset me-2"></i>Quản Lý Liên Hệ</h1>
+                <!-- Export button moved to table card header for better context -->
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row contact-stats">
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="stat-card h-100">
+                        <div class="stat-card-icon total"><i class="fas fa-envelope-open-text"></i></div>
+                        <div class="stat-info">
+                            <h4>Tổng số liên hệ</h4>
+                            <p id="totalContacts">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="stat-card h-100">
+                        <div class="stat-card-icon pending"><i class="fas fa-hourglass-half"></i></div>
+                        <div class="stat-info">
+                            <h4>Chưa xử lý</h4>
+                            <p id="pendingContacts">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="stat-card h-100">
+                        <div class="stat-card-icon completed"><i class="fas fa-check-double"></i></div>
+                        <div class="stat-info">
+                            <h4>Đã xử lý</h4>
+                            <p id="completedContacts">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter and Search Section -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light py-3">
+                    <h6 class="m-0"><i class="fas fa-filter me-2"></i>Bộ lọc và Tìm kiếm</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-lg-5 col-md-12">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <input type="text" class="form-control" id="searchInput" placeholder="Tìm theo tên, email, SĐT, chủ đề...">
+                            </div>
+                        </div>
+                        <div class="col-lg-auto col-md-12">
+                            <label class="form-label mb-0 me-2 fw-500">Trạng thái:</label>
+                        </div>
+                        <div class="col-lg-auto col-md-12 btn-group" role="group" aria-label="Filter status">
+                            <button type="button" class="btn btn-sm btn-outline-primary filter-btn active" data-status="all">Tất cả</button>
+                            <button type="button" class="btn btn-sm btn-outline-warning filter-btn" data-status="pending">Chưa xử lý</button>
+                            <button type="button" class="btn btn-sm btn-outline-success filter-btn" data-status="completed">Đã xử lý</button>
+                        </div>
+                         <select id="filterStatus" class="form-select d-none" aria-label="Lọc theo trạng thái">
+                            <option value="all" selected>Tất cả</option>
+                            <option value="pending">Chưa xử lý</option>
+                            <option value="completed">Đã xử lý</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contacts Table Section -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light py-3 d-flex flex-wrap align-items-center justify-content-between">
+                    <h6 class="m-0 mb-2 mb-md-0"><i class="fas fa-list-ul me-2"></i>Danh sách liên hệ</h6>
+                    <button class="btn btn-sm btn-export-excel" id="exportExcelBtn"><i class="fas fa-file-excel me-1"></i> Xuất Excel</button>
+                </div>
+                <div class="card-body p-0"> <!-- Removed padding for table to touch edges -->
+                    <div id="loadingState" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <p class="mt-3 lead">Đang tải dữ liệu liên hệ...</p>
+                    </div>
+                    <div class="table-responsive" id="contactsTableContainer" style="display: none;">
+                        <table class="table table-hover mb-0" id="contactsTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col" class="ps-3">#</th>
+                                    <th scope="col">Họ Tên</th>
+                                    <th scope="col">Thông tin liên hệ</th>
+                                    <th scope="col">Chủ đề</th>
+                                    <th scope="col">Ngày gửi</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col" class="text-center pe-3">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contactList">
+                                <!-- Contact rows will be injected here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="emptyState" class="text-center py-5" style="display: none;">
+                        <i class="fas fa-envelope-open fa-4x text-muted mb-3"></i>
+                        <p class="lead text-muted">Không có dữ liệu liên hệ nào.</p>
+                        <p>Vui lòng thử lại với bộ lọc khác hoặc kiểm tra sau.</p>
+                    </div>
+                </div>
+                <div class="card-footer bg-light py-3 border-top-0" id="paginationContainer" style="display: none;"> <!-- Hide footer if no data -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mb-0" id="paginationControls">
+                            <!-- Pagination controls will be injected here -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Contact Detail Modal -->
+    <div class="modal fade" id="contactDetailModal" tabindex="-1" aria-labelledby="contactDetailModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactDetailModalLabel"><i class="fas fa-user-tie me-2"></i>Chi tiết liên hệ</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div id="modalLoadingState" class="text-center py-5" style="display:none;">
+                        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                        <p class="mt-2">Đang tải chi tiết...</p>
+                    </div>
+                    <div id="modalContentArea">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><strong><i class="fas fa-user fa-fw me-2 text-primary"></i>Họ tên:</strong> <span id="modalName">N/A</span></p>
+                                <p><strong><i class="fas fa-envelope fa-fw me-2 text-primary"></i>Email:</strong> <span id="modalEmail">N/A</span></p>
+                                <p><strong><i class="fas fa-phone fa-fw me-2 text-primary"></i>Điện thoại:</strong> <span id="modalPhone">N/A</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong><i class="fas fa-calendar-alt fa-fw me-2 text-primary"></i>Ngày gửi:</strong> <span id="modalDate">N/A</span></p>
+                                <p><strong><i class="fas fa-info-circle fa-fw me-2 text-primary"></i>Chủ đề:</strong> <span id="modalSubject">N/A</span></p>
+                                <p><strong><i class="fas fa-tag fa-fw me-2 text-primary"></i>Trạng thái:</strong> <span id="modalStatusBadge"></span></p>
+                            </div>
+                        </div>
+                        <hr class="my-3">
+                        <div class="mb-3">
+                            <h6><i class="fas fa-comment-alt fa-fw me-2 text-primary"></i>Nội dung lời nhắn:</h6>
+                            <div class="p-3 bg-light rounded border" style="min-height: 100px; white-space: pre-wrap;" id="modalMessage"></div>
+                        </div>
+                        <div id="responseDisplaySection" class="mb-3" style="display:none;">
+                             <hr class="my-3">
+                             <h6><i class="fas fa-reply fa-fw me-2 text-primary"></i>Nội dung đã phản hồi:</h6>
+                             <div class="p-3 bg-light rounded border" style="min-height: 80px; white-space: pre-wrap;" id="modalResponseContentDisplay"></div>
+                        </div>
+                        <div class="mb-3" id="sendResponseSection">
+                            <hr class="my-3">
+                            <h6><i class="fas fa-paper-plane fa-fw me-2 text-primary"></i>Gửi phản hồi mới (nếu cần):</h6>
+                            <textarea class="form-control" id="modalResponse" rows="4" placeholder="Nhập nội dung phản hồi..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Đóng</button>
+                    <button type="button" class="btn btn-success" id="btnMarkAsCompletedModal" style="display:none;"><i class="fas fa-check-circle me-1"></i>Đánh dấu đã xử lý</button>
+                    <button type="button" class="btn btn-primary" id="btnSendResponseModal" style="display:none;"><i class="fas fa-paper-plane me-1"></i>Gửi phản hồi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+    <script src="/public/js/adminAuth.js"></script>
+    <script src="/public/js/AdminContactController.js"></script>
+    <script>
+        // Ensure adminAuth.js runs its checks
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof checkAuth === 'function') {
+                checkAuth(); // From adminAuth.js
+            }
+            // Logout button event listener (if not already handled in adminAuth.js)
+            const logoutButton = document.getElementById('logoutBtn');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn muốn đăng xuất?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Đăng xuất',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            localStorage.removeItem('adminToken'); // Or however token is stored
+                            localStorage.removeItem('adminUser');
+                            window.location.href = 'AdminLogin.html';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -91,18 +91,66 @@
             border: 1px solid #e5e7eb;
             border-radius: 6px;
             transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
+        }        .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
         }
 
-        .form-group textarea {
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .form-error {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }        .form-group textarea {
             height: 150px;
             resize: vertical;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .form-error {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
         }
 
         .submit-btn {
@@ -116,11 +164,29 @@
             transition: all 0.3s ease;
             margin-left: 150px;
             
-        }
-
-        .submit-btn:hover {
+        }        .submit-btn:hover {
             background: var(--secondary-color);
             transform: translateY(-2px);
+        }
+
+        .message-status {
+            text-align: center;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .message-status.success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .message-status.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
         }
 
         .map-container {
@@ -141,12 +207,14 @@
 <body>
     <header class="header">
         <div class="header-inner">
+           <div class="header-inner">
+           <div class="header-inner">
             <div class="logo-header">
                 <a href="/public/index.html">
-                    <img src="/public/image/TK-DK.PNG" alt="Logo" class="logo">
+                    <img src="/public/image/AutomotiveCar.png" alt="TKĐK Logo" class="logo">
                 </a>
             </div>
-            <div class="menu-header">
+            <nav class="menu-header">
                 <ul class="menu">
                     <li class="menu-item"><a href="/public/index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
                     <li class="menu-item"><a href="/public/index.html#gioithieu"><i class="fas fa-info-circle"></i> Giới thiệu</a></li>
@@ -161,6 +229,23 @@
                     <li class="menu-item"><a href="/views/DanhSachXeChoThue.html"><i class="fas fa-list"></i> Danh sách xe</a></li>
                     <li class="menu-item"><a href="/views/LienHe.html"><i class="fas fa-phone"></i> Liên hệ</a></li>
                 </ul>
+            </nav>
+            <div class="login-header guest-only">
+                <a href="/views/login.html" class="btn btn-login">
+                    <i class="fas fa-user"></i> Đăng nhập
+                </a>
+            </div>
+            <div class="user-header auth-required" style="display: none;">
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span class="user-name"></span>
+                    <ul class="user-menu">
+                        <li><a href="/views/account.html"><i class="fas fa-user-circle"></i> Tài khoản</a></li>
+                        <li><a href="/views/mycars.html"><i class="fas fa-car"></i> Xe của tôi</a></li>
+                        <li><a href="/views/mywallet.html"><i class="fas fa-wallet"></i> Ví của tôi</a></li>
+                        <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>
@@ -170,10 +255,9 @@
             <div class="contact-info" data-aos="fade-right">
                 <h2>Thông Tin Liên Hệ</h2>
                 <div class="info-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div class="info-content">
+                    <i class="fas fa-map-marker-alt"></i>                    <div class="info-content">
                         <h3>Địa Chỉ</h3>
-                        <p>123 Nguyễn Văn Linh, Quận 7, TP.HCM</p>
+                        <p>10/80c Song Hành Xa Lộ Hà Nội, Phường Tân Phú, Thủ Đức, Hồ Chí Minh</p>
                     </div>
                 </div>
                 <div class="info-item">
@@ -201,40 +285,51 @@
                     </div>
                 </div>
                 <img src="../public/image/limoside.jpg" alt="Hình ảnh xe limousine sang trọng" class="contact-image" style="width: 100%; height: auto; border-radius: 12px;">
-            </div>
-
-            <div class="contact-form" data-aos="fade-left">
+            </div>            <div class="contact-form" data-aos="fade-left">
                 <h2>Gửi Thông Tin Tư Vấn</h2>
-                <form id="contactForm">
+                <div id="alertSuccess" class="alert alert-success">
+                    Gửi thông tin thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.
+                </div>
+                <div id="alertError" class="alert alert-error">
+                    Có lỗi xảy ra, vui lòng thử lại sau.
+                </div>
+                <form id="contactForm" onsubmit="handleSubmit(event)">
                     <div class="form-group">
                         <label for="name">Họ và Tên</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="ten" required>
+                        <div class="form-error" id="tenError"></div>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" required>
+                        <div class="form-error" id="emailError"></div>
                     </div>
                     <div class="form-group">
                         <label for="phone">Số Điện Thoại</label>
-                        <input type="tel" id="phone" name="phone" required>
+                        <input type="tel" id="phone" name="so_dien_thoai" required>
+                        <div class="form-error" id="so_dien_thoaiError"></div>
                     </div>
                     <div class="form-group">
                         <label for="subject">Chủ Đề</label>
-                        <input type="text" id="subject" name="subject" required>
+                        <input type="text" id="subject" name="tieu_de" required>
+                        <div class="form-error" id="tieu_deError"></div>
                     </div>
                     <div class="form-group">
                         <label for="message">Nội Dung</label>
-                        <textarea id="message" name="message" required></textarea>
+                        <textarea id="message" name="noi_dung" required></textarea>
+                        <div class="form-error" id="noi_dungError"></div>
+                    </div>                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Gửi ngay
+                    </button>
+                    <div id="messageStatus" class="message-status">
+                        <i class="fas"></i> <span id="messageText"></span>
                     </div>
-                    <button type="submit" class="submit-btn">Gửi Thông Tin</button>
                 </form>
             </div>
-        </div>
-
-        <div class="map-container" data-aos="fade-up">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.8342935578785!2d106.70083011533433!3d10.748075992346437!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f6c6e8efe67%3A0x42d3c8a87f7b39db!2zTmd1eeG7hW4gVsSDbiBMaW5oLCBUw6JuIFBow7osIFF14bqtbiA3LCBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1650432985085!5m2!1svi!2s"
-                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+        </div>        <div class="map-container" data-aos="fade-up">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.6373778727547!2d106.76529267575776!3d10.840019257904666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527787a9431d5%3A0xa51d2859dd85894b!2s10%2F80c%20Song%20H%C3%A0nh%20Xa%20l%E1%BB%99%20H%C3%A0%20N%E1%BB%99i%2C%20T%C3%A2n%20Ph%C3%BA%2C%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%2C%20Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh!5e0!3m2!1svi!2s!4v1704856796744!5m2!1svi!2s" 
+                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>
     </main>
@@ -303,34 +398,15 @@
                 </a>
             </div>
         </div>
-    </footer>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    </footer>    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
             duration: 800,
             offset: 100,
             once: true
         });
-
-        // Form handling
-        document.getElementById('contactForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const submitBtn = this.querySelector('.submit-btn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
-
-            // Simulate form submission
-            setTimeout(() => {
-                submitBtn.innerHTML = '<i class="fas fa-check"></i> Đã gửi thành công';
-                this.reset();
-                setTimeout(() => {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Gửi Tin Nhắn';
-                }, 2000);
-            }, 1500);
-        });
     </script>
+    <script src="/public/js/contact-form.js"></script>
     <script src="/public/js/code.js"></script>
 </body>
 

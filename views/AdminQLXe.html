@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý xe - TKĐK Admin</title>    <link rel="stylesheet" href="/public/css/stylesAdmin.css">
+    <link rel="stylesheet" href="/public/css/carDetail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="/public/js/code.js"></script>
@@ -25,6 +26,7 @@
                 <li><a href="AdminQuanLyNguoiDung.html"><i class="fas fa-user-cog"></i> Quản Lý Người Dùng</a></li>
                 <li><a href="AdminGiaoDich.html"><i class="fas fa-exchange-alt"></i> Quản Lý Giao Dịch</a></li>
                 <li><a href="AdminVoucher.html"><i class="fas fa-ticket-alt"></i> Quản Lý Voucher</a></li>
+                <li><a href="AdminQuanLyLienHe.html"><i class="fas fa-envelope"></i> Quản Lý Liên hệ</a></li>
                 <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a></li>
             </ul>
         </div>
@@ -187,13 +189,88 @@
                         <option value="dang_thue">Đang thuê</option>
                         <option value="bao_tri">Đang bảo trì</option>
                     </select>
-                </div>
-                <div class="modal-footer">
+                </div>                <div class="modal-footer">
                     <button type="button" class="btn-secondary">Hủy</button>
                     <button type="submit" class="btn-add">Lưu</button>
                 </div>
             </form>
         </div>
-    </div>    </script>
-</body>
-</html>
+    </div>
+    
+    <!-- Modal từ chối xe -->
+    <div class="modal" id="rejectCarModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Từ chối xe</h3>
+                <button class="btn-close">&times;</button>
+            </div>
+            <form id="rejectCarForm">
+                <input type="hidden" id="rejectCarId">
+                <div class="form-group">
+                    <label>Lý do từ chối</label>
+                    <textarea required placeholder="Nhập lý do từ chối xe..." rows="4"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary">Hủy</button>
+                    <button type="submit" class="btn-danger">Từ chối xe</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal xem chi tiết xe chờ duyệt -->
+    <div class="modal" id="viewCarModal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h3>Chi tiết xe chờ duyệt</h3>
+                <button class="btn-close">&times;</button>
+            </div>
+            <div class="car-detail-view">
+                <div class="car-detail-header">
+                    <div class="car-info">
+                        <h2 id="viewCarName">Tên xe</h2>
+                        <p id="viewCarPlate">Biển số</p>
+                    </div>
+                    <div class="car-actions">
+                        <button class="btn-approve" id="approveCarBtn">
+                            <i class="fas fa-check"></i> Duyệt xe
+                        </button>
+                        <button class="btn-reject" id="showRejectCarModalBtn">
+                            <i class="fas fa-times"></i> Từ chối
+                        </button>
+                    </div>
+                </div>
+                <div class="car-detail-body">
+                    <div class="car-images" id="viewCarImages">
+                        <!-- Car images will be added here -->
+                    </div>
+                    <div class="car-specs">
+                        <div class="spec-group">
+                            <h4>Thông tin cơ bản</h4>
+                            <ul>
+                                <li><i class="fas fa-calendar-alt"></i> <span id="viewCarYear">Năm sản xuất</span></li>
+                                <li><i class="fas fa-chair"></i> <span id="viewCarSeats">Số chỗ</span></li>
+                                <li><i class="fas fa-gas-pump"></i> <span id="viewCarFuel">Nhiên liệu</span></li>
+                                <li><i class="fas fa-cog"></i> <span id="viewCarTransmission">Hộp số</span></li>
+                                <li><i class="fas fa-tag"></i> <span id="viewCarPrice">Giá thuê</span></li>
+                            </ul>
+                        </div>
+                        <div class="spec-group">
+                            <h4>Mô tả</h4>
+                            <p id="viewCarDescription">Mô tả xe</p>
+                        </div>
+                        <div class="spec-group">
+                            <h4>Thông tin chủ xe</h4>
+                            <ul>
+                                <li><i class="fas fa-user"></i> <span id="viewCarOwner">Tên chủ xe</span></li>
+                                <li><i class="fas fa-phone"></i> <span id="viewCarOwnerPhone">Số điện thoại</span></li>
+                                <li><i class="fas fa-envelope"></i> <span id="viewCarOwnerEmail">Email</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
